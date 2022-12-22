@@ -29,7 +29,7 @@ if __name__ == '__main__':
     #test_ds = tr.tf.data.Dataset.from_tensor_slices((test_X[:5], test_Y[:5])).batch(32)
 
     print(f'Generator building...')
-    gen = split_shuffle.DataGenerator(histones_imgs, histones_label, ratio=0.8)
+    gen = split_shuffle.DataGenerator(histones_imgs, histones_label, ratio=0.9)
     train_ds = tr.tf.data.Dataset.from_generator(gen.train_generator,
                                                  output_types=(tr.tf.float64, tr.tf.int32),
                                                  output_shapes=((img_size, img_size, 1), ())).batch(32)

@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras.layers import Dense, Flatten, BatchNormalization, \
-    Activation, Conv2D, AveragePooling2D, Input, Dropout, ReLU
+    Activation, Conv2D, AveragePooling2D, Input, Dropout, ReLU, MaxPool2D
 from tensorflow.keras import Model
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 
@@ -97,10 +97,10 @@ class LCI(Model):
             test_loss_results.append(self.test_loss.result())
             print(
                 f'Epoch {epoch + 1 : >3} | '
-                f'Loss:{self.train_loss.result() : <8.5f}, '
-                f'Accuracy:{self.train_accuracy.result() * 100 : <8.5f}, '
-                f'Test Loss:{self.test_loss.result() : <8.5f}, '
-                f'Test Accuracy:{self.test_accuracy.result() * 100 : <8.5f}'
+                f'Loss:{self.train_loss.result() : <9.5f}, '
+                f'Accuracy:{self.train_accuracy.result() * 100 : <9.5f}, '
+                f'Test Loss:{self.test_loss.result() : <9.5f}, '
+                f'Test Accuracy:{self.test_accuracy.result() * 100 : <9.5f}'
             )
         return train_loss_results, test_loss_results
 

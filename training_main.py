@@ -17,7 +17,8 @@ if __name__ == '__main__':
     histones = read_data.read_files(path=data_path)
     histones_label = make_label.make_label(histones, immobile_cutoff)
     print(f'Image processing...')
-    histones_imgs, img_size, time_scale = img_preprocess.preprocessing3D(histones, img_size=5, amplif=2, channel=1)
+    histones_imgs, img_size, time_scale = \
+        img_preprocess.preprocessing3D(histones, img_size=4, amplif=2, channel=1, time_scale=400)
 
     with tr.tf.device('/cpu:0'):
         print(f'Generator building...')
@@ -34,6 +35,7 @@ if __name__ == '__main__':
         print(f'Training the data...')
         training_model = tr.LCI()
         training_model.compile(jit_compile=True)
+        training_model.summary()
         history = training_model.fit(train_ds, test_ds, epochs=100)
         training_model.save(model_path)
     print(history)

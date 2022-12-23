@@ -17,11 +17,14 @@ if __name__ == '__main__':
     histones = read_data.read_files(path=data_path)
     histones_label = make_label.make_label(histones, immobile_cutoff)
     print(f'Image processing...')
-    histones_imgs, img_size, time_scale = img_preprocess.preprocessing3D(histones, img_size=8, amplif=2, channel=1)
+    histones_imgs, img_size, time_scale = img_preprocess.preprocessing3D(histones, img_size=5, amplif=2, channel=1)
 
     with tr.tf.device('/cpu:0'):
         print(f'Generator building...')
         gen = split_shuffle.DataGenerator(histones_imgs, histones_label, ratio=0.9)
+        del histones_imgs
+        del histones_label
+        del histones
         train_ds = tr.tf.data.Dataset.from_generator(gen.train_generator,
                                                      output_types=(tr.tf.float64, tr.tf.int32),
                                                      output_shapes=((img_size, img_size, time_scale, 1), ())).batch(32)

@@ -20,7 +20,7 @@ class LCI(Model):
 
         self.conv1 = Conv3D(filters=32, kernel_size=(25, 25, 25), strides=(5, 5, 5))
         self.conv2 = Conv3D(filters=8, kernel_size=(5, 5, 5))
-        self.pool1 = AveragePooling3D(pool_size=(25, 25, 25), strides=(25, 25, 25))
+        self.pool1 = AveragePooling3D(pool_size=(10, 10, 10), strides=(10, 10, 10))
         self.pool2 = AveragePooling3D(pool_size=(5, 5, 5))
         self.dropout1 = Dropout(0.2)
         self.flatten = Flatten()

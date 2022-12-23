@@ -41,7 +41,7 @@ def preprocessing(histones, img_size=None, amplif=3, channel=1, interpolation=Tr
     return imgs, img_size
 
 
-def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=600, interpolation=True):
+def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=500, interpolation=True):
     channel_vals = 0
     if img_size is None:
         img_size = 5 * (10 ** amplif)
@@ -66,10 +66,27 @@ def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=600
             y_val = y_shift + int(trajectory[1] * (10 ** amplif))
             t_time = int(trajectory[2] * 100)
             if not interpolation:
+
+
+                # scailing to reduce the memory
+                shifted_time = t_time - current_time
+                scaled_y_val = img_size - y_val
+                if shifted_time >= time_scale:
+                    shifted_time = time_scale-1
+                if scaled_y_val >= img_size:
+                    scaled_y_val = img_size-1
+                if scaled_y_val < 0:
+                    scaled_y_val = 0
+                if x_val >= img_size:
+                    x_val = img_size-1
+                if x_val < 0:
+                    x_val = 0
+
+
                 if not channel:
-                    img[img_size - y_val][x_val][t_time - current_time] = 1
+                    img[scaled_y_val][x_val][shifted_time] = 1
                 else:
-                    img[img_size - y_val][x_val][t_time - current_time][channel_vals] = 1
+                    img[scaled_y_val][x_val][shifted_time][channel_vals] = 1
             else:
                 interpolate_pos = interpolate3D([current_xval, current_yval, current_time-start_time],
                                                 [x_val, y_val, t_time-start_time])
@@ -77,6 +94,21 @@ def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=600
                 current_yval = y_val
                 current_time = t_time
                 for inter_pos in interpolate_pos:
+
+
+                    # scailing to reduce the memory
+                    if inter_pos[2] >= time_scale:
+                        inter_pos[2] = time_scale-1
+                    if inter_pos[0] < 0:
+                        inter_pos[0] = 0
+                    if inter_pos[0] >= img_size:
+                        inter_pos[0] = img_size-1
+                    if img_size - inter_pos[1] < 0:
+                        inter_pos[1] = img_size
+                    if img_size - inter_pos[1] >= img_size:
+                        inter_pos[1] = 1
+
+
                     if not channel:
                         img[img_size - inter_pos[1]][inter_pos[0]][inter_pos[2]] = 1
                     else:

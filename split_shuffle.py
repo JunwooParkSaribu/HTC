@@ -33,7 +33,7 @@ class DataGenerator:
             i += 1
 
 
-def split_shuffle(training_set, label_set=None, ratio=1, shuffle=True):
+def split(training_set, label_set=None, ratio=1):
     size = len(training_set)
     split_index = size * ratio
     test_X = []
@@ -50,4 +50,7 @@ def split_shuffle(training_set, label_set=None, ratio=1, shuffle=True):
             test_X.append(training_set[keys[i]])
             if label_set != None:
                 test_Y.append(label_set[keys[i]])
-    return np.array(train_X), np.array(train_Y), np.array(test_X), np.array(test_Y)
+    if ratio == 1:
+        return np.array(train_X), np.array(train_Y)
+    else:
+        return np.array(train_X), np.array(train_Y), np.array(test_X), np.array(test_Y)

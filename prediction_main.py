@@ -36,7 +36,7 @@ if __name__ == '__main__':
     histones_imgs, img_size = img_preprocess.preprocessing(histones, img_size=8, amplif=2, channel=1)
 
     print(f'Reshaping data...')
-    test_X, test_Y, a, b = split_shuffle.split_shuffle(histones_imgs, histones_label)
+    test_X, test_Y = split_shuffle.split(histones_imgs, histones_label)
     test_X = test_X.reshape((test_X.shape[0], img_size, img_size, 1))
 
 
@@ -55,6 +55,17 @@ if __name__ == '__main__':
         y_predict = np.array([np.argmax(x) for x in final_model.predict(test_X)])
 
     print('Accuracy = ', np.sum([1 if x == 0 else 0 for x in (test_Y.reshape(-1) - y_predict)])/float(y_predict.shape[0]))
+
+
+    histone_names = histones_imgs.keys()
+    for i, name in enumerate(histone_names):
+        if i == 50:
+            break
+        sample_img = histones_imgs[name]
+        sample_label = histones_label[name]
+        sample_pred = y_predict[i]
+        zoomed_img = img_preprocess.zoom(sample_img, size=img_size)
+        img_preprocess.img_save(zoomed_img, name, img_size=img_size, label=sample_label, pred=sample_pred)
 
     """
     cm = confusion_matrix(test_Y, y_predict)

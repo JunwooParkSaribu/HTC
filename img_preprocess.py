@@ -38,10 +38,6 @@ def preprocessing(histones, img_size=None, amplif=3, channel=1, interpolation=Tr
                     else:
                         img[img_size - inter_pos[1]][inter_pos[0]][channel_vals] = 1
         imgs[histone] = img
-        if not channel:
-            plt.imshow(img, cmap=matplotlib.colors.ListedColormap(['black', 'white']),
-                       extent=(0, img_size, 0, img_size))
-            plt.savefig('img/training_imgs/' + str(histone))
     return imgs, img_size
 
 
@@ -67,10 +63,50 @@ def interpolate(current_pos, next_pos):  # 2D interpolation
     return pos
 
 
+def zoom(img, size=800, to_size=(300, 300)):
+    if type(size) is not int:
+        center_pos = [int(size[0]/2), int(size[1]/2)]
+    else:
+        center_pos = [int(size/2), int(size/2)]
+
+    x_start = center_pos[0] - int(to_size[0] / 2)
+    x_end = center_pos[0] + int(to_size[0] / 2)
+    y_start = center_pos[1] - int(to_size[1] / 2)
+    y_end = center_pos[1] + int(to_size[1] / 2)
+    print(x_start, x_end, y_start, y_end)
+    return img[x_start:x_end, y_start:y_end], to_size[0]
+
+
+def img_save(img, img_name, img_size, label=0, pred=0):
+    ps = ''
+    if label==0:
+        label = 'immobile'
+    if label==1:
+        label = 'hybrid'
+    if label==2:
+        label = 'mobile'
+    if pred==0:
+        pred = 'immobile'
+    if pred==1:
+        pred = 'hybrid'
+    if pred==2:
+        pred = 'mobile'
+    plt.imshow(img, cmap=matplotlib.colors.ListedColormap(['black', 'white']),
+               extent=(0, img_size, 0, img_size))
+    if len(label) > 0:
+        ps += 'label = ' + label
+    if len(pred) > 0:
+        ps += '\nprediction = ' + pred
+    plt.title(ps)
+    plt.savefig('img/training_imgs/' + str(img_name))
+
+
 """
 hist = {}
 hist[203_1] = [[21.148162, 11.869134], [20.514558,	11.477142],
             [19.937856, 11.609182],[19.641905,	11.49018],[20.626125,	11.929091],
             [20.514558,	11.477142],[19.937856,	11.609182],[19.641905,	11.49018]]
-preprocessing(hist, img_size=5, amplif=2, channel=False)
+kk, imz_size = preprocessing(hist, img_size=5, amplif=2, channel=False)
+kkk = zoom(kk[2031], size=imz_size)
+img_save(kkk[0], '2031', kkk[1], 1, 2)
 """

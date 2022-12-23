@@ -28,20 +28,21 @@ if __name__ == '__main__':
     #train_ds = tr.tf.data.Dataset.from_tensor_slices((train_X[:2], train_Y[:2])).batch(32)
     #test_ds = tr.tf.data.Dataset.from_tensor_slices((test_X[:5], test_Y[:5])).batch(32)
 
-    print(f'Generator building...')
-    gen = split_shuffle.DataGenerator(histones_imgs, histones_label, ratio=0.9)
-    train_ds = tr.tf.data.Dataset.from_generator(gen.train_generator,
-                                                 output_types=(tr.tf.float64, tr.tf.int32),
-                                                 output_shapes=((img_size, img_size, 1), ())).batch(32)
-    test_ds = tr.tf.data.Dataset.from_generator(gen.test_generator,
-                                                output_types=(tr.tf.float64, tr.tf.int32),
-                                                output_shapes=((img_size, img_size, 1), ())).batch(32)
+    with tr.tf.device('/cpu:0'):
+        print(f'Generator building...')
+        gen = split_shuffle.DataGenerator(histones_imgs, histones_label, ratio=0.9)
+        train_ds = tr.tf.data.Dataset.from_generator(gen.train_generator,
+                                                     output_types=(tr.tf.float64, tr.tf.int32),
+                                                     output_shapes=((img_size, img_size, 1), ())).batch(32)
+        test_ds = tr.tf.data.Dataset.from_generator(gen.test_generator,
+                                                    output_types=(tr.tf.float64, tr.tf.int32),
+                                                    output_shapes=((img_size, img_size, 1), ())).batch(32)
 
-    print(f'Training data...')
-    training_model = tr.LCI()
-    training_model.compile(jit_compile=True)
-    training_model.fit(train_ds, test_ds,
-                       EPOCHS=100
-                       )
+        print(f'Training data...')
+        training_model = tr.LCI()
+        training_model.compile(jit_compile=True)
+        training_model.fit(train_ds, test_ds,
+                           EPOCHS=100
+                           )
 
-    training_model.save(model_path)
+        training_model.save(model_path)

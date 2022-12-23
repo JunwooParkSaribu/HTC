@@ -34,7 +34,7 @@ if __name__ == '__main__':
     print(f'Loading the data...')
     histones = read_data.read_files(path=data_path)
     histones_label = make_label.make_label(histones, immobile_cutoff)
-    """
+
     print(f'Image processing...')
     histones_imgs, img_size = img_preprocess.preprocessing(histones, img_size=8, amplif=2, channel=1)
     histones_imgs_2D, img_size = img_preprocess.preprocessing(histones, img_size=8, amplif=2, channel=False)
@@ -60,7 +60,7 @@ if __name__ == '__main__':
         zoomed_img, zoom_size = img_preprocess.zoom(sample_img, size=img_size)
         img_preprocess.img_save(zoomed_img, name,
                                 img_size=zoom_size, label=sample_label, pred=sample_pred, path=cur_path)
-    """
+
 
 
     """

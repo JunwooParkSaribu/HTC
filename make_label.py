@@ -8,7 +8,6 @@ def make_label(histones, immobile_cutoff) -> []:
     for histone in histones:
         ratio = distances[histone][0] / displacements[histone][0]
         radius, t = displacements[histone]
-        print(radius, t)
         if radius < immobile_cutoff and ratio < 3:
             histone_label[histone] = 0 # immobile
         elif ratio > 3 and t < 0.1:

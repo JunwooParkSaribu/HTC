@@ -75,10 +75,10 @@ class LCI(Model):
 
             print(
                 f'Epoch {epoch + 1 : >4} | '
-                f'Loss:{self.train_loss.result() : <10}, '
-                f'Accuracy:{self.train_accuracy.result() * 100 : <10}, '
-                f'Test Loss:{self.test_loss.result() : <10}, '
-                f'Test Accuracy:{self.test_accuracy.result() * 100 : <10}'
+                f'Loss:{self.train_loss.result() : <8.5f}, '
+                f'Accuracy:{self.train_accuracy.result() * 100 : <8.5f}, '
+                f'Test Loss:{self.test_loss.result() : <8.5f}, '
+                f'Test Accuracy:{self.test_accuracy.result() * 100 : <8.5f}'
             )
 
 

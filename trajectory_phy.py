@@ -43,7 +43,6 @@ def velocity(histones):
             y_distance = histones[histone][trajec_num + 1][1] - histones[histone][trajec_num][1]
             t = histones[histone][trajec_num + 1][2] - histones[histone][trajec_num][2]
             histone_velocity[histone].append([np.sqrt(x_distance**2 + y_distance**2)/t])
-
     return histone_velocity
 
 

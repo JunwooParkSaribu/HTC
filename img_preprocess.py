@@ -68,7 +68,7 @@ def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=500
             if not interpolation:
 
 
-                # scailing to reduce the memory
+                # Forcing the scailing to reduce the memory
                 shifted_time = t_time - current_time
                 scaled_y_val = img_size - y_val
                 if shifted_time >= time_scale:
@@ -96,7 +96,7 @@ def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=500
                 for inter_pos in interpolate_pos:
 
 
-                    # scailing to reduce the memory
+                    # Forcing the scailing to reduce the memory
                     if inter_pos[2] >= time_scale:
                         inter_pos[2] = time_scale-1
                     if inter_pos[0] < 0:

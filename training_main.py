@@ -31,11 +31,9 @@ if __name__ == '__main__':
         test_ds = tr.tf.data.Dataset.from_generator(gen.test_generator,
                                                     output_types=(tr.tf.float64, tr.tf.int32),
                                                     output_shapes=((img_size, img_size, time_scale, 1), ())).batch(32)
-
         print(f'Training the data...')
         training_model = tr.LCI()
         training_model.compile(jit_compile=True)
         history = training_model.fit(train_ds, test_ds, epochs=100)
         training_model.save(model_path)
-
     print(history)

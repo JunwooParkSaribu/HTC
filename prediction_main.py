@@ -9,11 +9,6 @@ from keras.models import load_model
 import tensorflow as tf
 import split_shuffle
 
-#from sklearn.metrics import confusion_matrix
-#import pandas as pd
-#import seaborn as sns
-#import matplotlib.pyplot as plt
-
 
 model_path = 'my_model'
 data_path = 'data/1_WT-H2BHalo_noIR/whole cells/20220217_h2b halo_before_irradiation_entire_Cell'
@@ -61,23 +56,3 @@ if __name__ == '__main__':
         img_preprocess.img_save(zoomed_img, name,
                                 img_size=zoom_size, label=sample_label, pred=sample_pred, path=cur_path)
 
-
-
-    """
-    print("Before loading data =", datetime.now().strftime("%H:%M:%S"))
-    train_X, test_X, train_Y, test_Y = load_data.load_data(data_path)
-    print("After loading data =", datetime.now().strftime("%H:%M:%S"))
-    img_size = 28  # width and length
-    test_X = test_X.reshape((test_X.shape[0], img_size, img_size, 1))
-    
-    cm = confusion_matrix(test_Y, y_predict)
-    cm_df = pd.DataFrame(cm,
-                         index=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-                         columns=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])
-    plt.figure()
-    sns.heatmap(cm_df, annot=True)
-    plt.title('Confusion Matrix')
-    plt.ylabel('Actual Values')
-    plt.xlabel('Predicted Values')
-    plt.show()
-    """

@@ -239,4 +239,3 @@ for histone in distances:
 """
 
 histones_imgs, img_size, time_scale = img_preprocess.preprocessing3D(histones, img_size=8, amplif=2, channel=False)
-print(histones_imgs)

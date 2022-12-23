@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras.layers import Dense, Flatten, BatchNormalization, \
-    Activation, Conv2D, AveragePooling2D, Input, Dropout, ReLU, MaxPool2D
+    Activation, Conv3D, AveragePooling3D, Input, Dropout, ReLU, MaxPool3D
 from tensorflow.keras import Model
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 
@@ -18,12 +18,14 @@ class LCI(Model):
         self.test_loss = tf.keras.metrics.Mean(name='test_loss')
         self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
-        self.conv1 = Conv2D(filters=16, kernel_size=(5, 5), strides=(5, 5))
-        self.conv2 = Conv2D(filters=16, kernel_size=(5, 5))
-        self.conv3 = Conv2D(filters=8, kernel_size=(3, 3))
-        self.dropout1 = Dropout(0.1)
-        self.dropout2 = Dropout(0.1)
-        self.dropout3 = Dropout(0.1)
+        self.conv1 = Conv3D(filters=32, kernel_size=(25, 25, 25), strides=(5, 5, 5))
+        self.conv2 = Conv3D(filters=16, kernel_size=(10, 10, 10))
+        self.conv3 = Conv3D(filters=8, kernel_size=(5, 5, 5))
+        self.pool1 = AveragePooling3D(pool_size=(25, 25, 25), strides=(25, 25, 25))
+        self.pool2 = AveragePooling3D(pool_size=(5, 5, 5))
+        self.dropout1 = Dropout(0.2)
+        self.dropout2 = Dropout(0.2)
+        self.dropout3 = Dropout(0.2)
         self.flatten = Flatten()
         self.d1 = Dense(3, activation='softmax')
         self.relu_activ1 = ReLU()
@@ -37,17 +39,22 @@ class LCI(Model):
 
     def call(self, x):
         x = self.conv1(x)
+        x = self.pool1(x)
         x = self.batch1(x)
         x = self.relu_activ1(x)
         x = self.dropout1(x)
+
         x = self.conv2(x)
+        x = self.pool2(x)
         x = self.batch2(x)
         x = self.relu_activ2(x)
         x = self.dropout2(x)
+
         x = self.conv3(x)
         x = self.batch3(x)
         x = self.relu_activ3(x)
         x = self.dropout3(x)
+
         x = self.flatten(x)
         x = self.d1(x)
         x = self.batch4(x)
@@ -103,48 +110,3 @@ class LCI(Model):
                 f'Test Accuracy:{self.test_accuracy.result() * 100 : <9.5f}'
             )
         return train_loss_results, test_loss_results
-
-
-"""
-def define_model(input_shape):
-    # input
-    model_input = Input(shape=input_shape)
-
-    # first convolution layer
-    model_output = Conv2D(filters=8, kernel_size=(3, 3), activation='relu', name='Cov1')(model_input)
-    model_output = Flatten()(model_output)
-
-    model_output = Dense(10, activation=softmax)(model_output)
-    model_output = BatchNormalization()(model_output)
-    model_output = Activation("softmax")(model_output)
-
-    return model_input, model_output
-
-def fit_model(model_input, model_output, x_train, y_train, model_path):
-    # specify input and output
-    model = Model(inputs=model_input,
-                  outputs=model_output)
-
-    model.summary()
-
-    # define loss function and optimizer
-    model.compile(loss=SparseCategoricalCrossentropy(),
-                  optimizer=Adam(learning_rate=0.01),
-                  metrics=METRICS)
-
-    # save the best performing model
-    checkpointer = ModelCheckpoint(filepath=model_path,
-                                   monitor='val_loss',
-                                   verbose=0,
-                                   save_best_only=True,
-                                   mode='min')
-
-    # model training
-    model.fit(x_train, y_train,
-              batch_size=500,
-              epochs=100,
-              verbose=2,
-              callbacks=[checkpointer],
-              validation_split=0.2,
-              use_multiprocessing=True)
-"""

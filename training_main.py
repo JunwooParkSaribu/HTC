@@ -17,26 +17,17 @@ if __name__ == '__main__':
     histones = read_data.read_files(path=data_path)
     histones_label = make_label.make_label(histones, immobile_cutoff)
     print(f'Image processing...')
-    histones_imgs, img_size = img_preprocess.preprocessing(histones, img_size=8, amplif=2, channel=1)
-
-    #train_X, test_X, train_Y, test_Y = load_data.load_data('data/')
-    #img_size = 28  # width and length
-    #train_X = train_X.reshape((train_X.shape[0], img_size, img_size, 1))
-    #test_X = test_X.reshape((test_X.shape[0], img_size, img_size, 1))
-
-    #train_X, train_Y, test_X, test_Y = split_shuffle.split_shuffle(histones_imgs, histones_label, 0.7, shuffle=True)
-    #train_ds = tr.tf.data.Dataset.from_tensor_slices((train_X[:2], train_Y[:2])).batch(32)
-    #test_ds = tr.tf.data.Dataset.from_tensor_slices((test_X[:5], test_Y[:5])).batch(32)
+    histones_imgs, img_size, time_scale = img_preprocess.preprocessing3D(histones, img_size=8, amplif=2, channel=1)
 
     with tr.tf.device('/cpu:0'):
         print(f'Generator building...')
         gen = split_shuffle.DataGenerator(histones_imgs, histones_label, ratio=0.9)
         train_ds = tr.tf.data.Dataset.from_generator(gen.train_generator,
                                                      output_types=(tr.tf.float64, tr.tf.int32),
-                                                     output_shapes=((img_size, img_size, 1), ())).batch(32)
+                                                     output_shapes=((img_size, img_size, time_scale, 1), ())).batch(32)
         test_ds = tr.tf.data.Dataset.from_generator(gen.test_generator,
                                                     output_types=(tr.tf.float64, tr.tf.int32),
-                                                    output_shapes=((img_size, img_size, 1), ())).batch(32)
+                                                    output_shapes=((img_size, img_size, time_scale, 1), ())).batch(32)
 
         print(f'Training the data...')
         training_model = tr.LCI()

@@ -173,13 +173,3 @@ def img_save(img, img_name, img_size, label=None, pred=None, path=''):
     plt.title(ps)
     plt.savefig(path + str(img_name))
 
-
-"""
-hist = {}
-hist[203_1] = [[21.148162, 11.869134], [20.514558,	11.477142],
-            [19.937856, 11.609182],[19.641905,	11.49018],[20.626125,	11.929091],
-            [20.514558,	11.477142],[19.937856,	11.609182],[19.641905,	11.49018]]
-kk, imz_size = preprocessing(hist, img_size=5, amplif=2, channel=False)
-kkk = zoom(kk[2031], size=imz_size)
-img_save(kkk[0], '2031', kkk[1], 1, 2)
-"""

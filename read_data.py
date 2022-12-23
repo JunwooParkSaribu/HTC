@@ -42,7 +42,6 @@ def read_file(file, cutoff=4, amplif=6):
         if len(trajectory[histone]) > cutoff:
             histones[histone] = trajectory[histone]
     del trajectory
-
     return histones, x_min, x_max, y_min, y_max, time_max
 
 

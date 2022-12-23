@@ -15,7 +15,7 @@ if __name__ == '__main__':
     immobile_cutoff = 0.118
     print(f'Loading the data...')
     histones = read_data.read_files(path=data_path)
-    histones_label = make_label.make_label(histones, immobile_cutoff, path=data_path)
+    histones_label = make_label.make_label(histones, immobile_cutoff)
     print(f'Image processing...')
     histones_imgs, img_size = img_preprocess.preprocessing(histones, img_size=8, amplif=2, channel=1)
 

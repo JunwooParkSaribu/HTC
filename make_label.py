@@ -2,7 +2,7 @@ import read_data
 import trajectory_phy
 
 
-def make_label(histones, immobile_cutoff, path) -> []:
+def make_label(histones, immobile_cutoff) -> []:
     distances = trajectory_phy.distance(histones)
     displacements = trajectory_phy.displacement(histones)
     histone_label = {}

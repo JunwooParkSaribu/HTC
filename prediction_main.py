@@ -25,6 +25,8 @@ if __name__ == '__main__':
         cur_path = sys.argv[1]
         model_path = cur_path + '/' + model_path
         data_path = cur_path + '/' + data_path
+    else:
+        cur_path = './'
     print(model_path)
     print(data_path)
 

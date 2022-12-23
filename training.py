@@ -74,11 +74,11 @@ class LCI(Model):
                 self.test_step(test_images, test_labels)
 
             print(
-                f'Epoch {epoch + 1}, '
-                f'Loss: {self.train_loss.result()}, '
-                f'Accuracy: {self.train_accuracy.result() * 100}, '
-                f'Test Loss: {self.test_loss.result()}, '
-                f'Test Accuracy: {self.test_accuracy.result() * 100}'
+                f'Epoch {epoch + 1 : >4} | '
+                f'Loss:{self.train_loss.result() : <10}, '
+                f'Accuracy:{self.train_accuracy.result() * 100 : <10}, '
+                f'Test Loss:{self.test_loss.result() : <10}, '
+                f'Test Accuracy:{self.test_accuracy.result() * 100 : <10}'
             )
 
 

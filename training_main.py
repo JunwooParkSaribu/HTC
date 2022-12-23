@@ -13,7 +13,7 @@ model_path = 'my_model'
 
 if __name__ == '__main__':
     immobile_cutoff = 0.118
-    print(f'Loading data...')
+    print(f'Loading the data...')
     histones = read_data.read_files(path=data_path)
     histones_label = make_label.make_label(histones, immobile_cutoff, path=data_path)
     print(f'Image processing...')
@@ -38,7 +38,7 @@ if __name__ == '__main__':
                                                     output_types=(tr.tf.float64, tr.tf.int32),
                                                     output_shapes=((img_size, img_size, 1), ())).batch(32)
 
-        print(f'Training data...')
+        print(f'Training the data...')
         training_model = tr.LCI()
         training_model.compile(jit_compile=True)
         training_model.fit(train_ds, test_ds,

@@ -34,6 +34,7 @@ if __name__ == '__main__':
     print(f'Loading the data...')
     histones = read_data.read_files(path=data_path)
     histones_label = make_label.make_label(histones, immobile_cutoff)
+    """
     print(f'Image processing...')
     histones_imgs, img_size = img_preprocess.preprocessing(histones, img_size=8, amplif=2, channel=1)
     histones_imgs_2D, img_size = img_preprocess.preprocessing(histones, img_size=8, amplif=2, channel=False)
@@ -42,23 +43,12 @@ if __name__ == '__main__':
     test_X, test_Y = split_shuffle.split(histones_imgs, histones_label)
     test_X = test_X.reshape((test_X.shape[0], img_size, img_size, 1))
 
-
-    """
-    print("Before loading data =", datetime.now().strftime("%H:%M:%S"))
-    train_X, test_X, train_Y, test_Y = load_data.load_data(data_path)
-    print("After loading data =", datetime.now().strftime("%H:%M:%S"))
-    img_size = 28  # width and length
-    test_X = test_X.reshape((test_X.shape[0], img_size, img_size, 1))
-    """
-
     final_model = load_model(model_path)
     final_model.summary()
 
     with tf.device('/cpu:0'):
         y_predict = np.array([np.argmax(x) for x in final_model.predict(test_X)])
-
     print('Accuracy = ', np.sum([1 if x == 0 else 0 for x in (test_Y.reshape(-1) - y_predict)])/float(y_predict.shape[0]))
-
 
     histone_names = histones_imgs_2D.keys()
     for i, name in enumerate(histone_names):
@@ -70,8 +60,16 @@ if __name__ == '__main__':
         zoomed_img, zoom_size = img_preprocess.zoom(sample_img, size=img_size)
         img_preprocess.img_save(zoomed_img, name,
                                 img_size=zoom_size, label=sample_label, pred=sample_pred, path=cur_path)
+    """
+
 
     """
+    print("Before loading data =", datetime.now().strftime("%H:%M:%S"))
+    train_X, test_X, train_Y, test_Y = load_data.load_data(data_path)
+    print("After loading data =", datetime.now().strftime("%H:%M:%S"))
+    img_size = 28  # width and length
+    test_X = test_X.reshape((test_X.shape[0], img_size, img_size, 1))
+    
     cm = confusion_matrix(test_Y, y_predict)
     cm_df = pd.DataFrame(cm,
                          index=['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],

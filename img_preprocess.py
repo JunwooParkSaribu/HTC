@@ -73,30 +73,31 @@ def zoom(img, size=800, to_size=(300, 300)):
     x_end = center_pos[0] + int(to_size[0] / 2)
     y_start = center_pos[1] - int(to_size[1] / 2)
     y_end = center_pos[1] + int(to_size[1] / 2)
-    print(x_start, x_end, y_start, y_end)
     return img[x_start:x_end, y_start:y_end], to_size[0]
 
 
-def img_save(img, img_name, img_size, label=0, pred=0):
+def img_save(img, img_name, img_size, label=None, pred=None):
     ps = ''
-    if label==0:
-        label = 'immobile'
-    if label==1:
-        label = 'hybrid'
-    if label==2:
-        label = 'mobile'
-    if pred==0:
-        pred = 'immobile'
-    if pred==1:
-        pred = 'hybrid'
-    if pred==2:
-        pred = 'mobile'
+    if label is not None:
+        if label==0:
+            label = 'immobile'
+        if label==1:
+            label = 'hybrid'
+        if label==2:
+            label = 'mobile'
+    if pred is not None:
+        if pred==0:
+            pred = 'immobile'
+        if pred==1:
+            pred = 'hybrid'
+        if pred==2:
+            pred = 'mobile'
+    if label is not None:
+        ps += 'label = ' + label
+    if pred is not None:
+        ps += '\nprediction = ' + pred
     plt.imshow(img, cmap=matplotlib.colors.ListedColormap(['black', 'white']),
                extent=(0, img_size, 0, img_size))
-    if len(label) > 0:
-        ps += 'label = ' + label
-    if len(pred) > 0:
-        ps += '\nprediction = ' + pred
     plt.title(ps)
     plt.savefig('img/training_imgs/' + str(img_name))
 

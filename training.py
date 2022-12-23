@@ -1,5 +1,6 @@
 import tensorflow as tf
-from tensorflow.keras.layers import Dense, Flatten, BatchNormalization, Activation, Conv2D, AveragePooling2D, Input
+from tensorflow.keras.layers import Dense, Flatten, BatchNormalization, \
+    Activation, Conv2D, AveragePooling2D, Input, Dropout, ReLU
 from tensorflow.keras import Model
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 
@@ -17,22 +18,40 @@ class LCI(Model):
         self.test_loss = tf.keras.metrics.Mean(name='test_loss')
         self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
-        self.conv1 = Conv2D(filters=8, kernel_size=(10, 10), strides=(10, 10), activation='relu')
-        self.conv2 = Conv2D(filters=8, kernel_size=(5, 5), activation='relu')
-        self.conv3 = Conv2D(filters=8, kernel_size=(3, 3), activation='relu')
+        self.conv1 = Conv2D(filters=16, kernel_size=(5, 5), strides=(5, 5))
+        self.conv2 = Conv2D(filters=16, kernel_size=(5, 5))
+        self.conv3 = Conv2D(filters=8, kernel_size=(3, 3))
+        self.dropout1 = Dropout(0.1)
+        self.dropout2 = Dropout(0.1)
+        self.dropout3 = Dropout(0.1)
         self.flatten = Flatten()
         self.d1 = Dense(3, activation='softmax')
+        self.relu_activ1 = ReLU()
+        self.relu_activ2 = ReLU()
+        self.relu_activ3 = ReLU()
         self.batch1 = BatchNormalization()
-        self.activ = Activation("softmax")
+        self.batch2 = BatchNormalization()
+        self.batch3 = BatchNormalization()
+        self.batch4 = BatchNormalization()
+        self.soft_activ = Activation("softmax")
 
     def call(self, x):
         x = self.conv1(x)
+        x = self.batch1(x)
+        x = self.relu_activ1(x)
+        x = self.dropout1(x)
         x = self.conv2(x)
+        x = self.batch2(x)
+        x = self.relu_activ2(x)
+        x = self.dropout2(x)
         x = self.conv3(x)
+        x = self.batch3(x)
+        x = self.relu_activ3(x)
+        x = self.dropout3(x)
         x = self.flatten(x)
         x = self.d1(x)
-        x = self.batch1(x)
-        x = self.activ(x)
+        x = self.batch4(x)
+        x = self.soft_activ(x)
         return x
 
     @tf.function
@@ -40,9 +59,7 @@ class LCI(Model):
         with tf.GradientTape() as tape:
             # training=True is only needed if there are layers with different
             # behavior during training versus inference (e.g. Dropout).
-            print(labels)
             predictions = self(images, training=True)
-            print(predictions)
             loss = self.loss_object(y_true=labels, y_pred=predictions)
 
         gradients = tape.gradient(loss, self.trainable_variables)

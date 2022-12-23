@@ -40,8 +40,10 @@ class LCI(Model):
         with tf.GradientTape() as tape:
             # training=True is only needed if there are layers with different
             # behavior during training versus inference (e.g. Dropout).
+            print(labels)
             predictions = self(images, training=True)
-            loss = self.loss_object(labels, predictions)
+            print(predictions)
+            loss = self.loss_object(y_true=labels, y_pred=predictions)
 
         gradients = tape.gradient(loss, self.trainable_variables)
         self.optimizer.apply_gradients(zip(gradients, self.trainable_variables))
@@ -58,14 +60,15 @@ class LCI(Model):
         self.test_loss(t_loss)
         self.test_accuracy(labels, predictions)
 
-    def fit(self, train_ds, test_ds, EPOCHS):
-        for epoch in range(EPOCHS):
+    def fit(self, train_ds, test_ds, epochs):
+        train_loss_results = []
+        test_loss_results = []
+        for epoch in range(epochs):
             # Reset the metrics at the start of the next epoch
             self.train_loss.reset_states()
             self.train_accuracy.reset_states()
             self.test_loss.reset_states()
             self.test_accuracy.reset_states()
-            self.loss_object
 
             for images, labels in train_ds:
                 self.train_step(images, labels)
@@ -73,6 +76,8 @@ class LCI(Model):
             for test_images, test_labels in test_ds:
                 self.test_step(test_images, test_labels)
 
+            train_loss_results.append(self.train_loss.result())
+            test_loss_results.append(self.test_loss.result())
             print(
                 f'Epoch {epoch + 1 : >3} | '
                 f'Loss:{self.train_loss.result() : <8.5f}, '
@@ -80,6 +85,7 @@ class LCI(Model):
                 f'Test Loss:{self.test_loss.result() : <8.5f}, '
                 f'Test Accuracy:{self.test_accuracy.result() * 100 : <8.5f}'
             )
+        return train_loss_results, test_loss_results
 
 
 """

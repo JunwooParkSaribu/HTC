@@ -41,8 +41,7 @@ if __name__ == '__main__':
         print(f'Training the data...')
         training_model = tr.LCI()
         training_model.compile(jit_compile=True)
-        training_model.fit(train_ds, test_ds,
-                           EPOCHS=100
-                           )
-
+        history = training_model.fit(train_ds, test_ds, epochs=100)
         training_model.save(model_path)
+
+    print(history)

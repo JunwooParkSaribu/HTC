@@ -19,22 +19,17 @@ class LCI(Model):
         self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
         self.conv1 = Conv3D(filters=32, kernel_size=(25, 25, 25), strides=(5, 5, 5))
-        self.conv2 = Conv3D(filters=16, kernel_size=(10, 10, 10))
-        self.conv3 = Conv3D(filters=8, kernel_size=(5, 5, 5))
+        self.conv2 = Conv3D(filters=8, kernel_size=(5, 5, 5))
         self.pool1 = AveragePooling3D(pool_size=(25, 25, 25), strides=(25, 25, 25))
         self.pool2 = AveragePooling3D(pool_size=(5, 5, 5))
         self.dropout1 = Dropout(0.2)
-        self.dropout2 = Dropout(0.2)
-        self.dropout3 = Dropout(0.2)
         self.flatten = Flatten()
         self.d1 = Dense(3, activation='softmax')
         self.relu_activ1 = ReLU()
         self.relu_activ2 = ReLU()
-        self.relu_activ3 = ReLU()
         self.batch1 = BatchNormalization()
         self.batch2 = BatchNormalization()
         self.batch3 = BatchNormalization()
-        self.batch4 = BatchNormalization()
         self.soft_activ = Activation("softmax")
 
     def call(self, x):
@@ -48,16 +43,10 @@ class LCI(Model):
         x = self.pool2(x)
         x = self.batch2(x)
         x = self.relu_activ2(x)
-        x = self.dropout2(x)
-
-        x = self.conv3(x)
-        x = self.batch3(x)
-        x = self.relu_activ3(x)
-        x = self.dropout3(x)
 
         x = self.flatten(x)
         x = self.d1(x)
-        x = self.batch4(x)
+        x = self.batch3(x)
         x = self.soft_activ(x)
         return x
 

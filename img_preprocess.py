@@ -76,8 +76,10 @@ def zoom(img, size=800, to_size=(300, 300)):
     return img[x_start:x_end, y_start:y_end], to_size[0]
 
 
-def img_save(img, img_name, img_size, label=None, pred=None):
+def img_save(img, img_name, img_size, label=None, pred=None, path='./'):
     ps = ''
+    if len(path) > 0:
+        path = path + '/img/training_imgs/'
     if label is not None:
         if label==0:
             label = 'immobile'
@@ -99,7 +101,7 @@ def img_save(img, img_name, img_size, label=None, pred=None):
     plt.imshow(img, cmap=matplotlib.colors.ListedColormap(['black', 'white']),
                extent=(0, img_size, 0, img_size))
     plt.title(ps)
-    plt.savefig('img/training_imgs/' + str(img_name))
+    plt.savefig(path + str(img_name))
 
 
 """

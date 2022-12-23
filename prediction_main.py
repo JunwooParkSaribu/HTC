@@ -65,7 +65,8 @@ if __name__ == '__main__':
         sample_label = histones_label[name]
         sample_pred = y_predict[i]
         zoomed_img = img_preprocess.zoom(sample_img, size=img_size)
-        img_preprocess.img_save(zoomed_img, name, img_size=img_size, label=sample_label, pred=sample_pred)
+        img_preprocess.img_save(zoomed_img, name,
+                                img_size=img_size, label=sample_label, pred=sample_pred, path=cur_path)
 
     """
     cm = confusion_matrix(test_Y, y_predict)

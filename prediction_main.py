@@ -11,7 +11,7 @@ import split_shuffle
 
 
 model_path = 'my_model'
-data_path = 'data/1_WT-H2BHalo_noIR/whole cells/20220217_h2b halo_before_irradiation_entire_Cell'
+data_path = 'data/TrainingData'
 
 
 if __name__ == '__main__':
@@ -39,6 +39,8 @@ if __name__ == '__main__':
     print(f'Reshaping the data...')
     test_X, test_Y = split_shuffle.split(zoomed_imgs, histones_label)
     test_X = test_X.reshape((test_X.shape[0], scaled_size, scaled_size, nChannel))
+
+    del histones; del histones_label; del histones_channel; del zoomed_imgs;
 
     final_model = load_model(model_path)
     final_model.summary()

@@ -18,7 +18,7 @@ class LCI(Model):
         self.test_loss = tf.keras.metrics.Mean(name='test_loss')
         self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
-        self.conv1 = Conv2D(filters=8, kernel_size=(50, 50), strides=(25, 25))
+        self.conv1 = Conv2D(filters=8, kernel_size=(25, 25), strides=(5, 5))
         self.conv2 = Conv2D(filters=32, kernel_size=(5, 5))
         self.conv3 = Conv2D(filters=32, kernel_size=(3, 3))
         self.pool1 = MaxPool2D(pool_size=(25, 25))

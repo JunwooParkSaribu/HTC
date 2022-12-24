@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     print(f'Reshaping the data...')
     test_X, test_Y = split_shuffle.split(zoomed_imgs, histones_label)
-    test_X = test_X.reshape((test_X.shape[0], scaled_size, scaled_size, 1))
+    test_X = test_X.reshape((test_X.shape[0], scaled_size, scaled_size, nChannel))
 
     final_model = load_model(model_path)
     final_model.summary()
@@ -47,6 +47,7 @@ if __name__ == '__main__':
         y_predict = np.array([np.argmax(x) for x in final_model.predict(test_X)])
     print('Accuracy = ', np.sum([1 if x == 0 else 0 for x in (test_Y.reshape(-1) - y_predict)])/float(y_predict.shape[0]))
 
+    """
     for i, histone in enumerate(histones):
         histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
                              int(histones[histone][0][1] * (10 ** amplif))]
@@ -56,4 +57,5 @@ if __name__ == '__main__':
         img_preprocess.img_save(zoomed_imgs[histone], histone, scaled_size,
                                 label=histones_label[histone], pred=y_predict[i],
                                 histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs/')
+    """
 

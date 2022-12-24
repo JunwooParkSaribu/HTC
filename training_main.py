@@ -7,14 +7,14 @@ import split_shuffle
 import read_data
 
 
-data_path = 'data/1_WT-H2BHalo_noIR/whole cells/20220217_h2b halo_before_irradiation_entire_Cell'
+data_path = 'data/TrainingData'
 model_path = 'my_model'
 
 
 if __name__ == '__main__':
     print(f'\nLoading the data...')
     histones = read_data.read_files(path=data_path)
-    histones_label = make_label.make_label(histones, radius=0.2, density=0.5)
+    histones_label = make_label.make_label(histones, radius=0.2, density=0.3)
     print(f'Image processing...')
     histones_channel, nChannel = img_preprocess.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=30)
     histones_imgs, img_size, time_scale = \

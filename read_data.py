@@ -1,7 +1,7 @@
 import os
 
 
-def read_file(file, cutoff=4, amplif=6):
+def read_file(file, cutoff=4, amplif=9):
     x_min = 9999999.
     x_max = 0.
     y_min = 9999999.
@@ -17,9 +17,13 @@ def read_file(file, cutoff=4, amplif=6):
 
     for line in lines:
         temp = line.split('\t')
+        temp[0] = temp[0].strip()
         temp[0] = file_date + '@' + temp[0]
+        temp[1] = temp[1].strip()
         temp[1] = round(float(temp[1]), amplif)
+        temp[2] = temp[2].strip()
         temp[2] = round(float(temp[2]), amplif)
+        temp[3] = temp[3].strip()
         temp[3] = float(temp[3])
 
         if temp[1] < x_min:

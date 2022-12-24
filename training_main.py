@@ -12,28 +12,26 @@ model_path = 'my_model'
 
 
 if __name__ == '__main__':
-    immobile_cutoff = 0.118
     print(f'Loading the data...')
     histones = read_data.read_files(path=data_path)
-    histones_label = make_label.make_label(histones, immobile_cutoff)
+    histones_label = make_label.make_label(histones, radius=0.2, density=0.5)
     print(f'Image processing...')
-    # img_size=8, time_scale=500
+    histones_channel, nChannel = img_preprocess.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=30)
     histones_imgs, img_size, time_scale = \
-        img_preprocess.preprocessing3D(histones, img_size=1, amplif=2, channel=1, time_scale=100)
-    print(f'Image size:{img_size}, Time scale:{time_scale}\n')
+        img_preprocess.preprocessing(histones, histones_channel, img_size=10, amplif=2, channel=nChannel)
+    zoomed_imgs, scaled_size = img_preprocess.zoom(histones_imgs, size=img_size, to_size=(500, 500))
+    print(f'Processed image size:{scaled_size}, Time scale:{time_scale}\n')
 
     with tr.tf.device('/cpu:0'):
         print(f'Generator building...')
-        gen = split_shuffle.DataGenerator(histones_imgs, histones_label, ratio=0.9)
-        del histones_imgs
-        del histones_label
-        del histones
+        gen = split_shuffle.DataGenerator(zoomed_imgs, histones_label, ratio=0.9)
+        del histones_imgs; del histones_label; del histones; del histones_channel
         train_ds = tr.tf.data.Dataset.from_generator(gen.train_generator,
                                                      output_types=(tr.tf.float64, tr.tf.int32),
-                                                     output_shapes=((img_size, img_size, time_scale, 1), ())).batch(32)
+                                                     output_shapes=((scaled_size, scaled_size, nChannel), ())).batch(32)
         test_ds = tr.tf.data.Dataset.from_generator(gen.test_generator,
                                                     output_types=(tr.tf.float64, tr.tf.int32),
-                                                    output_shapes=((img_size, img_size, time_scale, 1), ())).batch(32)
+                                                    output_shapes=((scaled_size, scaled_size, nChannel), ())).batch(32)
         print(f'Training the data...')
         training_model = tr.LCI()
         training_model.compile(jit_compile=True)

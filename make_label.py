@@ -1,6 +1,21 @@
 import trajectory_phy
 
 
+def make_label(histones, radius=0.2, density=0.5) -> []:
+    histones_balls = trajectory_phy.check_balls(histones, radius, density)
+    histone_label = {}
+    for histone in histones:
+        if histones_balls[histone][0] == 0:
+            histone_label[histone] = 2  # mobile
+        elif histones_balls[histone][1] == 1:
+            histone_label[histone] = 1  # hybrid
+        else:
+            histone_label[histone] = 0  # immobile
+    del histones_balls
+    return histone_label
+
+
+"""
 def make_label(histones, immobile_cutoff) -> []:
     distances = trajectory_phy.distance(histones)
     displacements = trajectory_phy.displacement(histones)
@@ -15,3 +30,4 @@ def make_label(histones, immobile_cutoff) -> []:
         else:
             histone_label[histone] = 1 # hybrid
     return histone_label
+"""

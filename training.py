@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras.layers import Dense, Flatten, BatchNormalization, \
-    Activation, Conv3D, AveragePooling3D, Input, Dropout, ReLU, MaxPool3D
+    Activation, Conv2D, AveragePooling2D, Dropout, ReLU, MaxPool2D
 from tensorflow.keras import Model
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 
@@ -18,10 +18,10 @@ class LCI(Model):
         self.test_loss = tf.keras.metrics.Mean(name='test_loss')
         self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
-        self.conv1 = Conv3D(filters=16, kernel_size=(10, 10, 10), strides=(2, 2, 2))
-        self.conv2 = Conv3D(filters=8, kernel_size=(5, 5, 5))
-        self.pool1 = AveragePooling3D(pool_size=(5, 5, 5), strides=(2, 2, 2))
-        self.pool2 = AveragePooling3D(pool_size=(2, 2, 2))
+        self.conv1 = Conv2D(filters=16, kernel_size=(10, 10), strides=(2, 2))
+        self.conv2 = Conv2D(filters=8, kernel_size=(5, 5))
+        self.pool1 = AveragePooling2D(pool_size=(5, 5), strides=(2, 2))
+        self.pool2 = AveragePooling2D(pool_size=(2, 2))
         self.dropout1 = Dropout(0.2)
         self.flatten = Flatten()
         self.d1 = Dense(3, activation='softmax')
@@ -37,12 +37,12 @@ class LCI(Model):
         x = self.pool1(x)
         x = self.batch1(x)
         x = self.relu_activ1(x)
-        x = self.dropout1(x)
 
         x = self.conv2(x)
         x = self.pool2(x)
         x = self.batch2(x)
         x = self.relu_activ2(x)
+        x = self.dropout1(x)
 
         x = self.flatten(x)
         x = self.d1(x)

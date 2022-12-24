@@ -1,6 +1,5 @@
 import numpy as np
 from matplotlib import pyplot as plt
-import matplotlib.colors
 import trajectory_phy
 
 

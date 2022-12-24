@@ -12,7 +12,7 @@ model_path = 'my_model'
 
 
 if __name__ == '__main__':
-    print(f'Loading the data...')
+    print(f'\nLoading the data...')
     histones = read_data.read_files(path=data_path)
     histones_label = make_label.make_label(histones, radius=0.2, density=0.5)
     print(f'Image processing...')

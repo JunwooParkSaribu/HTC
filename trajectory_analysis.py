@@ -175,6 +175,7 @@ histones_channel, nChannel = img_preprocess.make_channel(histones, immobile_cuto
 histones_imgs, img_size, time_scale = \
     img_preprocess.preprocessing(histones, histones_channel, img_size=8, amplif=amplif, channel=nChannel)
 print(f'Making imgs...')
+zoomed_imgs, to_size = img_preprocess.zoom(histones_imgs, size=img_size, to_size=(300, 300))
 i = 0
 for histone in histones:
     histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
@@ -183,6 +184,5 @@ for histone in histones:
     if 0 in channels or 2 in channels:
         print(f'i={i}')
         i += 1
-        zoomed_img, to_size = img_preprocess.zoom(histones_imgs[histone], size=img_size, to_size=(300, 300))
-        img_preprocess.img_save(zoomed_img, histone, to_size, label=histones_label[histone],
+        img_preprocess.img_save(zoomed_imgs[histone], histone, to_size, label=histones_label[histone],
                                 histone_first_pos=histone_first_pos, amplif=amplif, path='.')

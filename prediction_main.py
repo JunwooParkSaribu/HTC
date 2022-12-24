@@ -53,6 +53,7 @@ if __name__ == '__main__':
         channels = histones_channel[histone]
         if i % 10 == 0:
             print(f'i={i}')
-        img_preprocess.img_save(zoomed_imgs[histone], histone, scaled_size, label=histones_label[histone],
+        img_preprocess.img_save(zoomed_imgs[histone], histone, scaled_size,
+                                label=histones_label[histone], pred=y_predict[i],
                                 histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs/')
 

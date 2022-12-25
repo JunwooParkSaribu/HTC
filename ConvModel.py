@@ -124,10 +124,11 @@ class HTC(Model):
             )
 
             best_weight = callback.on_epoch_end(
-                epoch=epoch, weights=self.weights, loss=self.train_loss.result())
+                epoch=epoch, weights=self.weights, loss=self.test_loss.result())
             if best_weight is not None:
                 self.set_weights(best_weight)
                 break
 
-        callback.on_train_end()
+        best_weight = callback.on_train_end()
+        self.set_weights(best_weight)
         return train_loss_results, test_loss_results

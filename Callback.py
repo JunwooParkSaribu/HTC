@@ -34,3 +34,4 @@ class EarlyStoppingAtMinLoss():
     def on_train_end(self):
         if self.stopped_epoch > 0:
             print("Epoch %4d: early stopping" % (self.stopped_epoch + 1))
+        return self.best_weights

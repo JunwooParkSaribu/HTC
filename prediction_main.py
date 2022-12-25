@@ -11,7 +11,7 @@ import split_shuffle
 
 
 model_path = 'my_model'
-data_path = 'data/TrainingData'
+data_path = 'data/sample'
 
 
 if __name__ == '__main__':
@@ -27,8 +27,8 @@ if __name__ == '__main__':
     print(data_path)
 
     print(f'Loading the data...')
-    histones = read_data.read_files(path=data_path)
-    histones_label = make_label.make_label(histones, radius=0.2, density=0.3)
+    histones = read_data.read_files(path=data_path, cutoff=10)
+    histones_label = make_label.make_label(histones, radius=0.35, density=0.5)
 
     print(f'Image processing...')
     histones_channel, nChannel = img_preprocess.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25)
@@ -37,27 +37,23 @@ if __name__ == '__main__':
     zoomed_imgs, scaled_size = img_preprocess.zoom(histones_imgs, size=img_size, to_size=(500, 500))
 
     print(f'Reshaping the data...')
-    test_X, test_Y = split_shuffle.split(zoomed_imgs, histones_label)
+    test_X, test_Y, histone_key_list = split_shuffle.split(zoomed_imgs, histones_label)
     test_X = test_X.reshape((test_X.shape[0], scaled_size, scaled_size, nChannel))
-
-    del histones; del histones_label; del histones_channel; del zoomed_imgs;
 
     final_model = load_model(model_path)
     final_model.summary()
 
+    print(f'\nInput shape:{test_X.shape}\n')
     with tf.device('/cpu:0'):
         y_predict = np.array([np.argmax(x) for x in final_model.predict(test_X)])
     print('Accuracy = ', np.sum([1 if x == 0 else 0 for x in (test_Y.reshape(-1) - y_predict)])/float(y_predict.shape[0]))
 
-    """
-    for i, histone in enumerate(histones):
+    for i, histone in enumerate(histone_key_list):
         histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
                              int(histones[histone][0][1] * (10 ** amplif))]
         channels = histones_channel[histone]
-        if i % 10 == 0:
-            print(f'i={i}')
-        img_preprocess.img_save(zoomed_imgs[histone], histone, scaled_size,
-                                label=histones_label[histone], pred=y_predict[i],
-                                histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs/')
-    """
-
+        if histones_label[histone] != y_predict[i]:
+            print(f'Name={histone}')
+            img_preprocess.img_save(zoomed_imgs[histone], histone, scaled_size,
+                                    label=histones_label[histone], pred=y_predict[i],
+                                    histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs/')

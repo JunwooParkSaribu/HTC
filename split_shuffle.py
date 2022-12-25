@@ -57,6 +57,6 @@ def split(training_set, label_set=None, ratio=1):
             if label_set != None:
                 test_Y.append(label_set[keys[i]])
     if ratio == 1:
-        return np.array(train_X), np.array(train_Y)
+        return np.array(train_X), np.array(train_Y) ,keys
     else:
-        return np.array(train_X), np.array(train_Y), np.array(test_X), np.array(test_Y)
+        return np.array(train_X), np.array(train_Y), np.array(test_X), np.array(test_Y), keys

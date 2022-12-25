@@ -1,7 +1,7 @@
 import trajectory_phy
 
 
-def make_label(histones, radius=0.2, density=0.5) -> []:
+def make_label(histones, radius=0.35, density=0.5) -> []:
     histones_balls = trajectory_phy.check_balls(histones, radius, density)
     histone_label = {}
     for histone in histones:

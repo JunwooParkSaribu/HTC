@@ -1,7 +1,7 @@
 import os
 
 
-def read_file(file, cutoff=4, amplif=9):
+def read_file(file, cutoff=10, amplif=9):
     x_min = 9999999.
     x_max = 0.
     y_min = 9999999.
@@ -49,7 +49,7 @@ def read_file(file, cutoff=4, amplif=9):
     return histones, x_min, x_max, y_min, y_max, time_max
 
 
-def read_files(path, cutoff=4, amplif=9):
+def read_files(path, cutoff=10, amplif=9):
     try:
         files = os.listdir(path)
     except Exception as e:

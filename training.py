@@ -18,18 +18,18 @@ class LCI(Model):
         self.test_loss = tf.keras.metrics.Mean(name='test_loss')
         self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
-        self.conv1 = Conv2D(filters=8, kernel_size=(10, 10))
+        self.conv1 = Conv2D(filters=16, kernel_size=(10, 10))
         self.pool1 = MaxPool2D(pool_size=(10, 10))
         self.batch1 = BatchNormalization()
         self.relu_activ1 = ReLU()
 
         self.conv2 = Conv2D(filters=32, kernel_size=(3, 3))
-        self.pool2 = AveragePooling2D(pool_size=(3, 3))
+        self.pool2 = MaxPool2D(pool_size=(3, 3))
         self.batch2 = BatchNormalization()
         self.relu_activ2 = ReLU()
 
-        self.conv3 = Conv2D(filters=32, kernel_size=(2, 2))
-        self.pool3 = AveragePooling2D(pool_size=(2, 2))
+        self.conv3 = Conv2D(filters=64, kernel_size=(2, 2))
+        self.pool3 = MaxPool2D(pool_size=(2, 2))
         self.batch3 = BatchNormalization()
         self.relu_activ3 = ReLU()
         self.dropout1 = Dropout(0.2)

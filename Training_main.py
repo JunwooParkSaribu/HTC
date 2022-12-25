@@ -1,10 +1,10 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-import img_preprocess
-import training as tr
-import make_label
-import split_shuffle
-import read_data
+import ImagePreprocessor
+import Model as tr
+import Labeling
+import ImgGenerator
+import DataLoad
 
 
 data_path = 'data/TrainingData'
@@ -13,18 +13,18 @@ model_path = 'my_model'
 
 if __name__ == '__main__':
     print(f'\nLoading the data...')
-    histones = read_data.read_files(path=data_path, cutoff=10)
-    histones_label = make_label.make_label(histones, radius=0.35, density=0.4)
+    histones = DataLoad.read_files(path=data_path, cutoff=10)
+    histones_label = Labeling.make_label(histones, radius=0.35, density=0.4)
     print(f'Image processing...')
-    histones_channel, nChannel = img_preprocess.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25)
+    histones_channel, nChannel = ImagePreprocessor.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25)
     histones_imgs, img_size, time_scale = \
-        img_preprocess.preprocessing(histones, histones_channel, img_size=10, amplif=2, channel=nChannel)
-    zoomed_imgs, scaled_size = img_preprocess.zoom(histones_imgs, size=img_size, to_size=(500, 500))
+        ImagePreprocessor.preprocessing(histones, histones_channel, img_size=10, amplif=2, channel=nChannel)
+    zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
     print(f'Number of training items:{len(zoomed_imgs)}, processed shape:{scaled_size}, time scale:{time_scale}\n')
 
     with tr.tf.device('/cpu:0'):
         print(f'Generator building...')
-        gen = split_shuffle.DataGenerator(zoomed_imgs, histones_label, ratio=0.9)
+        gen = ImgGenerator.DataGenerator(zoomed_imgs, histones_label, ratio=0.9)
         print(f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
         del histones_imgs; del histones_label; del histones; del histones_channel
         train_ds = tr.tf.data.Dataset.from_generator(gen.train_generator,

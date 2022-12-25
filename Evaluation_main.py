@@ -2,12 +2,12 @@ import os
 import sys
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import numpy as np
-import read_data
-import make_label
-import img_preprocess
+import DataLoad
+import Labeling
+import ImagePreprocessor
 from keras.models import load_model
 import tensorflow as tf
-import split_shuffle
+import ImgGenerator
 
 
 model_path = 'my_model'
@@ -27,17 +27,17 @@ if __name__ == '__main__':
     print(data_path)
 
     print(f'Loading the data...')
-    histones = read_data.read_files(path=data_path, cutoff=10)
-    histones_label = make_label.make_label(histones, radius=0.35, density=0.4)
+    histones = DataLoad.read_files(path=data_path, cutoff=10)
+    histones_label = Labeling.make_label(histones, radius=0.35, density=0.4)
 
     print(f'Image processing...')
-    histones_channel, nChannel = img_preprocess.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25)
+    histones_channel, nChannel = ImagePreprocessor.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25)
     histones_imgs, img_size, time_scale = \
-        img_preprocess.preprocessing(histones, histones_channel, img_size=10, amplif=amplif, channel=nChannel)
-    zoomed_imgs, scaled_size = img_preprocess.zoom(histones_imgs, size=img_size, to_size=(500, 500))
+        ImagePreprocessor.preprocessing(histones, histones_channel, img_size=10, amplif=amplif, channel=nChannel)
+    zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
 
     print(f'Reshaping the data...')
-    test_X, test_Y, histone_key_list = split_shuffle.split(zoomed_imgs, histones_label)
+    test_X, test_Y, histone_key_list = ImgGenerator.split(zoomed_imgs, histones_label)
     test_X = test_X.reshape((test_X.shape[0], scaled_size, scaled_size, nChannel))
 
     final_model = load_model(model_path)
@@ -54,6 +54,6 @@ if __name__ == '__main__':
         channels = histones_channel[histone]
         if histones_label[histone] != y_predict[i]:
             print(f'Name={histone}')
-            img_preprocess.img_save(zoomed_imgs[histone], histone, scaled_size,
+            ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
                                     label=histones_label[histone], pred=y_predict[i],
                                     histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs/')

@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     print(f'Loading the data...')
     histones = read_data.read_files(path=data_path, cutoff=10)
-    histones_label = make_label.make_label(histones, radius=0.35, density=0.5)
+    histones_label = make_label.make_label(histones, radius=0.35, density=0.4)
 
     print(f'Image processing...')
     histones_channel, nChannel = img_preprocess.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25)

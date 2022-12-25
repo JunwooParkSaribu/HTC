@@ -20,7 +20,7 @@ if __name__ == '__main__':
     histones_imgs, img_size, time_scale = \
         img_preprocess.preprocessing(histones, histones_channel, img_size=10, amplif=2, channel=nChannel)
     zoomed_imgs, scaled_size = img_preprocess.zoom(histones_imgs, size=img_size, to_size=(500, 500))
-    print(f'Processed shape:{zoomed_imgs.shape}, Time scale:{time_scale}\n')
+    print(f'Number of training items:{len(zoomed_imgs)}, processed shape:{scaled_size}, time scale:{time_scale}\n')
 
     with tr.tf.device('/cpu:0'):
         print(f'Generator building...')

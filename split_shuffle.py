@@ -18,7 +18,7 @@ class DataGenerator:
         for i, key in enumerate(self.keys):
             img = inputs[key]
             label = labels[key]
-            if n_c_check[label] < int(self.split_index/self.n_class) :
+            if n_c_check[label] < int(self.split_index/self.n_class):
                 self.train_X.append(img)
                 self.train_Y.append(label)
                 n_c_check[label] += 1

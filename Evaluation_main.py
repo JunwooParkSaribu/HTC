@@ -5,13 +5,13 @@ import numpy as np
 import DataLoad
 import Labeling
 import ImagePreprocessor
+import ImgGenerator
 from keras.models import load_model
 import tensorflow as tf
-import ImgGenerator
 
 
 model_path = 'my_model'
-data_path = 'data/sample'
+data_path = 'data/TestSample'
 
 
 if __name__ == '__main__':
@@ -40,12 +40,12 @@ if __name__ == '__main__':
     test_X, test_Y, histone_key_list = ImgGenerator.split(zoomed_imgs, histones_label)
     test_X = test_X.reshape((test_X.shape[0], scaled_size, scaled_size, nChannel))
 
-    final_model = load_model(model_path)
-    final_model.summary()
+    HTC_model = load_model(model_path)
+    HTC_model.summary()
 
     print(f'\nInput shape:{test_X.shape}\n')
     with tf.device('/cpu:0'):
-        y_predict = np.array([np.argmax(x) for x in final_model.predict(test_X)])
+        y_predict = np.array([np.argmax(x) for x in HTC_model.predict(test_X)])
     print('Accuracy = ', np.sum([1 if x == 0 else 0 for x in (test_Y.reshape(-1) - y_predict)])/float(y_predict.shape[0]))
 
     for i, histone in enumerate(histone_key_list):
@@ -55,5 +55,5 @@ if __name__ == '__main__':
         if histones_label[histone] != y_predict[i]:
             print(f'Name={histone}')
             ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
-                                    label=histones_label[histone], pred=y_predict[i],
-                                    histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs/')
+                                       label=histones_label[histone], pred=y_predict[i],
+                                       histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs/')

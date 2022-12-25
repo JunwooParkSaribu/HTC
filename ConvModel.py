@@ -8,9 +8,9 @@ from keras.callbacks import ModelCheckpoint, EarlyStopping
 print("TensorFlow version:", tf.__version__)
 
 
-class LCI(Model):
+class HTC(Model):
     def __init__(self):
-        super(LCI, self).__init__()
+        super(HTC, self).__init__()
         self.loss_object = tf.keras.losses.SparseCategoricalCrossentropy()
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
         self.train_loss = tf.keras.metrics.Mean(name='train_loss')

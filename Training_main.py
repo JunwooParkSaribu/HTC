@@ -1,10 +1,10 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import ImagePreprocessor
-import Model as tr
 import Labeling
 import ImgGenerator
 import DataLoad
+import ConvModel
 
 
 data_path = 'data/TrainingData'
@@ -22,19 +22,19 @@ if __name__ == '__main__':
     zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
     print(f'Number of training items:{len(zoomed_imgs)}, processed shape:{scaled_size}, time scale:{time_scale}\n')
 
-    with tr.tf.device('/cpu:0'):
+    with ConvModel.tf.device('/cpu:0'):
         print(f'Generator building...')
         gen = ImgGenerator.DataGenerator(zoomed_imgs, histones_label, ratio=0.9)
         print(f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
         del histones_imgs; del histones_label; del histones; del histones_channel
-        train_ds = tr.tf.data.Dataset.from_generator(gen.train_generator,
-                                                     output_types=(tr.tf.float64, tr.tf.int32),
+        train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,
+                                                     output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
                                                      output_shapes=((scaled_size, scaled_size, nChannel), ())).batch(32)
-        test_ds = tr.tf.data.Dataset.from_generator(gen.test_generator,
-                                                    output_types=(tr.tf.float64, tr.tf.int32),
+        test_ds = ConvModel.tf.data.Dataset.from_generator(gen.test_generator,
+                                                    output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
                                                     output_shapes=((scaled_size, scaled_size, nChannel), ())).batch(32)
         print(f'Training the data...')
-        training_model = tr.LCI()
+        training_model = ConvModel.HTC()
         training_model.compile(jit_compile=True)
         history = training_model.fit(train_ds, test_ds, epochs=100)
         training_model.save(model_path)

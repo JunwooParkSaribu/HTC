@@ -32,11 +32,16 @@ class LCI(Model):
         self.pool3 = MaxPool2D(pool_size=(2, 2))
         self.batch3 = BatchNormalization()
         self.relu_activ3 = ReLU()
+
+        self.conv4 = Conv2D(filters=128, kernel_size=(2, 2))
+        self.pool4 = MaxPool2D(pool_size=(2, 2))
+        self.batch4 = BatchNormalization()
+        self.relu_activ4 = ReLU()
         self.dropout1 = Dropout(0.2)
 
         self.flatten = Flatten()
-        self.d1 = Dense(3, activation='softmax')
-        self.batch4 = BatchNormalization()
+        self.d_fin = Dense(3, activation='softmax')
+        self.batch_fin = BatchNormalization()
         self.soft_activ = Activation("softmax")
 
     def call(self, x):
@@ -54,11 +59,16 @@ class LCI(Model):
         x = self.pool3(x)
         x = self.batch3(x)
         x = self.relu_activ3(x)
+
+        x = self.conv4(x)
+        x = self.pool4(x)
+        x = self.batch4(x)
+        x = self.relu_activ4(x)
         x = self.dropout1(x)
 
         x = self.flatten(x)
-        x = self.d1(x)
-        x = self.batch4(x)
+        x = self.d_fin(x)
+        x = self.batch_fin(x)
         x = self.soft_activ(x)
         return x
 

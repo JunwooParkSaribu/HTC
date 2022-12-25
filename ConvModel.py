@@ -1,13 +1,13 @@
+import keras
 import tensorflow as tf
 from tensorflow.keras.layers import Dense, Flatten, BatchNormalization, \
     Activation, Conv2D, AveragePooling2D, Dropout, ReLU, MaxPool2D
-from tensorflow.keras import Model
 
 
 print("TensorFlow version:", tf.__version__)
 
 
-class HTC(Model):
+class HTC(keras.Model):
     def __init__(self):
         super(HTC, self).__init__()
         self.loss_object = tf.keras.losses.SparseCategoricalCrossentropy()

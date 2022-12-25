@@ -25,6 +25,7 @@ class DataGenerator:
             else:
                 self.test_X.append(img)
                 self.test_Y.append(label)
+        print(f'Training set length:{len(self.train_X)}, Test set length:{len(self.test_X)}')
 
     def train_generator(self):
         i = 0

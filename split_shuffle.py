@@ -10,15 +10,21 @@ class DataGenerator:
         self.keys = list(inputs.keys())
         self.size = len(inputs)
         self.split_index = int(self.size * ratio)
+        self.n_class = len(set(labels[label] for label in labels))
+        n_c_check = [0] * self.n_class
+
         if shuffle:
             np.random.shuffle(self.keys)
         for i, key in enumerate(self.keys):
-            if i < self.split_index:
-                self.train_X.append(inputs[key])
-                self.train_Y.append(labels[key])
+            img = inputs[key]
+            label = labels[key]
+            if n_c_check[label] < int(self.split_index/self.n_class) :
+                self.train_X.append(img)
+                self.train_Y.append(label)
+                n_c_check[label] += 1
             else:
-                self.test_X.append(inputs[key])
-                self.test_Y.append(labels[key])
+                self.test_X.append(img)
+                self.test_Y.append(label)
 
     def train_generator(self):
         i = 0

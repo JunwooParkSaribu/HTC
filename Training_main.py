@@ -5,6 +5,7 @@ import Labeling
 import ImgGenerator
 import DataLoad
 import ConvModel
+import Callback
 
 
 data_path = 'data/TrainingData'
@@ -28,14 +29,17 @@ if __name__ == '__main__':
         print(f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
         del histones_imgs; del histones_label; del histones; del histones_channel
         train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,
-                                                     output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
-                                                     output_shapes=((scaled_size, scaled_size, nChannel), ())).batch(32)
+                                                            output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
+                                                            output_shapes=((scaled_size, scaled_size, nChannel), ())
+                                                            ).batch(32)
         test_ds = ConvModel.tf.data.Dataset.from_generator(gen.test_generator,
-                                                    output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
-                                                    output_shapes=((scaled_size, scaled_size, nChannel), ())).batch(32)
+                                                           output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
+                                                           output_shapes=((scaled_size, scaled_size, nChannel), ())
+                                                           ).batch(32)
         print(f'Training the data...')
         training_model = ConvModel.HTC()
         training_model.compile(jit_compile=True)
-        history = training_model.fit(train_ds, test_ds, epochs=100)
+        history = training_model.fit(train_ds, test_ds, epochs=100,
+                                     callback=Callback.EarlyStoppingAtMinLoss(patience=5))
         training_model.save(model_path)
     print(history)

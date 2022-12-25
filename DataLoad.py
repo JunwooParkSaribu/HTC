@@ -2,9 +2,9 @@ import os
 
 
 def read_file(file, cutoff=10, amplif=9):
-    x_min = 9999999.
+    x_min = 99999999.
     x_max = 0.
-    y_min = 9999999.
+    y_min = 99999999.
     y_max = 0.
     time_max = 0.
     histones = {}

@@ -73,11 +73,6 @@ class HTC(keras.Model):
         x = self.pool5(x)
         x = self.batch5(x)
         x = self.relu_activ5(x)
-
-        x = self.conv6(x)
-        x = self.pool6(x)
-        x = self.batch6(x)
-        x = self.relu_activ6(x)
         x = self.dropout1(x)
 
         x = self.flatten(x)

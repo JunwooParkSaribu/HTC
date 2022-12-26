@@ -17,12 +17,12 @@ class HTC(keras.Model):
         self.test_loss = tf.keras.metrics.Mean(name='test_loss')
         self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
-        self.conv1 = Conv2D(filters=32, kernel_size=(5, 5))
+        self.conv1 = Conv2D(filters=32, kernel_size=(8, 8))
         self.pool1 = MaxPool2D(pool_size=(5, 5))
         self.batch1 = BatchNormalization()
         self.relu_activ1 = ReLU()
 
-        self.conv2 = Conv2D(filters=64, kernel_size=(3, 3))
+        self.conv2 = Conv2D(filters=64, kernel_size=(5, 5))
         self.pool2 = MaxPool2D(pool_size=(3, 3))
         self.batch2 = BatchNormalization()
         self.relu_activ2 = ReLU()
@@ -41,11 +41,6 @@ class HTC(keras.Model):
         self.pool5 = MaxPool2D(pool_size=(2, 2))
         self.batch5 = BatchNormalization()
         self.relu_activ5 = ReLU()
-
-        self.conv6 = Conv2D(filters=512, kernel_size=(2, 2))
-        self.pool6 = MaxPool2D(pool_size=(2, 2))
-        self.batch6 = BatchNormalization()
-        self.relu_activ6 = ReLU()
         self.dropout1 = Dropout(0.2)
 
         self.flatten = Flatten()
@@ -78,11 +73,6 @@ class HTC(keras.Model):
         x = self.pool5(x)
         x = self.batch5(x)
         x = self.relu_activ5(x)
-
-        x = self.conv6(x)
-        x = self.pool6(x)
-        x = self.batch6(x)
-        x = self.relu_activ6(x)
         x = self.dropout1(x)
 
         x = self.flatten(x)

@@ -47,7 +47,7 @@ if __name__ == '__main__':
     with tf.device('/cpu:0'):
         y_predict = np.array([np.argmax(x) for x in HTC_model.predict(test_X)])
     print('Accuracy = ', np.sum([1 if x == 0 else 0 for x in (test_Y.reshape(-1) - y_predict)])/float(y_predict.shape[0]))
-"""    
+
     for i, histone in enumerate(histone_key_list):
         histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
                              int(histones[histone][0][1] * (10 ** amplif))]
@@ -57,4 +57,4 @@ if __name__ == '__main__':
             ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
                                        label=histones_label[histone], pred=y_predict[i],
                                        histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs/')
-"""
+

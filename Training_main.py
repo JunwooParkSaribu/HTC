@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     with ConvModel.tf.device('/cpu:0'):
         print(f'Generator building...')
-        gen = ImgGenerator.DataGenerator(zoomed_imgs, histones_label, ratio=0.9)
+        gen = ImgGenerator.DataGenerator(zoomed_imgs, histones_label, ratio=0.8)
         print(f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
         del histones_imgs; del histones_label; del histones; del histones_channel
         train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,

@@ -1,17 +1,17 @@
 import os
 import sys
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import numpy as np
 import DataLoad
-import Labeling
+import DataSave
 import ImagePreprocessor
 import ImgGenerator
 from keras.models import load_model
-import tensorflow as tf
 
 
 model_path = 'my_model'
 data_path = 'data/TestSample'
+img_save_path = 'result/image'
+report_save_path = 'result'
 
 
 if __name__ == '__main__':
@@ -28,7 +28,6 @@ if __name__ == '__main__':
 
     print(f'Loading the data...')
     histones = DataLoad.read_files(path=data_path, cutoff=10)
-    histones_label = Labeling.make_label(histones, radius=0.35, density=0.4)
 
     print(f'Image processing...')
     histones_channel, nChannel = ImagePreprocessor.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25)
@@ -37,26 +36,21 @@ if __name__ == '__main__':
     zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
 
     print(f'Reshaping the data...')
-    test_X, test_Y, histone_key_list = ImgGenerator.conversion(zoomed_imgs, histones_label)
+    test_X, histone_key_list = ImgGenerator.conversion(zoomed_imgs, eval=False)
     test_X = test_X.reshape((test_X.shape[0], scaled_size, scaled_size, nChannel))
 
     HTC_model = load_model(model_path)
     HTC_model.summary()
 
     print(f'\nInput shape:{test_X.shape}\n')
-    with tf.device('/cpu:0'):
-        y_predict = np.array([np.argmax(x) for x in HTC_model.predict(test_X)])
-    print('Accuracy = ', np.sum([1 if x == 0 else 0 for x in (test_Y.reshape(-1) - y_predict)])/float(y_predict.shape[0]))
+    y_predict = np.array([np.argmax(x) for x in HTC_model.predict(test_X)])
 
-    """
     for i, histone in enumerate(histone_key_list):
         histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
                              int(histones[histone][0][1] * (10 ** amplif))]
         channels = histones_channel[histone]
-        if histones_label[histone] != y_predict[i]:
+        if i % 100 == 0:
             print(f'Name={histone}')
             ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
-                                       label=histones_label[histone], pred=y_predict[i],
-                                       histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs/')
-    """
-
+                                       label=None, pred=y_predict[i],
+                                       histone_first_pos=histone_first_pos, amplif=amplif, path=img_save_path)

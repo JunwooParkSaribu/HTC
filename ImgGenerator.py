@@ -42,24 +42,20 @@ class DataGenerator:
             i += 1
 
 
-def split(training_set, label_set=None, ratio=1):
+def conversion(training_set, label_set=None, eval=True):
     size = len(training_set)
-    split_index = size * ratio
-    test_X = []
     train_X = []
     train_Y = []
-    test_Y = []
+
     keys = list(training_set.keys())
-    for i in range(size):
-        if i < split_index:
+    if not eval:
+        for i in range(size):
             train_X.append(training_set[keys[i]])
-            if label_set != None:
-                train_Y.append(label_set[keys[i]])
-        else:
-            test_X.append(training_set[keys[i]])
-            if label_set != None:
-                test_Y.append(label_set[keys[i]])
-    if ratio == 1:
-        return np.array(train_X), np.array(train_Y) ,keys
-    else:
-        return np.array(train_X), np.array(train_Y), np.array(test_X), np.array(test_Y), keys
+        return np.array(train_X), keys
+
+    for i in range(size):
+        train_X.append(training_set[keys[i]])
+        if label_set is not None:
+            train_Y.append(label_set[keys[i]])
+    return np.array(train_X), np.array(train_Y), keys
+

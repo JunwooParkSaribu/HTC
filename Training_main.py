@@ -40,6 +40,6 @@ if __name__ == '__main__':
         training_model = ConvModel.HTC()
         training_model.compile(jit_compile=True)
         history = training_model.fit(train_ds, test_ds, epochs=100,
-                                     callback=Callback.EarlyStoppingAtMinLoss(patience=25))
+                                     callback=Callback.EarlyStoppingAtMinLoss(patience=50))
         training_model.save(model_path)
     print(history)

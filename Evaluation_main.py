@@ -57,6 +57,6 @@ if __name__ == '__main__':
             print(f'Name={histone}')
             ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
                                        label=histones_label[histone], pred=y_predict[i],
-                                       histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs/')
+                                       histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs')
     """
 

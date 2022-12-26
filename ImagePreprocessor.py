@@ -259,7 +259,7 @@ def zoom(imgs, size=800, to_size=(300, 300)):
 def img_save(img, img_name, img_size, label=None, pred=None, histone_first_pos=None, amplif=2, path=''):
     ps = ''
     if len(path) > 0:
-        path = './' + path
+        path = path + '/'
     if label is not None:
         if label==0:
             label = 'immobile'

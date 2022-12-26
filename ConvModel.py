@@ -36,6 +36,11 @@ class HTC(keras.Model):
         self.pool4 = MaxPool2D(pool_size=(2, 2))
         self.batch4 = BatchNormalization()
         self.relu_activ4 = ReLU()
+
+        self.conv5 = Conv2D(filters=256, kernel_size=(2, 2))
+        self.pool5 = MaxPool2D(pool_size=(2, 2))
+        self.batch5 = BatchNormalization()
+        self.relu_activ5 = ReLU()
         self.dropout1 = Dropout(0.2)
 
         self.flatten = Flatten()
@@ -63,6 +68,11 @@ class HTC(keras.Model):
         x = self.pool4(x)
         x = self.batch4(x)
         x = self.relu_activ4(x)
+
+        x = self.conv5(x)
+        x = self.pool5(x)
+        x = self.batch5(x)
+        x = self.relu_activ5(x)
         x = self.dropout1(x)
 
         x = self.flatten(x)

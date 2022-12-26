@@ -21,6 +21,8 @@ if __name__ == '__main__':
         cur_path = sys.argv[1]
         model_path = cur_path + '/' + model_path
         data_path = cur_path + '/' + data_path
+        img_save_path = cur_path + '/' + img_save_path
+        report_save_path = cur_path + '/' + report_save_path
     else:
         cur_path = '.'
     print(model_path)
@@ -44,13 +46,13 @@ if __name__ == '__main__':
 
     print(f'\nInput shape:{test_X.shape}\n')
     y_predict = np.array([np.argmax(x) for x in HTC_model.predict(test_X)])
+    DataSave.save_report(y_predict, histone_key_list, path=report_save_path)
 
     for i, histone in enumerate(histone_key_list):
         histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
                              int(histones[histone][0][1] * (10 ** amplif))]
         channels = histones_channel[histone]
-        if i % 100 == 0:
-            print(f'Name={histone}')
-            ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
-                                       label=None, pred=y_predict[i],
-                                       histone_first_pos=histone_first_pos, amplif=amplif, path=img_save_path)
+
+        ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
+                                   label=None, pred=y_predict[i],
+                                   histone_first_pos=histone_first_pos, amplif=amplif, path=img_save_path)

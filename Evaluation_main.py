@@ -31,8 +31,7 @@ def predict(gen, scaled_size, nChannel):
     return test_Y, y_predict
 
 
-"""
-def making_image(histones, zoomed_imgs, histone_key_list, scaled_size):
+def making_image(histones, histones_label, y_predict, zoomed_imgs, histone_key_list, scaled_size):
     for i, histone in enumerate(histone_key_list):
         histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
                              int(histones[histone][0][1] * (10 ** amplif))]
@@ -41,7 +40,6 @@ def making_image(histones, zoomed_imgs, histone_key_list, scaled_size):
             ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
                                        label=histones_label[histone], pred=y_predict[i],
                                        histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs')
-"""
 
 
 def main_pipe(full_histones, amplif, batch_size):
@@ -69,7 +67,7 @@ def main_pipe(full_histones, amplif, batch_size):
         test_Y.extend(batch_test_Y)
         y_predict.extend(batch_y_predict)
 
-        # making_image(histones, zoomed_imgs, histone_key_list, scaled_size)
+        #making_image(histones, histones_label, batch_y_predict, zoomed_imgs, histone_key_list, scaled_size)
     return np.array(test_Y), np.array(y_predict), np.array(full_histones_key)
 
 

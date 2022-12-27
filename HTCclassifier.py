@@ -33,7 +33,7 @@ def making_image(histones, zoomed_imgs, histone_key_list, scaled_size):
     for i, histone in enumerate(histone_key_list):
         histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
                              int(histones[histone][0][1] * (10 ** amplif))]
-        if i % 100 == 0:
+        if i % 10 == 0:
             ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
                                        label=None, pred=y_predict[i],
                                        histone_first_pos=histone_first_pos, amplif=amplif, path=img_save_path)
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     batch_size = 1000
     group_size = 5000
     cut_off = 10
-    make_image = False
+    make_image = True
 
     print('python script working dir : ', os.getcwd())
     if len(sys.argv) > 1:

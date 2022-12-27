@@ -96,6 +96,6 @@ if __name__ == '__main__':
     y_predict, full_histones_key = main_pipe(full_histones, amplif, batch_size, make_image)
 
     print(f'Making reports...')
-    DataSave.save_report(y_predict, full_histones_key, path=report_save_path)
+    DataSave.save_report(full_histones, y_predict, full_histones_key, path=report_save_path)
 
 

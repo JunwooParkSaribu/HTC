@@ -2,7 +2,7 @@ import numpy as np
 
 
 class DataGenerator:
-    def __init__(self, inputs, labels, ratio=0.8, shuffle=True):
+    def __init__(self, inputs, labels=None, ratio=0.8, shuffle=True):
         self.train_X = []
         self.train_Y = []
         self.test_X = []
@@ -10,21 +10,31 @@ class DataGenerator:
         self.keys = list(inputs.keys())
         self.size = len(inputs)
         self.split_index = int(self.size * ratio)
-        self.n_class = len(set(labels[label] for label in labels))
+        if labels is not None:
+            self.n_class = len(set(labels[label] for label in labels))
+        else:
+            self.n_class = 1
         n_c_check = [0] * self.n_class
 
         if shuffle:
             np.random.shuffle(self.keys)
-        for i, key in enumerate(self.keys):
-            img = inputs[key]
-            label = labels[key]
-            if n_c_check[label] < int(self.split_index/self.n_class):
-                self.train_X.append(img)
-                self.train_Y.append(label)
-                n_c_check[label] += 1
-            else:
-                self.test_X.append(img)
-                self.test_Y.append(label)
+        if labels is not None:
+            for i, key in enumerate(self.keys):
+                img = inputs[key]
+                label = labels[key]
+                if n_c_check[label] < int(self.split_index/self.n_class):
+                    self.train_X.append(img)
+                    self.train_Y.append(label)
+                    n_c_check[label] += 1
+                else:
+                    self.test_X.append(img)
+                    self.test_Y.append(label)
+        else:
+            for i, key in enumerate(self.keys):
+                self.test_X.append(inputs[key])
+
+    def get_keys(self):
+        return self.keys
 
     def get_size(self):
         return len(self.train_X), len(self.test_X)
@@ -42,20 +52,42 @@ class DataGenerator:
             i += 1
 
 
-def conversion(training_set, label_set=None, eval=True):
+def conversion(training_set, label_set=None, keylist=None, batch_size=1000, eval=True):
     size = len(training_set)
     train_X = []
     train_Y = []
+    if keylist is None:
+        keys = list(training_set.keys())
+    else:
+        keys = keylist
 
-    keys = list(training_set.keys())
     if not eval:
-        for i in range(size):
-            train_X.append(training_set[keys[i]])
-        return np.array(train_X), keys
-
-    for i in range(size):
-        train_X.append(training_set[keys[i]])
-        if label_set is not None:
-            train_Y.append(label_set[keys[i]])
-    return np.array(train_X), np.array(train_Y), keys
-
+        i = 0
+        while True:
+            if i == size:
+                del train_X
+                del train_Y
+                return
+            while i < size:
+                train_X.append(training_set[keys[i]])
+                i += 1
+                if i % batch_size == 0:
+                    break
+            yield train_X
+            train_X = []
+    else:
+        i = 0
+        while True:
+            if i == size:
+                del train_X
+                del train_Y
+                return
+            while i < size:
+                train_X.append(training_set[keys[i]])
+                train_Y.append(label_set[keys[i]])
+                i += 1
+                if i % batch_size == 0:
+                    break
+            yield train_X, train_Y
+            train_X = []
+            train_Y = []

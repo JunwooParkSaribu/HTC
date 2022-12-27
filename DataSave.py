@@ -23,6 +23,7 @@ def save_report(pred, histone_names, path=''):
 
             input_string += f'{file_name : <25}\t{trajectory_num : <6}\t{class_num : <4}\t{class_id : <9}'
             input_string += '\n'
-        f.write(f'Immobile:{num_immobile}, Hybrid:{num_hybrid}, Mobile:{num_mobile}\n')
+        total_num = num_mobile + num_hybrid + num_immobile
+        f.write(f'Immobile:{num_immobile/total_num}, Hybrid:{num_hybrid/total_num}, Mobile:{num_mobile/total_num}\n')
         f.write(input_string)
 

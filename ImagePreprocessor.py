@@ -1,6 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
 import TrajectoryPhy
+import tracemalloc
+import gc
 
 
 def preprocessing(histones, histones_channel, img_size=None, amplif=2, channel=3, interpolation=True):
@@ -242,7 +244,8 @@ def make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25):
 
 def zoom(imgs, size=800, to_size=(300, 300)):
     zoomed_imgs = {}
-    for histone in imgs:
+    keys = list(imgs.keys())
+    for histone in keys:
         if type(size) is not int:
             center_pos = [int(size[0]/2), int(size[1]/2)]
         else:
@@ -253,6 +256,7 @@ def zoom(imgs, size=800, to_size=(300, 300)):
         y_start = center_pos[1] - int(to_size[1] / 2)
         y_end = center_pos[1] + int(to_size[1] / 2)
         zoomed_imgs[histone] = imgs[histone][x_start:x_end, y_start:y_end].copy()
+        del imgs[histone]
     return zoomed_imgs, to_size[0]
 
 

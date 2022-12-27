@@ -1,4 +1,6 @@
 import os
+from itertools import zip_longest
+from itertools import islice
 
 
 def read_file(file, cutoff=10, amplif=9):
@@ -44,12 +46,12 @@ def read_file(file, cutoff=10, amplif=9):
 
     for histone in trajectory:
         if len(trajectory[histone]) > cutoff:
-            histones[histone] = trajectory[histone]
+            histones[histone] = trajectory[histone].copy()
     del trajectory
     return histones, x_min, x_max, y_min, y_max, time_max
 
 
-def read_files(path, cutoff=10, amplif=9):
+def read_files(path, cutoff=10, group_size=5000, amplif=9):
     try:
         files = os.listdir(path)
     except Exception as e:
@@ -61,5 +63,14 @@ def read_files(path, cutoff=10, amplif=9):
             if file.strip().split('.')[-1] == 'trxyt':
                 h, x_min, x_max, y_min, y_max, time_max = read_file(path+'/'+file, cutoff=cutoff, amplif=amplif)
                 histones |= h
-    return histones
 
+    split_histones = []
+    for item in chunks(histones, group_size):
+        split_histones.append(item)
+    return split_histones
+
+
+def chunks(data, size):
+    it = iter(data)
+    for i in range(0, len(data), size):
+        yield {k:data[k] for k in islice(it, size)}

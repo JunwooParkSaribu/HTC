@@ -1,6 +1,5 @@
 import os
 import sys
-import gc
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import numpy as np
 import DataLoad
@@ -15,7 +14,7 @@ data_path = 'data/TestSample'
 model_path = 'my_model'
 
 
-def predict(gen):
+def predict(gen, scaled_size, nChannel):
     y_predict = []
     test_Y = []
     for batch_num in range(99999):
@@ -29,15 +28,57 @@ def predict(gen):
             test_Y.extend(batch_Y)
         del batch_X
         del batch_Y
-        gc.collect()
-    return np.array(test_Y), np.array(y_predict)
+    return test_Y, y_predict
+
+
+"""
+def making_image(histones, zoomed_imgs, histone_key_list, scaled_size):
+    for i, histone in enumerate(histone_key_list):
+        histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
+                             int(histones[histone][0][1] * (10 ** amplif))]
+        if histones_label[histone] != y_predict[i]:
+            print(f'Name={histone}')
+            ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
+                                       label=histones_label[histone], pred=y_predict[i],
+                                       histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs')
+"""
+
+
+def main_pipe(full_histones, amplif, batch_size):
+    y_predict = []
+    test_Y = []
+    full_histones_key = []
+
+    for g_num, histones in enumerate(full_histones):
+        print(f'\nWorking on group{g_num+1}...')
+        print(f'Making labels...')
+        histones_label = Labeling.make_label(histones, radius=0.35, density=0.4)
+        print(f'Image processing...')
+        histones_channel, nChannel = ImagePreprocessor.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25)
+        histones_imgs, img_size, time_scale = \
+            ImagePreprocessor.preprocessing(histones, histones_channel, img_size=10, amplif=amplif, channel=nChannel)
+        zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
+        histone_key_list = list(zoomed_imgs.keys())
+        full_histones_key.extend(histone_key_list)
+
+        print(f'Converting the data into generator...')
+        print(f'Number of histones:{len(zoomed_imgs)}, batch size:{batch_size}\n')
+        gen = ImgGenerator.conversion(zoomed_imgs, histones_label,
+                                      keylist=histone_key_list, batch_size=batch_size, eval=True)
+        batch_test_Y, batch_y_predict = predict(gen, scaled_size, nChannel)
+        test_Y.extend(batch_test_Y)
+        y_predict.extend(batch_y_predict)
+
+        # making_image(histones, zoomed_imgs, histone_key_list, scaled_size)
+    return np.array(test_Y), np.array(y_predict), np.array(full_histones_key)
 
 
 if __name__ == '__main__':
     amplif = 2
     batch_size = 1000
-    y_predict = []
-    test_Y = []
+    group_size = 5000
+    cutoff = 10
+
     print('python script working dir : ', os.getcwd())
     if len(sys.argv) > 1:
         cur_path = sys.argv[1]
@@ -49,40 +90,17 @@ if __name__ == '__main__':
     print(data_path)
 
     print(f'Loading the data...')
-    histones = DataLoad.read_files(path=data_path, cutoff=10)
-    histones_label = Labeling.make_label(histones, radius=0.35, density=0.4)
-
-    print(f'Image processing...')
-    histones_channel, nChannel = ImagePreprocessor.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25)
-    histones_imgs, img_size, time_scale = \
-        ImagePreprocessor.preprocessing(histones, histones_channel, img_size=10, amplif=amplif, channel=nChannel)
-    zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
-    histone_key_list = list(zoomed_imgs.keys())
-    del histones_imgs
-    gc.collect()
+    full_histones = DataLoad.read_files(path=data_path, cutoff=cutoff, group_size=group_size)  # 16GB RAM
+    print(f'If Total number of trajectories is bigger than {group_size},\n'
+          f'data will be separated into groups to reduce the memory usage.')
 
     print(f'Model loading...')
     HTC_model = load_model(model_path)
     HTC_model.summary()
 
-    print(f'\nConverting the data into generator...')
-    print(f'Number of histones:{len(zoomed_imgs)}, batch size:{batch_size}')
-    gen = ImgGenerator.conversion(zoomed_imgs, histones_label,
-                                  keylist=histone_key_list, batch_size=batch_size, eval=True)
-    test_Y, y_predict = predict(gen)
+    # Main pipe start.
+    test_Y, y_predict, full_histones_key = main_pipe(full_histones, amplif, batch_size)
 
     print('Accuracy = ',
           np.sum([1 if x == 0 else 0 for x in (test_Y.reshape(-1) - y_predict)]) / float(y_predict.shape[0]))
-
-    """
-    for i, histone in enumerate(histone_key_list):
-        histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
-                             int(histones[histone][0][1] * (10 ** amplif))]
-        channels = histones_channel[histone]
-        if histones_label[histone] != y_predict[i]:
-            print(f'Name={histone}')
-            ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
-                                       label=histones_label[histone], pred=y_predict[i],
-                                       histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs')
-    """
 

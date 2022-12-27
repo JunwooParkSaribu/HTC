@@ -36,8 +36,8 @@ def making_image(histones, y_predict, zoomed_imgs, histone_key_list, scaled_size
                              int(histones[histone][0][1] * (10 ** amplif))]
         if i % 10 == 0:
             ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
-                                       label=None, pred=y_predict[i],
-                                       histone_first_pos=histone_first_pos, amplif=amplif, path=img_save_path)
+                                       pred=y_predict[i], histone_first_pos=histone_first_pos,
+                                       amplif=amplif, path=img_save_path)
 
 
 def main_pipe(full_histones, amplif, batch_size, make_image=False):
@@ -62,7 +62,7 @@ def main_pipe(full_histones, amplif, batch_size, make_image=False):
         if make_image:
             making_image(histones, predicted_y, zoomed_imgs, histone_key_list, scaled_size)
 
-    return np.array(test_Y), np.array(y_predict), np.array(full_histones_key)
+    return np.array(y_predict), np.array(full_histones_key)
 
 
 if __name__ == '__main__':
@@ -70,7 +70,7 @@ if __name__ == '__main__':
     batch_size = 1000
     group_size = 5000
     cut_off = 10
-    make_image = True
+    make_image = False
 
     print('python script working dir : ', os.getcwd())
     if len(sys.argv) > 1:
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     HTC_model = load_model(model_path)
 
     # Main pipe start.
-    test_Y, y_predict, full_histones_key = main_pipe(full_histones, amplif, batch_size, make_image)
+    y_predict, full_histones_key = main_pipe(full_histones, amplif, batch_size, make_image)
 
     print(f'Making reports...')
     DataSave.save_report(y_predict, full_histones_key, path=report_save_path)

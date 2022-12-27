@@ -252,7 +252,7 @@ def zoom(imgs, size=800, to_size=(300, 300)):
         x_end = center_pos[0] + int(to_size[0] / 2)
         y_start = center_pos[1] - int(to_size[1] / 2)
         y_end = center_pos[1] + int(to_size[1] / 2)
-        zoomed_imgs[histone] = imgs[histone][x_start:x_end, y_start:y_end]
+        zoomed_imgs[histone] = imgs[histone][x_start:x_end, y_start:y_end].copy()
     return zoomed_imgs, to_size[0]
 
 

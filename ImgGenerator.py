@@ -73,7 +73,7 @@ def conversion(training_set, label_set=None, keylist=None, batch_size=1000, eval
                 i += 1
                 if i % batch_size == 0:
                     break
-            yield train_X
+            yield train_X.copy()
             train_X = []
     else:
         i = 0
@@ -88,6 +88,6 @@ def conversion(training_set, label_set=None, keylist=None, batch_size=1000, eval
                 i += 1
                 if i % batch_size == 0:
                     break
-            yield train_X, train_Y
+            yield train_X.copy(), train_Y.copy()
             train_X = []
             train_Y = []

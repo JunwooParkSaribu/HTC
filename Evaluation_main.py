@@ -19,7 +19,6 @@ def predict(gen):
     y_predict = []
     test_Y = []
     for batch_num in range(99999):
-        gc.collect()
         batch_X, batch_Y = next(gen, (-1, -1))
         if batch_X == -1 or batch_Y == -1:
             break
@@ -28,6 +27,9 @@ def predict(gen):
         with tf.device('/cpu:0'):
             y_predict.extend([np.argmax(x) for x in HTC_model.predict(test_X)])
             test_Y.extend(batch_Y)
+        del batch_X
+        del batch_Y
+        gc.collect()
     return np.array(test_Y), np.array(y_predict)
 
 
@@ -57,16 +59,16 @@ if __name__ == '__main__':
     zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
     histone_key_list = list(zoomed_imgs.keys())
     del histones_imgs
+    gc.collect()
 
     print(f'Model loading...')
     HTC_model = load_model(model_path)
     HTC_model.summary()
 
     print(f'\nConverting the data into generator...')
+    print(f'Number of histones:{len(zoomed_imgs)}, batch size:{batch_size}')
     gen = ImgGenerator.conversion(zoomed_imgs, histones_label,
                                   keylist=histone_key_list, batch_size=batch_size, eval=True)
-
-    print(f'Number of histones:{len(zoomed_imgs)}, batch size:{batch_size}')
     test_Y, y_predict = predict(gen)
 
     print('Accuracy = ',

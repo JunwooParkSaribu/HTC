@@ -30,6 +30,7 @@ def predict(gen, scaled_size, nChannel):
 
 
 def making_image(histones, y_predict, zoomed_imgs, histone_key_list, scaled_size):
+    print(f'Generating images...')
     for i, histone in enumerate(histone_key_list):
         histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
                              int(histones[histone][0][1] * (10 ** amplif))]

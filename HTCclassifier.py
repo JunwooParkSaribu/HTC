@@ -29,7 +29,7 @@ def predict(gen, scaled_size, nChannel):
     return y_predict
 
 
-def making_image(histones, zoomed_imgs, histone_key_list, scaled_size):
+def making_image(histones, y_predict, zoomed_imgs, histone_key_list, scaled_size):
     for i, histone in enumerate(histone_key_list):
         histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
                              int(histones[histone][0][1] * (10 ** amplif))]
@@ -55,10 +55,11 @@ def main_pipe(full_histones, amplif, batch_size, make_image=False):
         print(f'Converting the data into generator...')
         print(f'Number of histones:{len(zoomed_imgs)}, batch size:{batch_size}\n')
         gen = ImgGenerator.conversion(zoomed_imgs, keylist=histone_key_list, batch_size=batch_size, eval=False)
-        y_predict.extend(predict(gen, scaled_size, nChannel))
+        predicted_y = predict(gen, scaled_size, nChannel)
+        y_predict.extend(predicted_y)
 
         if make_image:
-            making_image(histones, zoomed_imgs, histone_key_list, scaled_size)
+            making_image(histones, predicted_y, zoomed_imgs, histone_key_list, scaled_size)
 
     return np.array(test_Y), np.array(y_predict), np.array(full_histones_key)
 

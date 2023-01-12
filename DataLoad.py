@@ -51,7 +51,7 @@ def read_file(file, cutoff=10, amplif=9):
     return histones, x_min, x_max, y_min, y_max, time_max
 
 
-def read_files(path, cutoff=10, group_size=5000, amplif=9):
+def read_files(path, cutoff=10, group_size=5000, amplif=9, chunk=True):
     try:
         files = os.listdir(path)
     except Exception as e:
@@ -61,8 +61,10 @@ def read_files(path, cutoff=10, group_size=5000, amplif=9):
     if len(files) > 0:
         for file in files:
             if file.strip().split('.')[-1] == 'trxyt':
-                h, x_min, x_max, y_min, y_max, time_max = read_file(path+'/'+file, cutoff=cutoff, amplif=amplif)
+                h, x_min, x_max, y_min, y_max, time_max = read_file(path + '/' + file, cutoff=cutoff, amplif=amplif)
                 histones |= h
+    if chunk == False:
+        return histones
 
     split_histones = []
     for item in chunks(histones, group_size):
@@ -73,4 +75,4 @@ def read_files(path, cutoff=10, group_size=5000, amplif=9):
 def chunks(data, size):
     it = iter(data)
     for i in range(0, len(data), size):
-        yield {k:data[k] for k in islice(it, size)}
+        yield {k: data[k] for k in islice(it, size)}

@@ -14,7 +14,7 @@ model_path = 'my_model'
 
 if __name__ == '__main__':
     print(f'\nLoading the data...')
-    histones = DataLoad.read_files(path=data_path, cutoff=10)
+    histones = DataLoad.read_files(path=data_path, cutoff=10, chunk=False)
     histones_label = Labeling.make_label(histones, radius=0.35, density=0.4)
     print(f'Image processing...')
     histones_channel, nChannel = ImagePreprocessor.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25)

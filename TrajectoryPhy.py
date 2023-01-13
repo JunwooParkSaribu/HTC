@@ -74,6 +74,7 @@ def accumulate(histone):
 def check_balls(histones, radius=0.35, density=0.4) -> dict:
     histones_balls = {}
     for histone in histones:
+        max_dist = 0
         n_balls = 0
         hybrid_flag = 0
         all_trajec = histones[histone]
@@ -83,6 +84,7 @@ def check_balls(histones, radius=0.35, density=0.4) -> dict:
             pos = all_trajec[i][:2]
             for j in range(len(all_trajec)):
                 next_pos = all_trajec[j][:2]
+                max_dist = max(max_dist, np.sqrt((next_pos[0] - pos[0])**2 + (next_pos[1] - pos[1])**2))
                 if np.sqrt((next_pos[0] - pos[0])**2 + (next_pos[1] - pos[1])**2) < radius:
                     trajec_density += 1
                 else:
@@ -92,7 +94,7 @@ def check_balls(histones, radius=0.35, density=0.4) -> dict:
                 break
             if trajec_density/all_trajec_n > density and all_trajec_n > 15:
                 n_balls += 1
-        histones_balls[histone] = [n_balls, hybrid_flag]
+        histones_balls[histone] = [n_balls, hybrid_flag, max_dist]
         del all_trajec
     return histones_balls
 

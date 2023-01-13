@@ -15,9 +15,9 @@ model_path = 'my_model'
 if __name__ == '__main__':
     print(f'\nLoading the data...')
     histones = DataLoad.read_files(path=data_path, cutoff=10, chunk=False)
-    histones_label = Labeling.make_label(histones, radius=0.35, density=0.4)
+    histones_label, histone_max_dist = Labeling.make_label(histones, radius=0.45, density=0.4)
     print(f'Image processing...')
-    histones_channel, nChannel = ImagePreprocessor.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25)
+    histones_channel, nChannel = ImagePreprocessor.make_channel(histones, immobile_cutoff=0.3, hybrid_cutoff=10)
     histones_imgs, img_size, time_scale = \
         ImagePreprocessor.preprocessing(histones, histones_channel, img_size=10, amplif=2, channel=nChannel)
     zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))

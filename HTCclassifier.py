@@ -22,7 +22,7 @@ def predict(gen, scaled_size, nChannel):
         if batch == -1:
             break
         print(f'Predicting batch{batch_num+1}...')
-        test_X = np.array(batch).reshape((len(batch), scaled_size, scaled_size, nChannel))
+        test_X = np.array(batch).reshape((len(batch), scaled_size[0], scaled_size[1], nChannel))
         with tf.device('/cpu:0'):
             y_predict.extend([np.argmax(x) for x in HTC_model.predict(test_X)])
         del batch
@@ -32,12 +32,12 @@ def predict(gen, scaled_size, nChannel):
 def making_image(histones, y_predict, zoomed_imgs, histone_key_list, scaled_size):
     print(f'Generating images...')
     for i, histone in enumerate(histone_key_list):
-        histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
-                             int(histones[histone][0][1] * (10 ** amplif))]
+        histone_first_pos = [int(histones[histone][0][0] * (10 ** amp)),
+                             int(histones[histone][0][1] * (10 ** amp))]
         if i % 100 == 0:
-            ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
+            ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size[0],
                                        pred=y_predict[i], histone_first_pos=histone_first_pos,
-                                       amplif=amplif, path=img_save_path)
+                                       amp=amp, path=img_save_path)
 
 
 def main_pipe(full_histones, amp, nChannel, batch_size, make_image=False):

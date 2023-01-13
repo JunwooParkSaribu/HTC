@@ -264,7 +264,7 @@ def zoom(imgs, size=800, to_size=(300, 300)):
     return zoomed_imgs, to_size
 
 
-def img_save(img, img_name, img_size, label=None, pred=None, histone_first_pos=None, amplif=2, path=''):
+def img_save(img, img_name, img_size, label=None, pred=None, histone_first_pos=None, amp=2, path=''):
     ps = ''
     if len(path) > 0:
         path = path + '/'
@@ -291,10 +291,10 @@ def img_save(img, img_name, img_size, label=None, pred=None, histone_first_pos=N
         plt.imshow(img, cmap='coolwarm', origin='lower')
     else:
         plt.imshow(img, cmap='coolwarm', origin='lower',
-                   extent=[int((histone_first_pos[0] - (img_size/2))/(10**amplif)),
-                           int((histone_first_pos[0] + int(img_size/2))/(10**amplif)),
-                           int((histone_first_pos[1] - int(img_size/2))/(10**amplif)),
-                           int((histone_first_pos[1] + int(img_size/2))/(10**amplif))])
+                   extent=[int((histone_first_pos[0] - (img_size/2))/(10**amp)),
+                           int((histone_first_pos[0] + int(img_size/2))/(10**amp)),
+                           int((histone_first_pos[1] - int(img_size/2))/(10**amp)),
+                           int((histone_first_pos[1] + int(img_size/2))/(10**amp))])
     plt.title(ps)
     plt.savefig(path + str(img_name))
 

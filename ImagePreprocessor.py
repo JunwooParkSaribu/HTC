@@ -19,9 +19,10 @@ def preprocessing(histones, histones_channel, img_size=None, amplif=2, channel=3
             img = np.zeros((img_size, img_size))
         else:
             img = np.zeros((img_size, img_size, channel))
-        x_shift = central_point[0] - int(histones[histone][0][0] * (10 ** amplif))
-        y_shift = central_point[1] - int(histones[histone][0][1] * (10 ** amplif))
-        for index, trajectory in enumerate(histones[histone]):
+        histone_trajectory = histones[histone].get_trajectory()
+        x_shift = central_point[0] - int(histone_trajectory[0][0] * (10 ** amplif))
+        y_shift = central_point[1] - int(histone_trajectory[0][1] * (10 ** amplif))
+        for index, trajectory in enumerate(histone_trajectory):
             if index < len(histones_channel[histone]):
                 trajec_channel = histones_channel[histone][index]
             else:

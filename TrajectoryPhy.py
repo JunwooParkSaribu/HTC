@@ -52,10 +52,12 @@ def velocity(histones):
         histone_velocity[histone] = []
 
     for histone in histones:
-        for trajec_num in range(len(histones[histone])-1):
-            x_distance = histones[histone][trajec_num + 1][0] - histones[histone][trajec_num][0]
-            y_distance = histones[histone][trajec_num + 1][1] - histones[histone][trajec_num][1]
-            t = histones[histone][trajec_num + 1][2] - histones[histone][trajec_num][2]
+        for trajec_num in range(histones[histone].get_len_trajectory() - 1):
+            trajectory = histones[histone].get_trajectory()
+            time = histones[histone].get_time()
+            x_distance = trajectory[trajec_num + 1][0] - trajectory[trajec_num][0]
+            y_distance = trajectory[trajec_num + 1][1] - trajectory[trajec_num][1]
+            t = time[trajec_num + 1] - time[trajec_num]
             if t == 0 :
                 print(histone)
             histone_velocity[histone].append(np.sqrt(x_distance**2 + y_distance**2)/t)
@@ -74,17 +76,15 @@ def accumulate(histone):
 def check_balls(histones, radius=0.35, density=0.4) -> dict:
     histones_balls = {}
     for histone in histones:
-        max_dist = 0
         n_balls = 0
         hybrid_flag = 0
-        all_trajec = histones[histone]
-        all_trajec_n = len(histones[histone])
+        all_trajec = histones[histone].get_trajectory()
+        all_trajec_n = len(histones[histone].get_trajectory())
         for i in range(len(all_trajec)):
             trajec_density = 0
-            pos = all_trajec[i][:2]
+            pos = all_trajec[i]
             for j in range(len(all_trajec)):
-                next_pos = all_trajec[j][:2]
-                max_dist = max(max_dist, np.sqrt((next_pos[0] - pos[0])**2 + (next_pos[1] - pos[1])**2))
+                next_pos = all_trajec[j]
                 if np.sqrt((next_pos[0] - pos[0])**2 + (next_pos[1] - pos[1])**2) < radius:
                     trajec_density += 1
                 else:
@@ -94,7 +94,18 @@ def check_balls(histones, radius=0.35, density=0.4) -> dict:
                 break
             if trajec_density/all_trajec_n > density and all_trajec_n > 15:
                 n_balls += 1
-        histones_balls[histone] = [n_balls, hybrid_flag, max_dist]
+        histones_balls[histone] = [n_balls, hybrid_flag]
         del all_trajec
     return histones_balls
+
+
+def calcul_max_radius(histones):
+    for histone in histones:
+        trajectories = histones[histone].get_trajectory()
+        first_position = trajectories[0]
+        max_r = 0
+        for trajectory in trajectories:
+            dist = np.sqrt((first_position[0] - trajectory[0])**2 + (first_position[1] - trajectory[1])**2)
+            max_r = max(max_r, dist)
+        histones[histone].set_max_radius(max_r)
 

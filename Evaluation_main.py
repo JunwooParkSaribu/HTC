@@ -32,18 +32,19 @@ def predict(gen, scaled_size, nChannel):
 
 
 def making_image(histones, histones_label, y_predict, zoomed_imgs, histone_key_list, scaled_size):
+    amp=2
     print(f'Generating images...')
     for i, histone in enumerate(histone_key_list):
-        histone_first_pos = [int(histones[histone][0][0] * (10 ** amplif)),
-                             int(histones[histone][0][1] * (10 ** amplif))]
+        histone_first_pos = [int(histones[histone][0][0] * (10 ** amp)),
+                             int(histones[histone][0][1] * (10 ** amp))]
         if histones_label[histone] != y_predict[i]:
             print(f'Name={histone}')
             ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size,
                                        label=histones_label[histone], pred=y_predict[i],
-                                       histone_first_pos=histone_first_pos, amplif=amplif, path='img/pred_imgs')
+                                       histone_first_pos=histone_first_pos, amplif=amp, path='img/pred_imgs')
 
 
-def main_pipe(full_histones, amplif, batch_size):
+def main_pipe(full_histones, amp, nChannel, batch_size):
     y_predict = []
     test_Y = []
     full_histones_key = []
@@ -53,9 +54,8 @@ def main_pipe(full_histones, amplif, batch_size):
         print(f'Making labels...')
         histones_label = Labeling.make_label(histones, radius=0.45, density=0.4)
         print(f'Image processing...')
-        histones_channel, nChannel = ImagePreprocessor.make_channel(histones, immobile_cutoff=0.3, hybrid_cutoff=10)
-        histones_imgs, img_size, time_scale = \
-            ImagePreprocessor.preprocessing(histones, histones_channel, img_size=10, amplif=amplif, channel=nChannel)
+        ImagePreprocessor.make_channel(histones, immobile_cutoff=0.3, hybrid_cutoff=10, nChannel=nChannel)
+        histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=amp)
         zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
         histone_key_list = list(zoomed_imgs.keys())
         full_histones_key.extend(histone_key_list)
@@ -73,7 +73,8 @@ def main_pipe(full_histones, amplif, batch_size):
 
 
 if __name__ == '__main__':
-    amplif = 2
+    amp = 2
+    nChannel = 3
     batch_size = 1000
     group_size = 5000
     cutoff = 10
@@ -98,7 +99,7 @@ if __name__ == '__main__':
     HTC_model.summary()
 
     # Main pipe start.
-    test_Y, y_predict, full_histones_key = main_pipe(full_histones, amplif, batch_size)
+    test_Y, y_predict, full_histones_key = main_pipe(full_histones, amp, nChannel, batch_size)
 
     print('Accuracy = ',
           np.sum([1 if x == 0 else 0 for x in (test_Y.reshape(-1) - y_predict)]) / float(y_predict.shape[0]))

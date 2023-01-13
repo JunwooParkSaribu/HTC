@@ -40,15 +40,14 @@ def making_image(histones, y_predict, zoomed_imgs, histone_key_list, scaled_size
                                        amplif=amplif, path=img_save_path)
 
 
-def main_pipe(full_histones, amplif, batch_size, make_image=False):
+def main_pipe(full_histones, amp, nChannel, batch_size, make_image=False):
     y_predict = []
     full_histones_key = []
     for g_num, histones in enumerate(full_histones):
         print(f'\nWorking on group{g_num+1}...')
         print(f'Image processing...')
-        histones_channel, nChannel = ImagePreprocessor.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25)
-        histones_imgs, img_size, time_scale = \
-            ImagePreprocessor.preprocessing(histones, histones_channel, img_size=10, amplif=amplif, channel=nChannel)
+        ImagePreprocessor.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25)
+        histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=amp)
         zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
         histone_key_list = list(zoomed_imgs.keys())
         full_histones_key.extend(histone_key_list)
@@ -66,7 +65,8 @@ def main_pipe(full_histones, amplif, batch_size, make_image=False):
 
 
 if __name__ == '__main__':
-    amplif = 2
+    amp = 2
+    nChannel = 3
     batch_size = 1000
     group_size = 5000
     cut_off = 10
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     HTC_model = load_model(model_path)
 
     # Main pipe start.
-    y_predict, full_histones_key = main_pipe(full_histones, amplif, batch_size, make_image)
+    y_predict, full_histones_key = main_pipe(full_histones, amp, nChannel, batch_size, make_image)
 
     print(f'Making reports...')
     DataSave.save_report(full_histones, y_predict, full_histones_key, path=report_save_path)

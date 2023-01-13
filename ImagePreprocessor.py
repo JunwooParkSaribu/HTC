@@ -5,14 +5,16 @@ import tracemalloc
 import gc
 
 
-def preprocessing(histones, histones_channel, img_size=None, amplif=2, channel=3, interpolation=True):
-    if img_size is None:
-        img_size = 5 * (10 ** amplif)
+def preprocessing(histones, img_scale=None, amp=2, interpolation=True):
+    if img_scale is None:
+        img_size = 5 * (10 ** amp)
     else:
-        img_size = img_size * (10 ** amplif)
+        img_size = img_scale * (10 ** amp)
     central_point = [int(img_size / 2), int(img_size / 2)]
     imgs = {}
     for histone in histones:
+        histones_channel = histones[histone].get_channel()
+        channel = histones[histone].get_channel_size()
         current_xval = central_point[0]
         current_yval = central_point[1]
         if not channel:
@@ -20,16 +22,16 @@ def preprocessing(histones, histones_channel, img_size=None, amplif=2, channel=3
         else:
             img = np.zeros((img_size, img_size, channel))
         histone_trajectory = histones[histone].get_trajectory()
-        x_shift = central_point[0] - int(histone_trajectory[0][0] * (10 ** amplif))
-        y_shift = central_point[1] - int(histone_trajectory[0][1] * (10 ** amplif))
+        x_shift = central_point[0] - int(histone_trajectory[0][0] * (10 ** amp))
+        y_shift = central_point[1] - int(histone_trajectory[0][1] * (10 ** amp))
         for index, trajectory in enumerate(histone_trajectory):
-            if index < len(histones_channel[histone]):
-                trajec_channel = histones_channel[histone][index]
+            if index < len(histones_channel):
+                trajec_channel = histones_channel[index]
             else:
-                trajec_channel = histones_channel[histone][index-1]
+                trajec_channel = histones_channel[index-1]
 
-            x_val = x_shift + int(trajectory[0] * (10 ** amplif))
-            y_val = y_shift + int(trajectory[1] * (10 ** amplif))
+            x_val = x_shift + int(trajectory[0] * (10 ** amp))
+            y_val = y_shift + int(trajectory[1] * (10 ** amp))
             if not interpolation:
 
                 # Forcing the scailing to reduce the memory
@@ -67,7 +69,7 @@ def preprocessing(histones, histones_channel, img_size=None, amplif=2, channel=3
                     else:
                         img[inter_pos[1]][inter_pos[0]][trajec_channel] = 1
         imgs[histone] = img
-    return imgs, img_size, None
+    return imgs, (img_size, img_size), None
 
 
 def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=500, interpolation=True):
@@ -224,23 +226,24 @@ def interpolate3D(current_pos, next_pos):  # 3D interpolation
     return pos
 
 
-def make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25):
-    num_channel = 3
-    hist_velos = TrajectoryPhy.velocity(histones)
+def make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25, nChannel=3):
+    histones_velocity = TrajectoryPhy.velocity(histones)
     hist_channel = {}
     for histone in histones:
         hist_channel[histone] = []
 
-    for histone in hist_velos:
-        for trajec in hist_velos[histone]:
-            if trajec < immobile_cutoff:
-                hist_channel[histone].append(0)
-            elif trajec < hybrid_cutoff:
-                hist_channel[histone].append(1)
+    for histone in histones:
+        temp = []
+        for velocity in histones_velocity[histone]:
+            if velocity < immobile_cutoff:
+                temp.append(0)
+            elif velocity < hybrid_cutoff:
+                temp.append(1)
             else:
-                hist_channel[histone].append(2)
-    del hist_velos
-    return hist_channel, num_channel
+                temp.append(2)
+        histones[histone].set_channel(temp)
+        histones[histone].set_channel_size(nChannel)
+    del histones_velocity
 
 
 def zoom(imgs, size=800, to_size=(300, 300)):
@@ -258,7 +261,7 @@ def zoom(imgs, size=800, to_size=(300, 300)):
         y_end = center_pos[1] + int(to_size[1] / 2)
         zoomed_imgs[histone] = imgs[histone][x_start:x_end, y_start:y_end].copy()
         del imgs[histone]
-    return zoomed_imgs, to_size[0]
+    return zoomed_imgs, to_size
 
 
 def img_save(img, img_name, img_size, label=None, pred=None, histone_first_pos=None, amplif=2, path=''):

@@ -3,6 +3,8 @@ class H2B():
         self.trajectory = []
         self.time = []
         self.max_radius = None
+        self.channel = []
+        self.channel_size = 0
 
     def get_trajectory(self):
         return self.trajectory
@@ -27,3 +29,15 @@ class H2B():
 
     def get_max_radius(self):
         return self.max_radius
+
+    def set_channel(self, channel):
+        self.channel = channel
+
+    def get_channel(self):
+        return self.channel
+
+    def set_channel_size(self, n):
+        self.channel_size = n
+
+    def get_channel_size(self):
+        return self.channel_size

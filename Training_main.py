@@ -30,11 +30,11 @@ if __name__ == '__main__':
         del histones_imgs; del histones_label; del histones;
         train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,
                                                             output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
-                                                            output_shapes=((scaled_size, scaled_size, nChannel), ())
+                                                            output_shapes=((scaled_size[0], scaled_size[1], nChannel), ())
                                                             ).batch(32)
         test_ds = ConvModel.tf.data.Dataset.from_generator(gen.test_generator,
                                                            output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
-                                                           output_shapes=((scaled_size, scaled_size, nChannel), ())
+                                                           output_shapes=((scaled_size[0], scaled_size[1], nChannel), ())
                                                            ).batch(32)
         print(f'Training the data...')
         training_model = ConvModel.HTC()

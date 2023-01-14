@@ -86,7 +86,7 @@ if __name__ == '__main__':
 
     print(f'Loading the data...')
     full_histones = DataLoad.read_files(path=data_path, cutoff=cut_off, group_size=group_size)  # 16GB RAM
-    print(f'If Total number of trajectories is bigger than {group_size},\n'
+    print(f'If total number of trajectories is bigger than {group_size},\n'
           f'data will be separated into groups to reduce the memory usage.')
 
     print(f'Model loading...')

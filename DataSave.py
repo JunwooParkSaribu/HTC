@@ -10,8 +10,9 @@ def save_report(full_histones, pred, histone_names, path=''):
         num_mobile = 0
         input_string = ''
         for i, histone_name in enumerate(histone_names):
-            first_x_pos = histones[histone_name][0][0]
-            first_y_pos = histones[histone_name][0][1]
+            trajectory = histones[histone_name].get_trajectory()
+            first_x_pos = trajectory[0][0]
+            first_y_pos = trajectory[0][1]
             histone_name = histone_name.strip().split('@')
             file_name = histone_name[0]
             trajectory_num = histone_name[1]

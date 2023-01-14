@@ -10,7 +10,7 @@ from keras.models import load_model
 import tensorflow as tf
 
 
-data_path = 'data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell'
+data_path = 'data/TestSample'
 model_path = 'my_model'
 
 

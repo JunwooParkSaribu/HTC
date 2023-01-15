@@ -5,6 +5,8 @@ class H2B():
         self.max_radius = None
         self.channel = []
         self.channel_size = 0
+        self.file_name = None
+        self.id = None
 
     def get_trajectory(self):
         return self.trajectory
@@ -41,3 +43,15 @@ class H2B():
 
     def get_channel_size(self):
         return self.channel_size
+
+    def set_id(self, id):
+        self.id= id
+
+    def get_id(self):
+        return self.id
+
+    def set_file_name(self, file_name):
+        self.file_name = file_name
+
+    def get_file_name(self):
+        return self.file_name

@@ -37,6 +37,9 @@ def read_file(file, cutoff=10):
             histones[histone] = H2B()
             histones[histone].set_trajectory(trajectory[histone])
             histones[histone].set_time(time[histone])
+            info = histone.strip().split('@')
+            histones[histone].set_id(info[-1])
+            histones[histone].set_file_name(info[0])
     del trajectory
     del time
     return histones

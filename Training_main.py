@@ -8,7 +8,7 @@ import ConvModel
 import Callback
 
 
-data_path = 'data/TrainingData'
+data_path = 'data/TrainingSample'
 model_path = 'my_model'
 
 

@@ -9,7 +9,7 @@ from keras.models import load_model
 import tensorflow as tf
 
 
-data_path = 'data/TestSample'
+data_path = 'data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell'
 model_path = 'my_model'
 img_save_path = 'result/image'
 report_save_path = 'result'
@@ -32,8 +32,9 @@ def predict(gen, scaled_size, nChannel):
 def making_image(histones, y_predict, zoomed_imgs, histone_key_list, scaled_size):
     print(f'Generating images...')
     for i, histone in enumerate(histone_key_list):
-        histone_first_pos = [int(histones[histone][0][0] * (10 ** amp)),
-                             int(histones[histone][0][1] * (10 ** amp))]
+        trajectory = histones[histone].get_trajectory()
+        histone_first_pos = [int(trajectory[0][0] * (10 ** amp)),
+                             int(trajectory[0][1] * (10 ** amp))]
         if i % 500 == 0:
             ImagePreprocessor.img_save(zoomed_imgs[histone], histone, scaled_size[0],
                                        pred=y_predict[i], histone_first_pos=histone_first_pos,
@@ -70,7 +71,7 @@ if __name__ == '__main__':
     batch_size = 1000
     group_size = 5000
     cut_off = 10
-    make_image = False
+    make_image = True
 
     print('python script working dir : ', os.getcwd())
     if len(sys.argv) > 1:

@@ -40,10 +40,10 @@ def predict(gen, scaled_size, nChannel, progress_i, progress_total):
 def making_image(histones, zoomed_imgs, scaled_size, amp):
     print(f'Generating images...')
     for i, histone in enumerate(histones):
-        trajectory = histones[histone].get_trajectory()
-        histone_first_pos = [int(trajectory[0][0] * (10 ** amp)),
-                             int(trajectory[0][1] * (10 ** amp))]
-        if i % 500 == 0:
+        if histones[histone].get_predicted_proba() < 0.5:
+            trajectory = histones[histone].get_trajectory()
+            histone_first_pos = [int(trajectory[0][0] * (10 ** amp)),
+                                 int(trajectory[0][1] * (10 ** amp))]
             ImagePreprocessor.img_save(zoomed_imgs[histone], histones[histone], scaled_size,
                                        histone_first_pos=histone_first_pos,
                                        amp=amp, path=img_save_path)

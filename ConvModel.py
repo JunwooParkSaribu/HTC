@@ -3,7 +3,6 @@ import tensorflow as tf
 from tensorflow.keras.layers import Dense, Flatten, BatchNormalization, \
     Activation, Conv2D, AveragePooling2D, Dropout, ReLU, MaxPool2D
 
-
 print("TensorFlow version:", tf.__version__)
 
 
@@ -104,7 +103,7 @@ class HTC(keras.Model):
         self.test_loss(t_loss)
         self.test_accuracy(labels, predictions)
 
-    def fit(self, train_ds, test_ds, epochs, callback):
+    def fit(self, train_ds, test_ds, epochs, callback, trace='test_loss'):
         callback.on_train_begin()
 
         train_loss_results = []
@@ -133,8 +132,16 @@ class HTC(keras.Model):
                 f'Test Accuracy:{self.test_accuracy.result() * 100 : <9.5f}'
             )
 
-            best_weight = callback.on_epoch_end(
-                epoch=epoch, weights=self.weights, loss=self.test_loss.result())
+            # Callback
+            if trace == 'training_loss':
+                best_weight = callback.on_epoch_end(
+                    epoch=epoch, weights=self.weights, loss=self.training_loss.result())
+            elif trace == 'training_test_loss':
+                best_weight = callback.on_epoch_end(
+                    epoch=epoch, weights=self.weights, loss=self.training.result() + self.test_loss.result())
+            else:
+                best_weight = callback.on_epoch_end(
+                    epoch=epoch, weights=self.weights, loss=self.test_loss.result())
             if best_weight is not None:
                 self.set_weights(best_weight)
                 break

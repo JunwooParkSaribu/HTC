@@ -41,7 +41,8 @@ if __name__ == '__main__':
         training_model = ConvModel.HTC()
         training_model.compile(jit_compile=True)
         train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,
-                                                         callback=Callback.EarlyStoppingAtMinLoss(patience=50))
+                                                         callback=Callback.EarlyStoppingAtMinLoss(patience=50),
+                                                         trace='test_loss')
         training_model.save(model_path)
 
     # loss history figure save

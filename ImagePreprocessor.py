@@ -270,6 +270,8 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
     pred = h2b.get_predicted_label()
     proba = h2b.get_predicted_proba()
 
+    if type(img_size) is tuple:
+        img_size = img_size[0]
     if label is not None:
         if label==0:
             label = 'immobile'

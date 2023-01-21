@@ -79,7 +79,7 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
             histones[histone].set_predicted_proba(batch_y_predict_proba[index])
             histones[histone].set_manuel_label(histones_label[histone])
 
-        making_image(histones, zoomed_imgs, scaled_size, amp)
+        #making_image(histones, zoomed_imgs, scaled_size, amp)
 
 
 if __name__ == '__main__':
@@ -115,4 +115,4 @@ if __name__ == '__main__':
     for i, histone in enumerate(histones):
         if histones[histone].get_predicted_label() != histones[histone].get_manuel_label():
             miss_classfied += 1
-    print(f'Accuracy = {miss_classfied/i}')
+    print(f'Accuracy = {(i-miss_classfied)/i}')

@@ -44,7 +44,7 @@ def making_image(histones, zoomed_imgs, scaled_size, amp):
         histone_first_pos = [int(trajectory[0][0] * (10 ** amp)),
                              int(trajectory[0][1] * (10 ** amp))]
         if i % 500 == 0:
-            ImagePreprocessor.img_save(zoomed_imgs[histone], histones[histone], scaled_size[0],
+            ImagePreprocessor.img_save(zoomed_imgs[histone], histones[histone], scaled_size,
                                        histone_first_pos=histone_first_pos,
                                        amp=amp, path=img_save_path)
 

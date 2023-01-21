@@ -13,4 +13,3 @@ def make_label(histones, radius=0.45, density=0.4) -> []:
             histone_label[histone] = 1  # hybrid
     del histones_balls
     return histone_label
-

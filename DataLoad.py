@@ -1,4 +1,5 @@
 import os
+import csv
 import TrajectoryPhy
 from H2B import H2B
 from itertools import islice
@@ -71,3 +72,13 @@ def chunks(data, size):
     it = iter(data)
     for i in range(0, len(data), size):
         yield {k: data[k] for k in islice(it, size)}
+
+
+def read_report(file):
+    lines = []
+    with open(file, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+        header = reader.fieldnames
+        for row in reader:
+            lines.append(row)
+    return header, lines

@@ -8,9 +8,11 @@ from sklearn import tree
 
 
 data_path = 'data/TrainingSample'
+report_path = 'result/report_all.csv'
 
 
 if __name__ == '__main__':
+    """    
     nChannel = 3
     print(f'\nLoading the data...')
     histones = DataLoad.read_files(path=data_path, cutoff=10, chunk=False)
@@ -34,3 +36,7 @@ if __name__ == '__main__':
 
     clf = clf.fit(X, Y)
     tree.plot_tree(clf)
+    """
+
+    header, data = DataLoad.read_report(report_path)
+    print(data)

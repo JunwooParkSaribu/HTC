@@ -1,5 +1,3 @@
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import ImagePreprocessor
 import Labeling
 import ImgGenerator
@@ -15,7 +13,7 @@ model_path = 'my_model'
 
 
 if __name__ == '__main__':
-    epochs = 3
+    epochs = 200
     params = ReadParam.read('.')
     print(f'\nLoading the data...')
     histones = DataLoad.read_files(path=data_path, cutoff=params['cut_off'], chunk=False)

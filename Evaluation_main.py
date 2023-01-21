@@ -1,5 +1,4 @@
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Suppress TensorFlow logging (1)
 import sys
 import numpy as np
 import DataLoad
@@ -9,8 +8,7 @@ import ImgGenerator
 import ReadParam
 import ProgressBar
 from keras.models import load_model
-from tensorflow import device, get_logger
-get_logger().setLevel('ERROR')  # Suppress TensorFlow logging (2)
+from tensorflow import device
 
 
 data_path = 'data/TestSample'

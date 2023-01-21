@@ -264,10 +264,12 @@ def zoom(imgs, size=800, to_size=(300, 300)):
     return zoomed_imgs, to_size
 
 
-def img_save(img, img_name, img_size, label=None, pred=None, histone_first_pos=None, amp=2, path=''):
+def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
     ps = ''
-    if len(path) > 0:
-        path = path + '/'
+    label = h2b.get_manuel_label()
+    pred = h2b.get_predicted_label()
+    proba = h2b.get_predicted_proba()
+
     if label is not None:
         if label==0:
             label = 'immobile'
@@ -286,6 +288,8 @@ def img_save(img, img_name, img_size, label=None, pred=None, histone_first_pos=N
         ps += 'label = ' + label
     if pred is not None:
         ps += '\nprediction = ' + pred
+    if proba is not None:
+        ps += '\nprobability = ' + str(proba)
 
     if histone_first_pos is None:
         plt.imshow(img, cmap='coolwarm', origin='lower')
@@ -296,5 +300,5 @@ def img_save(img, img_name, img_size, label=None, pred=None, histone_first_pos=N
                            int((histone_first_pos[1] - int(img_size/2))/(10**amp)),
                            int((histone_first_pos[1] + int(img_size/2))/(10**amp))])
     plt.title(ps)
-    plt.savefig(path + str(img_name))
+    plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png')
 

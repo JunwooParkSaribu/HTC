@@ -7,6 +7,9 @@ class H2B():
         self.channel_size = 0
         self.file_name = None
         self.id = None
+        self.predicted_label = None
+        self.manuel_label = None
+        self.predicted_proba = None
 
     def get_trajectory(self):
         return self.trajectory
@@ -55,3 +58,21 @@ class H2B():
 
     def get_file_name(self):
         return self.file_name
+
+    def set_predicted_label(self, label):
+        self.predicted_label = label
+
+    def get_predicted_label(self):
+        return self.predicted_label
+
+    def set_predicted_proba(self, proba):
+        self.predicted_proba = proba
+
+    def get_predicted_proba(self):
+        return self.predicted_proba
+
+    def set_manuel_label(self, label):
+        self.manuel_label = label
+
+    def get_manuel_label(self):
+        return self.manuel_label

@@ -1,10 +1,10 @@
 import os
+import TrajectoryPhy
 from H2B import H2B
-from itertools import zip_longest
 from itertools import islice
 
 
-def read_file(file, cutoff=10):
+def read_file(file, cutoff):
     histones = {}
     trajectory = {}
     time = {}
@@ -45,7 +45,7 @@ def read_file(file, cutoff=10):
     return histones
 
 
-def read_files(path, cutoff=10, group_size=5000, chunk=True):
+def read_files(path, cutoff=10, group_size=3000, chunk=True):
     try:
         files = os.listdir(path)
     except Exception as e:
@@ -57,9 +57,10 @@ def read_files(path, cutoff=10, group_size=5000, chunk=True):
             if file.strip().split('.')[-1] == 'trxyt':
                 h = read_file(path + '/' + file, cutoff=cutoff)
                 histones |= h
+    TrajectoryPhy.calcul_max_radius(histones)
+
     if chunk == False:
         return histones
-
     split_histones = []
     for item in chunks(histones, group_size):
         split_histones.append(item)

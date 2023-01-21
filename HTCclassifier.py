@@ -8,7 +8,7 @@ import ImgGenerator
 import ReadParam
 import ProgressBar
 from keras.models import load_model
-import tensorflow as tf
+from tensorflow import device
 
 
 data_path = 'data/TestSample'
@@ -24,7 +24,7 @@ def predict(gen, scaled_size, nChannel, progress_i, progress_total):
         if batch == -1:
             break
         test_X = np.array(batch).reshape((len(batch), scaled_size[0], scaled_size[1], nChannel))
-        with tf.device('/cpu:0'):
+        with device('/cpu:0'):
             y_predict.extend([np.argmax(x) for x in HTC_model.predict(test_X, verbose=0)])
         progress_i += 1
         ProgressBar.printProgressBar(progress_i, progress_total)

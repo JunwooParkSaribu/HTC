@@ -41,7 +41,7 @@ def predict(gen, scaled_size, nChannel, progress_i, progress_total):
 def making_image(histones, zoomed_imgs, scaled_size, amp, img_num, shuffle):
     histone_ids = []
     for histone in histones:
-        if histones[histone].get_predicted_proba() < 0.5:
+        if histones[histone].get_predicted_proba() < 0.3:
             histone_ids.append(histone)
             img_num -= 1
         if img_num == 0:
@@ -87,7 +87,7 @@ def main_pipe(full_histones, amp, nChannel, batch_size, make_image=False, img_nu
 
 
 if __name__ == '__main__':
-    make_image = True
+    make_image = False
 
     print('python script working dir : ', os.getcwd())
     if len(sys.argv) > 1:

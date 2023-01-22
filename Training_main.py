@@ -47,8 +47,8 @@ if __name__ == '__main__':
 
     # loss history figure save
     plt.figure()
-    plt.plot(range(0, epochs), train_history, label='Train loss')
-    plt.plot(range(0, epochs), test_history, label='Validation loss')
+    plt.plot(range(0, len(train_history)), train_history, label='Train loss')
+    plt.plot(range(0, len(test_history)), test_history, label='Validation loss')
     plt.legend()
     plt.savefig('./img/loss_history.png')
 

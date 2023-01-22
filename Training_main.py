@@ -42,7 +42,7 @@ if __name__ == '__main__':
         training_model.compile(jit_compile=True)
         train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,
                                                          callback=Callback.EarlyStoppingAtMinLoss(patience=75),
-                                                         trace='test_loss')
+                                                         trace='training_test_loss')
         training_model.save(model_path)
 
     # loss history figure save

@@ -135,10 +135,10 @@ class HTC(keras.Model):
             # Callback
             if trace == 'training_loss':
                 best_weight = callback.on_epoch_end(
-                    epoch=epoch, weights=self.weights, loss=self.training_loss.result())
+                    epoch=epoch, weights=self.weights, loss=self.train_loss.result())
             elif trace == 'training_test_loss':
                 best_weight = callback.on_epoch_end(
-                    epoch=epoch, weights=self.weights, loss=self.training.result() + self.test_loss.result())
+                    epoch=epoch, weights=self.weights, loss=self.train_loss.result() + self.test_loss.result())
             else:
                 best_weight = callback.on_epoch_end(
                     epoch=epoch, weights=self.weights, loss=self.test_loss.result())

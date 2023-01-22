@@ -28,6 +28,7 @@ class EarlyStoppingAtMinLoss():
             if self.wait >= self.patience:
                 self.stopped_epoch = epoch
                 print("Restoring model weights from the end of the best epoch.")
+                print(f'Best epoch={self.stopped_epoch + 1 - self.patience}')
                 return self.best_weights
             return None
 

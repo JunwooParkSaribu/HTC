@@ -12,7 +12,7 @@ from keras.models import load_model
 from tensorflow import device
 
 
-data_path = 'data/TestSample'
+data_path = 'data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell'
 model_path = 'my_model'
 img_save_path = 'result/image'
 report_save_path = 'result'
@@ -38,19 +38,27 @@ def predict(gen, scaled_size, nChannel, progress_i, progress_total):
     return y_predict, y_predict_proba, progress_i
 
 
-def making_image(histones, zoomed_imgs, scaled_size, amp):
-    print(f'Generating images...')
-    for i, histone in enumerate(histones):
+def making_image(histones, zoomed_imgs, scaled_size, amp, img_num, shuffle):
+    histone_ids = []
+    for histone in histones:
         if histones[histone].get_predicted_proba() < 0.5:
-            trajectory = histones[histone].get_trajectory()
-            histone_first_pos = [int(trajectory[0][0] * (10 ** amp)),
-                                 int(trajectory[0][1] * (10 ** amp))]
-            ImagePreprocessor.img_save(zoomed_imgs[histone], histones[histone], scaled_size,
-                                       histone_first_pos=histone_first_pos,
-                                       amp=amp, path=img_save_path)
+            histone_ids.append(histone)
+            img_num -= 1
+        if img_num == 0:
+            break
+    if shuffle:
+        np.random.shuffle(histone_ids)
+
+    for histone in histone_ids:
+        trajectory = histones[histone].get_trajectory()
+        histone_first_pos = [int(trajectory[0][0] * (10 ** amp)),
+                             int(trajectory[0][1] * (10 ** amp))]
+        ImagePreprocessor.img_save(zoomed_imgs[histone], histones[histone], scaled_size,
+                                   histone_first_pos=histone_first_pos,
+                                   amp=amp, path=img_save_path)
 
 
-def main_pipe(full_histones, amp, nChannel, batch_size, make_image=False):
+def main_pipe(full_histones, amp, nChannel, batch_size, make_image=False, img_num=10, shuffle=True):
     total_n_histone = 0
     for g in full_histones:
         total_n_histone += len(list(g.keys()))
@@ -74,11 +82,12 @@ def main_pipe(full_histones, amp, nChannel, batch_size, make_image=False):
             histones[histone].set_predicted_proba(batch_y_predict_proba[index])
 
         if make_image:
-            making_image(histones, zoomed_imgs, scaled_size, amp)
+            making_image(histones, zoomed_imgs, scaled_size, amp,
+                         img_num=int(img_num/len(full_histones)), shuffle=shuffle)
 
 
 if __name__ == '__main__':
-    make_image = False
+    make_image = True
 
     print('python script working dir : ', os.getcwd())
     if len(sys.argv) > 1:

@@ -58,7 +58,7 @@ def making_image(histones, zoomed_imgs, scaled_size, amp, img_num, shuffle):
                                    amp=amp, path=img_save_path)
 
 
-def main_pipe(full_histones, amp, nChannel, batch_size, make_image=False, img_num=10, shuffle=True):
+def main_pipe(full_histones, amp, nChannel, batch_size, make_image=False, img_num=20, shuffle=True):
     total_n_histone = 0
     for g in full_histones:
         total_n_histone += len(list(g.keys()))

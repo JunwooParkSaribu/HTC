@@ -43,29 +43,28 @@ def read_file(file, cutoff):
             histones[histone].set_file_name(info[0])
     del trajectory
     del time
+    TrajectoryPhy.calcul_max_radius(histones)
     return histones
 
 
 def read_files(path, cutoff=10, group_size=3000, chunk=True):
     try:
         files = os.listdir(path)
+        histones = {}
+        if len(files) > 0:
+            for file in files:
+                if file.strip().split('.')[-1] == 'trxyt':
+                    h = read_file(path + '/' + file, cutoff=cutoff)
+                    histones |= h
+        if not chunk:
+            return histones
+        split_histones = []
+        for item in chunks(histones, group_size):
+            split_histones.append(item)
+        return split_histones
     except Exception as e:
         print(f'File load error, current path:{path}')
         print(e)
-    histones = {}
-    if len(files) > 0:
-        for file in files:
-            if file.strip().split('.')[-1] == 'trxyt':
-                h = read_file(path + '/' + file, cutoff=cutoff)
-                histones |= h
-    TrajectoryPhy.calcul_max_radius(histones)
-
-    if chunk == False:
-        return histones
-    split_histones = []
-    for item in chunks(histones, group_size):
-        split_histones.append(item)
-    return split_histones
 
 
 def chunks(data, size):

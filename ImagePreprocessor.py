@@ -304,11 +304,18 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
     plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png')
 
 
-def make_gif(full_histones, filename, id, immobile_cutoff=0.3, hybrid_cutoff=10, nChannel=3, img_scale=5, amp=2):
+def make_gif(full_histones, filename, id, immobile_cutoff=0.3,
+             hybrid_cutoff=10, nChannel=3, img_scale=5, amp=2, ):
     try:
         histones = {}
-        for h in full_histones:
-            histones |= h
+        if type(full_histones) is list:
+            for h in full_histones:
+                histones |= h
+        elif type(full_histones) is dict:
+            histones = full_histones
+        else:
+            raise Exception
+
         gif = []
         key = f'{filename}@{id}'
 
@@ -345,8 +352,17 @@ def make_gif(full_histones, filename, id, immobile_cutoff=0.3, hybrid_cutoff=10,
             current_xval = x_val
             current_yval = y_val
 
-            for inter_pos in interpolate_pos:
-                gif.append(img.copy())
+            for mod, inter_pos in enumerate(interpolate_pos):
+                if trajec_channel == 0:
+                    if mod%2 == 0:
+                        gif.append(img.copy())
+                elif trajec_channel == 1:
+                    if mod%10 == 0:
+                        gif.append(img.copy())
+                else:
+                    if mod%30 == 0:
+                        gif.append(img.copy())
+
                 # Forcing the scailing to reduce the memory
                 if inter_pos[0] < 0:
                     inter_pos[0] = 0

@@ -1,8 +1,7 @@
+import imageio
 import numpy as np
 from matplotlib import pyplot as plt
 import TrajectoryPhy
-import tracemalloc
-import gc
 
 
 def preprocessing(histones, img_scale=None, amp=2, interpolation=True):
@@ -303,4 +302,96 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
                            int((histone_first_pos[1] + int(img_size/2))/(10**amp))])
     plt.title(ps)
     plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png')
+
+
+def make_gif(full_histones, filename, id, immobile_cutoff=0.3, hybrid_cutoff=10, nChannel=3, img_scale=5, amp=2):
+    try:
+        histones = {}
+        for h in full_histones:
+            histones |= h
+        gif = []
+        key = f'{filename}@{id}'
+
+        make_channel(histones, immobile_cutoff=immobile_cutoff, hybrid_cutoff=hybrid_cutoff, nChannel=nChannel)
+
+        if img_scale is None:
+            img_size = 5 * (10 ** amp)
+        else:
+            img_size = img_scale * (10 ** amp)
+        central_point = [int(img_size / 2), int(img_size / 2)]
+        histones_channel = histones[key].get_channel()
+        channel = histones[key].get_channel_size()
+        current_xval = central_point[0]
+        current_yval = central_point[1]
+        if not channel:
+            img = np.zeros((img_size, img_size))
+        else:
+            img = np.zeros((img_size, img_size, channel))
+
+        histone_trajectory = histones[key].get_trajectory()
+        x_shift = central_point[0] - int(histone_trajectory[0][0] * (10 ** amp))
+        y_shift = central_point[1] - int(histone_trajectory[0][1] * (10 ** amp))
+
+        for index, trajectory in enumerate(histone_trajectory):
+            if index < len(histones_channel):
+                trajec_channel = histones_channel[index]
+            else:
+                trajec_channel = histones_channel[index - 1]
+
+            x_val = x_shift + int(trajectory[0] * (10 ** amp))
+            y_val = y_shift + int(trajectory[1] * (10 ** amp))
+
+            interpolate_pos = interpolate([current_xval, current_yval], [x_val, y_val])
+            current_xval = x_val
+            current_yval = y_val
+            for inter_pos in interpolate_pos:
+                gif.append(img.copy())
+                # Forcing the scailing to reduce the memory
+                if inter_pos[0] < 0:
+                    inter_pos[0] = 0
+                if inter_pos[0] >= img_size:
+                    inter_pos[0] = img_size - 1
+                if inter_pos[1] < 0:
+                    inter_pos[1] = 0
+                if inter_pos[1] >= img_size:
+                    inter_pos[1] = img_size - 1
+
+                if not channel:
+                    img[img_size - inter_pos[1]][inter_pos[0]] = 1
+                else:
+                    img[img_size - inter_pos[1]][inter_pos[0]][trajec_channel] = 1
+
+        ps = ''
+        label = histones[key].get_manuel_label()
+        pred = histones[key].get_predicted_label()
+        proba = histones[key].get_predicted_proba()
+
+        if label is not None:
+            if label == 0:
+                label = 'immobile'
+            if label == 1:
+                label = 'hybrid'
+            if label == 2:
+                label = 'mobile'
+        if pred is not None:
+            if pred == 0:
+                pred = 'immobile'
+            if pred == 1:
+                pred = 'hybrid'
+            if pred == 2:
+                pred = 'mobile'
+        if label is not None:
+            ps += 'label = ' + label
+        if pred is not None:
+            ps += '\nprediction = ' + pred
+        if proba is not None:
+            ps += '\nprobability = ' + str(proba)
+
+        with imageio.get_writer(f'./gif/{filename}@{id}.gif', mode='I') as writer:
+            for i in range(len(gif)):
+                writer.append_data(np.array(gif[i]))
+
+    except Exception as e:
+        print(e)
+        print(f'There is no matching filename and id in the data')
 

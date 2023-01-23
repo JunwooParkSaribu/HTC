@@ -9,7 +9,7 @@ import numpy as np
 from sklearn import tree
 
 
-data_path = 'data/1_WT-H2BHalo_noIR/whole cells/20220301_H2B Halo_Before_Irradiation_entire_Cell'
+data_path = 'data/1_WT-H2BHalo_noIR/whole cells/20220601_H2B Halo_Before_Irradiation_entire_Cell'
 report_path = 'result/report_all.csv'
 
 
@@ -51,4 +51,4 @@ if __name__ == '__main__':
 
     print(f'Loading the data...')
     full_histones = DataLoad.read_files(path=data_path, cutoff=params['cut_off'], group_size=params['group_size'])
-    ImagePreprocessor.make_gif(full_histones, '20220301_H2B Halo_Field2_no_ir', '387')
+    ImagePreprocessor.make_gif(full_histones, '20220601_H2B Halo_h2b halo_field7_before', '389')

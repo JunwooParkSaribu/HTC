@@ -344,6 +344,7 @@ def make_gif(full_histones, filename, id, immobile_cutoff=0.3, hybrid_cutoff=10,
             interpolate_pos = interpolate([current_xval, current_yval], [x_val, y_val])
             current_xval = x_val
             current_yval = y_val
+
             for inter_pos in interpolate_pos:
                 gif.append(img.copy())
                 # Forcing the scailing to reduce the memory

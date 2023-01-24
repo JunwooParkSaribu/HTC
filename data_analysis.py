@@ -23,7 +23,10 @@ if __name__ == '__main__':
     params = ReadParam.read(cur_path)
 
     print(f'Loading the data...')
-    histones = DataLoad.read_files(path=data_path, cutoff=params['cut_off'], group_size=params['group_size'])
+    histones = DataLoad.read_files(path=data_path, cutoff=5, group_size=params['group_size'])
     #histones = DataLoad.read_file('./data/scratch/1/20220217_h2b halo_cel9_no_ir.rpt_tracked.trxyt', cutoff=params['cut_off'])
-
-    ImagePreprocessor.make_gif(histones, '20220301_H2B Halo_Field2_no_ir', '500')
+    a = {}
+    for hist in histones:
+        a |= hist
+    print(len(a))
+    #ImagePreprocessor.make_gif(histones, '20220301_H2B Halo_Field2_no_ir', '500')

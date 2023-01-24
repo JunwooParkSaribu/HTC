@@ -49,6 +49,8 @@ def read_file(file, cutoff):
 
 def read_files(path, cutoff=10, group_size=3000, chunk=True):
     try:
+        if path.strip().split('.')[-1] == 'trxyt':
+            return [read_file(path, cutoff=cutoff)]
         files = os.listdir(path)
         histones = {}
         if len(files) > 0:
@@ -57,7 +59,7 @@ def read_files(path, cutoff=10, group_size=3000, chunk=True):
                     h = read_file(path + '/' + file, cutoff=cutoff)
                     histones |= h
         if not chunk:
-            return histones
+            return [histones]
         split_histones = []
         for item in chunks(histones, group_size):
             split_histones.append(item)

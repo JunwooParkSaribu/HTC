@@ -2,7 +2,7 @@ import csv
 
 
 def save_report(full_histones, path=''):
-    write_file_name = path + '/report.csv'
+    write_file_name = path
     histones = {}
     for h in full_histones:
         histones |= h

@@ -12,10 +12,10 @@ from keras.models import load_model
 from tensorflow import device
 
 
-data_path = 'data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell'
+data_path = 'data/2_WT-H2BHalo_IR/1min/IR zones 1min/Concatenation_20220210_20220217_20220301_H2B_Halo_1min_after_irradiation'
 model_path = 'my_model'
 img_save_path = 'result/image'
-report_save_path = 'result'
+report_save_path = 'result/1min_concat_IR.csv'
 
 
 def predict(gen, scaled_size, nChannel, progress_i, progress_total):

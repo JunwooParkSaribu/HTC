@@ -34,7 +34,7 @@ def read_file(file, cutoff):
             time[temp[0]] = [temp[3]]
 
     for histone in trajectory:
-        if len(trajectory[histone]) > cutoff:
+        if len(trajectory[histone]) >= cutoff:
             histones[histone] = H2B()
             histones[histone].set_trajectory(trajectory[histone])
             histones[histone].set_time(time[histone])

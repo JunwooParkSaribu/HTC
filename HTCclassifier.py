@@ -12,10 +12,10 @@ from keras.models import load_model
 from tensorflow import device
 
 
-data_path = 'data/2_WT-H2BHalo_IR/1min/IR zones 1min/Concatenation_20220210_20220217_20220301_H2B_Halo_1min_after_irradiation'
+data_path = 'data/1_WT-H2BHalo_noIR/zone/20220603_H2B HALO/20220603_H2B HALO_no_Olaparib_Field3_before_110ms-crop.rpt_tracked.trxyt'
 model_path = 'my_model'
 img_save_path = 'result/image'
-report_save_path = 'result/1min_concat_IR.csv'
+report_save_path = 'result/20220603field3_before_IR.csv'
 
 
 def predict(gen, scaled_size, nChannel, progress_i, progress_total):
@@ -91,11 +91,13 @@ if __name__ == '__main__':
 
     print('python script working dir : ', os.getcwd())
     if len(sys.argv) > 1:
-        cur_path = sys.argv[1]
-        model_path = cur_path + '/' + model_path
-        data_path = cur_path + '/' + data_path
-        img_save_path = cur_path + '/' + img_save_path
-        report_save_path = cur_path + '/' + report_save_path
+        data_path = sys.argv[1]
+        report_save_path = sys.argv[2]
+        cur_path = '.'
+        #model_path = cur_path + '/' + model_path
+        #data_path = cur_path + '/' + data_path
+        #img_save_path = cur_path + '/' + img_save_path
+        #report_save_path = cur_path + '/' + report_save_path
     else:
         cur_path = '.'
     print(model_path)

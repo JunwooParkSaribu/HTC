@@ -12,12 +12,6 @@ from keras.models import load_model
 from tensorflow import device
 
 
-data_path = 'data/1_WT-H2BHalo_noIR/zone/20220603_H2B HALO/20220603_H2B HALO_no_Olaparib_Field3_before_110ms-crop.rpt_tracked.trxyt'
-model_path = 'my_model'
-img_save_path = 'result/image'
-report_save_path = 'result/20220603field3_before_IR.csv'
-
-
 def predict(gen, scaled_size, nChannel, progress_i, progress_total):
     y_predict = []
     y_predict_proba = []
@@ -63,7 +57,6 @@ def main_pipe(full_histones, amp, nChannel, batch_size, make_image=False, img_nu
     for g in full_histones:
         total_n_histone += len(list(g.keys()))
     print(f'Total number of histones after cutting off : {total_n_histone}')
-    print(f'Predicting...')
     progress_i = 0
     progress_total = int(total_n_histone / params['batch_size']) + 1
     ProgressBar.printProgressBar(progress_i, progress_total)
@@ -88,34 +81,34 @@ def main_pipe(full_histones, amp, nChannel, batch_size, make_image=False, img_nu
 
 if __name__ == '__main__':
     make_image = False
+    img_save_path = 'result/image'
 
     print('python script working dir : ', os.getcwd())
     if len(sys.argv) > 1:
-        data_path = sys.argv[1]
-        report_save_path = sys.argv[2]
-        cur_path = '.'
-        #model_path = cur_path + '/' + model_path
-        #data_path = cur_path + '/' + data_path
-        #img_save_path = cur_path + '/' + img_save_path
-        #report_save_path = cur_path + '/' + report_save_path
+        config_path = sys.argv[1]
     else:
-        cur_path = '.'
-    print(model_path)
-    print(data_path)
+        config_path = '.'
 
-    params = ReadParam.read(cur_path)
+    params = ReadParam.read(config_path)
 
     print(f'Loading the data...')
-    full_histones = DataLoad.read_files(path=data_path, cutoff=params['cut_off'], group_size=params['group_size'])  # 16GB RAM
+    data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'],
+                                 all=params['all'], group_size=params['group_size'])  # 16GB RAM
     print(f'If total number of trajectories is bigger than {params["group_size"]},\n'
           f'data will be separated into groups to reduce the memory usage.')
-
-    print(f'Model loading...')
-    HTC_model = load_model(model_path)
+    HTC_model = load_model(params['model_dir'])
 
     # Main pipe start.
-    main_pipe(full_histones, params['amp'], params['nChannel'], params['batch_size'], make_image)
-
-    print(f'Making reports... ', end=' ')
-    DataSave.save_report(full_histones, path=report_save_path)
-    print(f'Done.')
+    for dt in data:
+        if params['all']:
+            print(f'Predicting all data...')
+            main_pipe(dt, params['amp'], params['nChannel'], params['batch_size'], make_image)
+            print(f'Making reports... ', end=' ')
+            DataSave.save_report(dt, filename='all.csv', path=params['save_dir'])
+            print(f'Done.')
+        else:
+            print(f'Predicting {dt[1]}')
+            main_pipe(dt[0], params['amp'], params['nChannel'], params['batch_size'], make_image)
+            print(f'Making reports... ', end=' ')
+            DataSave.save_report(dt[0], filename=f'{dt[1]}.csv', path=params['save_dir'])
+            print(f'Done.')

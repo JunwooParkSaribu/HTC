@@ -1,0 +1,12 @@
+data = data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell
+save_dir = result
+model_dir = my_model
+cut_off = 10
+all = True
+
+amp = 2
+nChannel = 3
+batch_size = 500
+group_size = 3000
+
+

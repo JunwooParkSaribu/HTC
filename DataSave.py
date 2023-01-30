@@ -1,8 +1,8 @@
 import csv
 
 
-def save_report(full_histones, path=''):
-    write_file_name = path
+def save_report(full_histones, filename='', path=''):
+    write_file_name = path + '/' + filename
     histones = {}
     for h in full_histones:
         histones |= h

@@ -53,7 +53,6 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
     for g in full_histones:
         total_n_histone += len(list(g.keys()))
     print(f'Total number of histones after cutting off : {total_n_histone}')
-    print(f'Predicting...')
     progress_i = 0
     progress_total = int(total_n_histone / params['batch_size']) + 1
     ProgressBar.printProgressBar(progress_i, progress_total)
@@ -83,34 +82,44 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
 if __name__ == '__main__':
     print('python script working dir : ', os.getcwd())
     if len(sys.argv) > 1:
-        cur_path = sys.argv[1]
-        model_path = cur_path + '/' + model_path
-        data_path = cur_path + '/' + data_path
+        config_path = sys.argv[1]
     else:
-        cur_path = '.'
-    print(model_path)
-    print(data_path)
+        config_path = '.'
 
-    params = ReadParam.read(cur_path)
+    params = ReadParam.read(config_path)
 
     print(f'Loading the data...')
-    full_histones = DataLoad.read_files(path=data_path, cutoff=params['cut_off'], group_size=params['group_size'])  # 16GB RAM
-    print(f'If total number of trajectories is bigger than {params["group_size"]},\n'
-          f'data will be separated into groups to reduce the memory usage.')
-
-    print(f'Model loading...')
-    HTC_model = load_model(model_path)
+    data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'],
+                                 all=params['all'], group_size=params['group_size'])
+    HTC_model = load_model(params['model_dir'])
     HTC_model.summary()
 
     # Main pipe start.
-    main_pipe(full_histones, params['amp'], params['nChannel'], params['batch_size'])
+    for dt in data:
+        if params['all']:
+            print(f'Predicting all data...')
+            main_pipe(dt, params['amp'], params['nChannel'], params['batch_size'])
 
-    # Result analysis
-    histones = {}
-    for h in full_histones:
-        histones |= h
-    miss_classfied=0
-    for i, histone in enumerate(histones):
-        if histones[histone].get_predicted_label() != histones[histone].get_manuel_label():
-            miss_classfied += 1
-    print(f'Accuracy = {(i-miss_classfied)/i}')
+            # Result analysis
+            histones = {}
+            for h in dt:
+                histones |= h
+            miss_classfied = 0
+            for i, histone in enumerate(histones):
+                if histones[histone].get_predicted_label() != histones[histone].get_manuel_label():
+                    miss_classfied += 1
+            print(f'Accuracy = {(i - miss_classfied) / i}')
+
+        else:
+            print(f'Predicting {dt[1]}')
+            main_pipe(dt[0], params['amp'], params['nChannel'], params['batch_size'])
+
+            # Result analysis
+            histones = {}
+            for h in dt[0]:
+                histones |= h
+            miss_classfied = 0
+            for i, histone in enumerate(histones):
+                if histones[histone].get_predicted_label() != histones[histone].get_manuel_label():
+                    miss_classfied += 1
+            print(f'Accuracy = {(i - miss_classfied) / i}')

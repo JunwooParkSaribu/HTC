@@ -1,8 +1,8 @@
-data = data/zone/1min
-save_dir = result/1min
+data = data/zone/5min
+save_dir = result/5min
 model_dir = my_model
 cut_off = 2
-all = True
+all = False
 
 amp = 2
 nChannel = 3

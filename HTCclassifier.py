@@ -91,10 +91,10 @@ if __name__ == '__main__':
 
     params = ReadParam.read(config_path)
 
-    print(f'Loading the data...')
+    print(f'Loading the data...', end=' ')
     data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'],
                                  all=params['all'], group_size=params['group_size'])  # 16GB RAM
-    print(f'If number of trajectories is bigger than {params["group_size"]},\n'
+    print(f'Done.\nIf number of trajectories is bigger than {params["group_size"]}, '
           f'data will be separated into groups to reduce the memory usage.')
     HTC_model = load_model(params['model_dir'])
 

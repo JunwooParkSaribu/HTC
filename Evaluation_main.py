@@ -52,7 +52,7 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
     total_n_histone = 0
     for g in full_histones:
         total_n_histone += len(list(g.keys()))
-    print(f'Total number of histones after cutting off : {total_n_histone}')
+    print(f'Number of histones after cutting off : {total_n_histone}')
     progress_i = 0
     progress_total = int(total_n_histone / params['batch_size']) + 1
     ProgressBar.printProgressBar(progress_i, progress_total)

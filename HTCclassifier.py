@@ -56,7 +56,7 @@ def main_pipe(full_histones, amp, nChannel, batch_size, make_image=False, img_nu
     total_n_histone = 0
     for g in full_histones:
         total_n_histone += len(list(g.keys()))
-    print(f'Total number of histones after cutting off : {total_n_histone}')
+    print(f'Number of histones after cutting off : {total_n_histone}')
     progress_i = 0
     progress_total = int(total_n_histone / params['batch_size']) + 1
     ProgressBar.printProgressBar(progress_i, progress_total)
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     print(f'Loading the data...')
     data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'],
                                  all=params['all'], group_size=params['group_size'])  # 16GB RAM
-    print(f'If total number of trajectories is bigger than {params["group_size"]},\n'
+    print(f'If number of trajectories is bigger than {params["group_size"]},\n'
           f'data will be separated into groups to reduce the memory usage.')
     HTC_model = load_model(params['model_dir'])
 

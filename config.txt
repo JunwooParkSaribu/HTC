@@ -1,5 +1,5 @@
-data = data/zone/before
-save_dir = result
+data = data/zone/30s
+save_dir = result/30s
 model_dir = my_model
 cut_off = 2
 all = false

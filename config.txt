@@ -1,7 +1,7 @@
 data = data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell
 save_dir = result
 model_dir = my_model
-cut_off = 10
+cut_off = 11
 all = True
 
 amp = 2

@@ -76,7 +76,7 @@ def file_distrib(paths, cutoff=10, all=False, group_size=3000, chunk=True):
         nb_files = len(paths)
         if nb_files == 1:
             h, filename = read_file(paths[0], cutoff=cutoff)
-            return ([h], filename)
+            return [([h], filename)]
         else:
             files = paths.copy()
             if all:

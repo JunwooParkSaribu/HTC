@@ -23,4 +23,9 @@ def read(file):
                     params[param_name] = False
             else:
                 params[param_name] = param_val
+
+    # single .trxyt file and paramter <all> unnecessary conflict
+    if len(params['data']) == 1 and params['all'] and '.trxyt' in params['data'][0]:
+        print('parameter warning, check the parameter <all>')
+        params['all'] = False
     return params

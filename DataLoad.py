@@ -45,9 +45,9 @@ def read_file(file, cutoff):
         del trajectory
         del time
         TrajectoryPhy.calcul_max_radius(histones)
+        return histones, file_date
     except Exception as e:
         print(f"{file} read err, {e}")
-    return histones, file_date
 
 
 def file_distrib(paths, cutoff=10, all=False, group_size=3000, chunk=True):

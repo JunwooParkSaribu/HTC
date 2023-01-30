@@ -57,8 +57,9 @@ def file_distrib(paths, cutoff=10, all=False, group_size=3000, chunk=True):
             histones = {}
             if len(files) > 0:
                 for file in files:
-                    h, _ = read_file(paths[0] + '/' + file, cutoff=cutoff)
-                    histones |= h
+                    if 'trxyt' in file:
+                        h, _ = read_file(paths[0] + '/' + file, cutoff=cutoff)
+                        histones |= h
             if not chunk:
                 return [[histones]]
             split_histones = []
@@ -69,8 +70,9 @@ def file_distrib(paths, cutoff=10, all=False, group_size=3000, chunk=True):
             histones = []
             if len(files) > 0:
                 for file in files:
-                    h, filename = read_file(paths[0] + '/' + file, cutoff=cutoff)
-                    histones.append(([h], filename))
+                    if 'trxyt' in file:
+                        h, filename = read_file(paths[0] + '/' + file, cutoff=cutoff)
+                        histones.append(([h], filename))
             return histones
     else:
         nb_files = len(paths)

@@ -16,7 +16,7 @@ if __name__ == '__main__':
     epochs = 200
     params = ReadParam.read('.')
     print(f'\nLoading the data...')
-    histones = DataLoad.read_files(path=data_path, cutoff=params['cut_off'], chunk=False)
+    histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], all=True, chunk=False)[0][0]
     histones_label = Labeling.make_label(histones, radius=0.45, density=0.4)
     print(f'Image processing...')
     ImagePreprocessor.make_channel(histones, immobile_cutoff=0.3, hybrid_cutoff=10, nChannel=params['nChannel'])

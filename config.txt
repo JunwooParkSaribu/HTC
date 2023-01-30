@@ -2,7 +2,7 @@ data = data/zone/before
 save_dir = result
 model_dir = my_model
 cut_off = 2
-all = True
+all = false
 
 amp = 2
 nChannel = 3

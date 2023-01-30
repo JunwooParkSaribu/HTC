@@ -95,7 +95,7 @@ if __name__ == '__main__':
     HTC_model.summary()
 
     # Main pipe start.
-    for dt in data:
+    for file_num, dt in enumerate(data):
         if params['all']:
             print(f'Predicting all data...')
             main_pipe(dt, params['amp'], params['nChannel'], params['batch_size'])
@@ -111,7 +111,7 @@ if __name__ == '__main__':
             print(f'Accuracy = {(i - miss_classfied) / i}')
 
         else:
-            print(f'Predicting {dt[1]}')
+            print(f'{file_num+1}/{len(data)} Predicting {dt[1]}')
             main_pipe(dt[0], params['amp'], params['nChannel'], params['batch_size'])
 
             # Result analysis

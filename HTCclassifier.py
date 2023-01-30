@@ -99,7 +99,7 @@ if __name__ == '__main__':
     HTC_model = load_model(params['model_dir'])
 
     # Main pipe start.
-    for dt in data:
+    for file_num, dt in enumerate(data):
         if params['all']:
             print(f'Predicting all data...')
             main_pipe(dt, params['amp'], params['nChannel'], params['batch_size'], make_image)
@@ -107,7 +107,7 @@ if __name__ == '__main__':
             DataSave.save_report(dt, filename='all.csv', path=params['save_dir'])
             print(f'Done.')
         else:
-            print(f'Predicting {dt[1]}')
+            print(f'{file_num+1}/{len(data)} Predicting {dt[1]}')
             main_pipe(dt[0], params['amp'], params['nChannel'], params['batch_size'], make_image)
             print(f'Making reports... ', end=' ')
             DataSave.save_report(dt[0], filename=f'{dt[1]}.csv', path=params['save_dir'])

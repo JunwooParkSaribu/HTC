@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 
 data_path = 'data/TrainingSample'
-model_path = 'my_model'
+model_path = '11_02_10500samples'
 
 
 if __name__ == '__main__':

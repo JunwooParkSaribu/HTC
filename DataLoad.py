@@ -50,7 +50,7 @@ def read_file(file, cutoff):
         print(f"{file} read err, {e}")
 
 
-def file_distrib(paths, cutoff=10, all=False, group_size=3000, chunk=True):
+def file_distrib(paths, cutoff=5, all=False, group_size=3000, chunk=True):
     if os.path.isdir(paths[0]):
         files = os.listdir(paths[0])
         if all:

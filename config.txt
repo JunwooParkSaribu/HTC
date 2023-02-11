@@ -1,5 +1,5 @@
-data = data/zone/5min
-save_dir = result/5min
+data = data/1_WT-H2BHalo_noIR/whole cells/20220601_H2B Halo_Before_Irradiation_entire_Cell
+save_dir = result
 model_dir = my_model
 cut_off = 2
 all = False

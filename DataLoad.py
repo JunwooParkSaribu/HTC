@@ -9,17 +9,17 @@ def read_file(file, cutoff):
     histones = {}
     trajectory = {}
     time = {}
-    file_date = file.strip().split('/')[-1].split('.')[0]
 
     try:
         with open(file, 'r', encoding="utf-8") as f:
             input = f.read()
         lines = input.strip().split('\n')
 
+        file_name = file.strip().split('/')[-1].strip()
         for line in lines:
             temp = line.split('\t')
             temp[0] = temp[0].strip()
-            temp[0] = file_date + '@' + temp[0]
+            temp[0] = file_name + '@' + temp[0]
             temp[1] = temp[1].strip()
             temp[1] = float(temp[1])
             temp[2] = temp[2].strip()
@@ -45,7 +45,7 @@ def read_file(file, cutoff):
         del trajectory
         del time
         TrajectoryPhy.calcul_max_radius(histones)
-        return histones, file_date
+        return histones, file_name
     except Exception as e:
         print(f"{file} read err, {e}")
 

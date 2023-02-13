@@ -7,6 +7,7 @@ import ImagePreprocessor
 import ImgGenerator
 import ReadParam
 import ProgressBar
+import DataSave
 from keras.models import load_model
 from tensorflow import device
 
@@ -105,6 +106,8 @@ if __name__ == '__main__':
                 if histones[histone].get_predicted_label() != histones[histone].get_manuel_label():
                     miss_classfied += 1
             print(f'Accuracy = {(i - miss_classfied) / i}')
+            print(f'Making reports... ', end=' ')
+            DataSave.save_report(dt, filename=f'eval_all.csv', path=params['save_dir'], eval=True)
 
         else:
             print(f'{file_num+1}/{len(data)} Predicting {dt[1]}')
@@ -119,3 +122,5 @@ if __name__ == '__main__':
                 if histones[histone].get_predicted_label() != histones[histone].get_manuel_label():
                     miss_classfied += 1
             print(f'Accuracy = {(i - miss_classfied) / i}')
+            print(f'Making reports... ', end=' ')
+            DataSave.save_report(dt[0], filename=f'eval_{dt[1]}.csv', path=params['save_dir'], eval=True)

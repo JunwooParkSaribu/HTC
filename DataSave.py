@@ -1,7 +1,7 @@
 import csv
 
 
-def save_report(full_histones, filename='', path=''):
+def save_report(full_histones, filename='', path='', eval=False):
     write_file_name = path + '/' + filename
     histones = {}
     for h in full_histones:
@@ -9,8 +9,12 @@ def save_report(full_histones, filename='', path=''):
     histone_names = list(histones.keys())
 
     with open(write_file_name, 'w', newline='') as f:
-        fieldnames = ['filename', 'h2b_id', 'predicted_class_id', 'predicted_class_name', 'probability',
-                      'maximum_radius','labeled_class_id', 'first_x_position', 'first_y_position']
+        if eval:
+            fieldnames = ['filename', 'h2b_id', 'predicted_class_id', 'predicted_class_name', 'probability',
+                          'maximum_radius', 'labeled_class_id', 'first_x_position', 'first_y_position']
+        else:
+            fieldnames = ['filename', 'h2b_id', 'predicted_class_id', 'predicted_class_name', 'probability',
+                          'maximum_radius', 'first_x_position', 'first_y_position']
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -33,12 +37,12 @@ def save_report(full_histones, filename='', path=''):
             if pred_class_id == 2:
                 pred_class_name = 'Mobile'
 
-            writer.writerow({'filename':file_name, 'h2b_id':h2b_id, 'predicted_class_id':pred_class_id,
-                             'predicted_class_name':pred_class_name, 'probability':proba, 'maximum_radius':max_r,
-                             'labeled_class_id':manuel_label_id,
-                             'first_x_position':first_x_pos, 'first_y_position':first_y_pos})
-            """
-            input_string += f'{file_name : <25}\t{trajectory_num : <6}\t{class_num : <4}\t' \
-                            f'{class_id : <9}\t{first_x_pos : <9}\t{first_y_pos : <9}'
-            input_string += '\n'
-            """
+            if eval:
+                writer.writerow({'filename':file_name, 'h2b_id':h2b_id, 'predicted_class_id':pred_class_id,
+                                 'predicted_class_name':pred_class_name, 'probability':proba, 'maximum_radius':max_r,
+                                 'labeled_class_id':manuel_label_id,
+                                 'first_x_position':first_x_pos, 'first_y_position':first_y_pos})
+            else:
+                writer.writerow({'filename':file_name, 'h2b_id':h2b_id, 'predicted_class_id':pred_class_id,
+                                 'predicted_class_name':pred_class_name, 'probability':proba, 'maximum_radius':max_r,
+                                 'first_x_position':first_x_pos, 'first_y_position':first_y_pos})

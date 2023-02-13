@@ -1,8 +1,8 @@
-data = data/1_WT-H2BHalo_noIR/whole cells/20220601_H2B Halo_Before_Irradiation_entire_Cell
+data = data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell
 save_dir = result
 model_dir = 11_02_10500samples
 cut_off = 5
-all = False
+all = True
 
 amp = 2
 nChannel = 3

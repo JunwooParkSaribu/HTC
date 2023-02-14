@@ -83,7 +83,6 @@ if __name__ == '__main__':
     make_image = False
     img_save_path = 'result/image'
 
-    print('python script working dir : ', os.getcwd())
     if len(sys.argv) > 1:
         config_path = sys.argv[1]
     else:

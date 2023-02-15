@@ -289,7 +289,7 @@ def make_window(treedata, starting_path=''):
 
 
 def run_command(cmd):
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return process
 
 
@@ -330,16 +330,13 @@ def main():
                 if proc.stdout != None:
                     if proc.poll() == 0:
                         # End of subprocess
-                        for outs in iter(proc.stdout.readline, ''):
-                            out = str(outs)
+                        for out in iter(proc.stdout.readline, b''):
+                            out = str(out).strip().split("\'")[1].split('\\n')[0]
                             if out.endswith('%'):
-                                if out.startswith('100'):
-                                    sg.cprint(f'{out}')
-                                else:
-                                    sg.cprint(f'{out}')
+                                continue
                             else:
                                 sg.cprint(out)
-                        sg.cprint(f'{proc} is finished')
+                        sg.cprint(f'{proc} is finished.')
                         proc.kill()
                         proc = 0
                     window.refresh()

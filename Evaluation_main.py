@@ -77,7 +77,6 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
 
 
 if __name__ == '__main__':
-    print('python script working dir : ', os.getcwd())
     if len(sys.argv) > 1:
         config_path = sys.argv[1]
     else:

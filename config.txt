@@ -1,5 +1,5 @@
 data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/before
-save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC
+save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/result/before
 model_dir = 11_02_10500samples
 cut_off = 5
 all = True

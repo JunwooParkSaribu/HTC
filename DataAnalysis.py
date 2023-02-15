@@ -86,19 +86,16 @@ def cell_radius_map(report, show=[0, 1, 2]):
 
 def bootstrapping_mean(report, repeat=1000):
     header, data = DataLoad.read_report(report)
-    print(type(data))
     sample_size = len(data)
     bootstrap_mean = {'0':0, '1':0, '2':0}
     class_nums = {'0':0, '1':0, '2':0}
 
     for rp in range(repeat):
-
         for i in range(sample_size):
             sample = data[int(np.random.uniform(0, sample_size-1))]
             class_nums[sample['predicted_class_id']] += 1
         for cl in class_nums:
             class_nums[cl] /= sample_size
-
         for bcl in bootstrap_mean:
             bootstrap_mean[bcl] += class_nums[bcl]
 
@@ -107,4 +104,8 @@ def bootstrapping_mean(report, repeat=1000):
     print(bootstrap_mean)
 
 
-bootstrapping_mean('./result/5min/all.csv', repeat=1)
+bootstrapping_mean('./result/before/all.csv', repeat=10000)
+bootstrapping_mean('./result/15s/all.csv', repeat=10000)
+bootstrapping_mean('./result/30s/all.csv', repeat=10000)
+bootstrapping_mean('./result/1min/all.csv', repeat=10000)
+bootstrapping_mean('./result/2min/all.csv', repeat=10000)

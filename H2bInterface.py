@@ -259,8 +259,8 @@ def make_window(treedata, starting_path=''):
         [sg.T('Interpreter ' + sg.execute_py_get_interpreter(), font='Default 8', pad=(0, 0))],
     ]
 
-    options_at_bottom = sg.pin(sg.Column([[sg.CB('Show ALL file types', default=False, enable_events=True, k='-SHOW ALL FILES-'),
-                                           ]],
+    options_at_bottom = sg.pin(sg.Column([[sg.CB('Evaluation mode', default=False, enable_events=True, k='-EVALMODE-'),
+                                           sg.CB('Show ALL file types', default=False, enable_events=True, k='-SHOW ALL FILES-')]],
                                          pad=(0, 0), k='-OPTIONS BOTTOM-', expand_x=True, expand_y=False), expand_x=True, expand_y=False)
 
     choose_folder_at_top = sg.pin(sg.Column([[sg.T('Current working directory'),
@@ -336,9 +336,10 @@ def main():
                                 continue
                             else:
                                 sg.cprint(out)
-                        sg.cprint(f'{proc} is finished.')
+                        sg.cprint(f'Subprocess killed : {proc}')
                         proc.kill()
                         proc = 0
+                        sg.cprint(f'Processing is finished', text_color='white', background_color='red')
                     window.refresh()
 
         if event in (sg.WINDOW_CLOSED, 'Exit'):
@@ -348,6 +349,7 @@ def main():
 
         if event == 'Kill':
             if proc != 0:
+                sg.cprint(f'Subprocess killed : {proc}')
                 sg.cprint(f'Terminate prediction', text_color='white', background_color='red')
                 proc.stdout.flush()
                 proc.kill()
@@ -410,7 +412,11 @@ def main():
                 sg.cprint(fichier, text_color='white', background_color='purple')
             try:
                 # Subprocess calling
-                proc = run_command(['python3', 'HTCclassifier.py'])
+                if window['-EVALMODE-'].get():
+                    proc = run_command(['python3', 'Evaluation_main.py'])
+                else:
+                    proc = run_command(['python3', 'HTCclassifier.py'])
+
                 sg.cprint(f'Subprocess created : {proc}')
             except Exception as e:
                 sg.cprint(f'Error trying to run file.  Error info:', e, c='white on red')

@@ -1,5 +1,6 @@
 import DataLoad
 import matplotlib.pyplot as plt
+import numpy as np
 from sklearn import metrics
 
 
@@ -81,3 +82,29 @@ def cell_radius_map(report, show=[0, 1, 2]):
     plt.scatter(x, y, c=c, s=0.5, cmap='jet', alpha=0.7)
     plt.colorbar()
     plt.show()
+
+
+def bootstrapping_mean(report, repeat=1000):
+    header, data = DataLoad.read_report(report)
+    print(type(data))
+    sample_size = len(data)
+    bootstrap_mean = {'0':0, '1':0, '2':0}
+    class_nums = {'0':0, '1':0, '2':0}
+
+    for rp in range(repeat):
+
+        for i in range(sample_size):
+            sample = data[int(np.random.uniform(0, sample_size-1))]
+            class_nums[sample['predicted_class_id']] += 1
+        for cl in class_nums:
+            class_nums[cl] /= sample_size
+
+        for bcl in bootstrap_mean:
+            bootstrap_mean[bcl] += class_nums[bcl]
+
+    for bcl in bootstrap_mean:
+        bootstrap_mean[bcl] /= repeat
+    print(bootstrap_mean)
+
+
+bootstrapping_mean('./result/5min/all.csv', repeat=1)

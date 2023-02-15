@@ -342,8 +342,6 @@ def main():
                         sg.cprint(f'{proc} is finished')
                         proc.kill()
                         proc = 0
-                    else:
-                        sg.cprint(f'Current working process:{proc}')
                     window.refresh()
 
         if event in (sg.WINDOW_CLOSED, 'Exit'):
@@ -416,6 +414,7 @@ def main():
             try:
                 # Subprocess calling
                 proc = run_command(['python3', 'HTCclassifier.py'])
+                sg.cprint(f'Subprocess created : {proc}')
             except Exception as e:
                 sg.cprint(f'Error trying to run file.  Error info:', e, c='white on red')
             try:

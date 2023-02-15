@@ -1,9 +1,10 @@
-data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/30s/20220301_H2B Halo_Field5_cell2_30s_crop.mldatx_tracked copy.trxyt
-data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/30s/20220301_H2B Halo_Field6_30s_crop.mldatx_tracked.trxyt
-save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master
+data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/15s/20220601_H2B Halo_h2b halo_Field13_15s_after_crop.trxyt
+data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/15s/20220624_H2BHalo_Field3_1s_during-crop.mldatx_tracked copy.trxyt
+data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/15s/20220217_h2b halo_Cell9_1_immediately_after_irradiation_crop.trxyt
+save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC
 model_dir = 11_02_10500samples
 cut_off = 5
-all = False
+all = True
 amp = 2
 nChannel = 3
 batch_size = 200

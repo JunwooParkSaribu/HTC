@@ -1,6 +1,6 @@
 data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/30s/20220301_H2B Halo_Field5_cell2_30s_crop.mldatx_tracked copy.trxyt
 data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/30s/20220301_H2B Halo_Field6_30s_crop.mldatx_tracked.trxyt
-save_dir = .
+save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master
 model_dir = 11_02_10500samples
 cut_off = 5
 all = False

@@ -104,8 +104,9 @@ def bootstrapping_mean(report, repeat=1000):
     print(bootstrap_mean)
 
 
-bootstrapping_mean('./result/before/all.csv', repeat=10000)
-bootstrapping_mean('./result/15s/all.csv', repeat=10000)
-bootstrapping_mean('./result/30s/all.csv', repeat=10000)
-bootstrapping_mean('./result/1min/all.csv', repeat=10000)
-bootstrapping_mean('./result/2min/all.csv', repeat=10000)
+#bootstrapping_mean('./result/before/all.csv', repeat=10000)
+#bootstrapping_mean('./result/15s/all.csv', repeat=10000)
+#bootstrapping_mean('./result/30s/all.csv', repeat=10000)
+#bootstrapping_mean('./result/1min/all.csv', repeat=10000)
+#bootstrapping_mean('./result/2min/all.csv', repeat=10000)
+confusion_matrix('./result/before/eval_all.csv')

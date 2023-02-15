@@ -64,7 +64,7 @@ if __name__ == '__main__':
         img_option = 1
 
     data_path = './data'
-    report_path = './result/eval_all.csv'
+    report_path = './result/before/eval_all.csv'
     header, data = DataLoad.read_report(report_path)
 
     img_list = {}

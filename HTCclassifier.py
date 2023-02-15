@@ -103,7 +103,7 @@ if __name__ == '__main__':
             print(f'Predicting all data...')
             main_pipe(dt, params['amp'], params['nChannel'], params['batch_size'], make_image)
             print(f'Making reports... ', end=' ')
-            DataSave.save_report(dt, filename='all.csv', path=params['save_dir'])
+            DataSave.save_report(dt, filename='pred_all.csv', path=params['save_dir'])
             print(f'Done.')
         else:
             print(f'{file_num+1}/{len(data)} Predicting {dt[1]}')

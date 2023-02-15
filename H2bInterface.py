@@ -17,14 +17,14 @@ def add_files_in_folder(treedata, parent, dirname):
                 treedata.Insert(parent, fullname, f, values=[])
 
 
-def get_demo_path():
+def get_gui_path():
     """
     Get the top-level folder path
     :return: Path to list of files using the user settings for this file.  Returns folder of this file if not found
     :rtype: str
     """
     #demo_path = sg.user_settings_get_entry('-demos folder-', os.path.dirname(__file__))
-    return '.'
+    return os.getcwd()
 
 
 def get_global_editor():
@@ -148,7 +148,7 @@ def window_choose_line_to_edit(filename, full_filename, line_num_list, match_lis
     return full_filename, line_chosen
 
 
-def settings_window():
+def settings_window(path, model_path):
     """
     Show the settings window.
     This is where the folder paths and program paths are set.
@@ -172,13 +172,17 @@ def settings_window():
         global_theme = ''
 
     layout = [[sg.T('Program Settings', font='DEFAULT 25')],
-              [sg.T('Path to Tree', font='_ 16')],
-              [sg.Combo(sorted(sg.user_settings_get_entry('-folder names-', [])), default_value=sg.user_settings_get_entry('-demos folder-', get_demo_path()), size=(50, 1),
+              [sg.T('Change working path', font='_ 16')],
+              [sg.Combo([path],
+                        default_value=path, size=(50, 1),
                         key='-FOLDERNAME-'),
-               sg.FolderBrowse('Folder Browse', target='-FOLDERNAME-'), sg.B('Clear History')],
-              [sg.T('Editor Program', font='_ 16')],
-              [sg.T('Leave blank to use global default'), sg.T(global_editor)],
-              [sg.In(sg.user_settings_get_entry('-editor program-', ''), k='-EDITOR PROGRAM-'), sg.FileBrowse()],
+               sg.FolderBrowse('Folder Browse', target='-FOLDERNAME-')],
+              [sg.T('Model path', font='_ 16')],
+              [sg.Combo([model_path],
+                        default_value=model_path, size=(50, 1),
+                        key='-MODELPATH-'),
+               sg.FolderBrowse('Folder Browse', target='-MODELPATH-')],
+
               [sg.T('File Explorer Program', font='_ 16')],
               [sg.T('Leave blank to use global default'), sg.T(global_explorer)],
               [sg.In(sg.user_settings_get_entry('-explorer program-'), k='-EXPLORER PROGRAM-'), sg.FileBrowse()],
@@ -201,25 +205,15 @@ def settings_window():
         if event in ('Cancel', sg.WIN_CLOSED):
             break
         if event == 'Ok':
-            sg.user_settings_set_entry('-folder names-', [])
-            sg.user_settings_set_entry('-last filename-', '')
-            sg.user_settings_set_entry('-demos folder-', values['-FOLDERNAME-'])
-            print('pressed ok in settings',values['-FOLDERNAME-'])
-            sg.user_settings_set_entry('-editor program-', values['-EDITOR PROGRAM-'])
             sg.user_settings_set_entry('-theme-', values['-THEME-'])
-            sg.user_settings_set_entry('-folder names-', list(set(sg.user_settings_get_entry('-folder names-', []) + [values['-FOLDERNAME-'], ])))
-            sg.user_settings_set_entry('-explorer program-', values['-EXPLORER PROGRAM-'])
-            sg.user_settings_set_entry('-advanced mode-', values['-ADVANCED MODE-'])
-            sg.user_settings_set_entry('-dclick runs-', values['-DCLICK RUNS-'])
-            sg.user_settings_set_entry('-dclick edits-', values['-DCLICK EDITS-'])
-            sg.user_settings_set_entry('-dclick nothing-', values['-DCLICK NONE-'])
-            settings_changed = True
+            if path != values['-FOLDERNAME-']:
+                settings_changed = True
             break
         elif event == 'Clear History':
             break
 
     window.close()
-    return settings_changed
+    return settings_changed, values['-FOLDERNAME-'], values['-MODELPATH-']
 
 
 # --------------------------------- Create the window ---------------------------------
@@ -246,7 +240,7 @@ def make_window(treedata, starting_path=''):
          ],
         [sg.Button('Run'), sg.Button('Stop'), sg.Button('Continue'), sg.Button('Kill')],
         [sg.Text('Save folder:', tooltip=save_tooltip),
-         sg.Text(size=(85,1), key='-REPORTPATH-'), sg.Button('Browse', tooltip=save_tooltip),
+         sg.Text(size=(80,1), key='-REPORTPATH-'), sg.Button('Browse', tooltip=save_tooltip),
          sg.CB('Seperate report', enable_events=True, k='-SEPERATE-', tooltip='Generate a report file for each trajectory file')]],
         element_justification='l', expand_x=True, expand_y=True)
 
@@ -314,11 +308,13 @@ def main():
         print(f'** Warning Exception parsing version: {version} **  ', f'{e}')
 
     STARTING_PATH = sg.PopupGetFolder('Choose working directory')
+    reloaded_dir = STARTING_PATH
+    model_dir = f'{get_gui_path()}/model'
     treedata = sg.TreeData()
     add_files_in_folder(treedata, '', STARTING_PATH)
     window = make_window(treedata, STARTING_PATH)
     window.force_focus()
-    save_dir = STARTING_PATH
+    save_dir = get_gui_path()
     window['-REPORTPATH-'].update(save_dir)
     window['-CUTOFF-'].update('5')
     proc = 0
@@ -371,6 +367,11 @@ def main():
             window['-REPORTPATH-'].update(save_dir)
 
         elif event == 'Run':
+            ## model check
+
+
+
+            ##########
             if proc != 0:
                 sg.cprint(f'Already a prediction is on processing...\n'
                           f'Wait for its end or kill it before starting new one.',
@@ -397,7 +398,7 @@ def main():
                     input_str += '\n'
 
                 input_str += f'save_dir = {save_dir}\n'
-                input_str += 'model_dir = 11_02_10500samples\n'
+                input_str += f'model_dir = {model_dir}\n'
                 input_str += f'cut_off = {cutoff_val}\n'
                 input_str += f'all = {all_val}\n'
                 input_str += 'amp = 2\n'
@@ -426,14 +427,13 @@ def main():
                 sg.cprint('Your version of PySimpleGUI needs to be upgraded to fully use the "WAIT" feature.', c='white on red')
 
         elif event == 'Settings':
-            if settings_window() is True:
-                reloaded_dir = sg.user_settings_get_entry('-folder names-', [])[0]
+            set_changed, reloaded_dir, model_dir = settings_window(reloaded_dir, model_dir)
+            if set_changed is True:
                 window.close()
                 treedata = sg.TreeData()
                 add_files_in_folder(treedata, '', reloaded_dir)
                 window = make_window(treedata, reloaded_dir)
                 window.force_focus()
-                save_dir = '.'
                 window['-REPORTPATH-'].update(save_dir)
                 window['-CUTOFF-'].update('5')
 

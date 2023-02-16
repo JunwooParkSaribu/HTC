@@ -305,7 +305,7 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
 
 
 def make_gif(full_histones, filename, id, immobile_cutoff=0.3,
-             hybrid_cutoff=10, nChannel=3, img_scale=5, amp=2, ):
+             hybrid_cutoff=10, nChannel=3, img_scale=5, amp=2):
     try:
         histones = {}
         if type(full_histones) is list:
@@ -318,9 +318,7 @@ def make_gif(full_histones, filename, id, immobile_cutoff=0.3,
 
         gif = []
         key = f'{filename}@{id}'
-
         make_channel(histones, immobile_cutoff=immobile_cutoff, hybrid_cutoff=hybrid_cutoff, nChannel=nChannel)
-
         if img_scale is None:
             img_size = 5 * (10 ** amp)
         else:
@@ -334,7 +332,6 @@ def make_gif(full_histones, filename, id, immobile_cutoff=0.3,
             img = np.zeros((img_size, img_size))
         else:
             img = np.zeros((img_size, img_size, channel))
-
         histone_trajectory = histones[key].get_trajectory()
         x_shift = central_point[0] - int(histone_trajectory[0][0] * (10 ** amp))
         y_shift = central_point[1] - int(histone_trajectory[0][1] * (10 ** amp))
@@ -357,10 +354,10 @@ def make_gif(full_histones, filename, id, immobile_cutoff=0.3,
                     if mod%2 == 0:
                         gif.append(img.copy())
                 elif trajec_channel == 1:
-                    if mod%10 == 0:
+                    if mod%3 == 0:
                         gif.append(img.copy())
                 else:
-                    if mod%30 == 0:
+                    if mod%5 == 0:
                         gif.append(img.copy())
 
                 # Forcing the scailing to reduce the memory

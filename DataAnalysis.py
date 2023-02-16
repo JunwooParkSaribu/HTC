@@ -1,7 +1,11 @@
+import os
+import Labeling
 import DataLoad
 import matplotlib.pyplot as plt
 import numpy as np
+import ImagePreprocessor
 from sklearn import metrics
+from sklearn import tree
 
 
 def confusion_matrix(report):
@@ -101,12 +105,32 @@ def bootstrapping_mean(report, repeat=1000):
 
     for bcl in bootstrap_mean:
         bootstrap_mean[bcl] /= repeat
-    print(bootstrap_mean)
+    return bootstrap_mean
 
 
 #bootstrapping_mean('./result/before/all.csv', repeat=10000)
-#bootstrapping_mean('./result/15s/all.csv', repeat=10000)
-#bootstrapping_mean('./result/30s/all.csv', repeat=10000)
-#bootstrapping_mean('./result/1min/all.csv', repeat=10000)
-#bootstrapping_mean('./result/2min/all.csv', repeat=10000)
-confusion_matrix('./result/before/eval_all.csv')
+#confusion_matrix('./result/15min/eval_all.csv')
+
+#histones = DataLoad.file_distrib(['./data/1_WT-H2BHalo_noIR/whole cells/20220217_h2b halo_before_irradiation_entire_Cell/20220217_h2b halo_cell6_no_ir003.rpt_tracked.trxyt'], cutoff=5)[0][0]
+#ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cell6_no_ir003.rpt_tracked.trxyt', '1846')
+#cell_radius_map('./result/20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt.csv', [0])
+
+"""
+plt.figure()
+immo = []
+hyb = []
+mob = []
+rpnum=1000
+for x in range(1, rpnum):
+    ratios = bootstrapping_mean('./result/15min/eval_all.csv', repeat=x)
+    immo.append(ratios['0'])
+    hyb.append(ratios['1'])
+    mob.append(ratios['2'])
+
+plt.plot(range(1, rpnum), immo, label='immobile')
+plt.plot(range(1, rpnum), hyb, label='hybrid')
+plt.plot(range(1, rpnum), mob, label='mobile')
+plt.legend()
+
+plt.show()
+"""

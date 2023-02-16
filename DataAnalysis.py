@@ -91,8 +91,8 @@ def cell_radius_map(report, show=[0, 1, 2]):
 def bootstrapping_mean(report, repeat=1000):
     header, data = DataLoad.read_report(report)
     sample_size = len(data)
-    bootstrap_mean = {'0':0, '1':0, '2':0}
-    class_nums = {'0':0, '1':0, '2':0}
+    bootstrap_mean = {'0': 0, '1': 0, '2': 0}
+    class_nums = {'0': 0, '1': 0, '2': 0}
 
     for rp in range(repeat):
         for i in range(sample_size):

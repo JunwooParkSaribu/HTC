@@ -3,6 +3,7 @@ import subprocess
 import sys
 import signal
 import PySimpleGUI as sg
+import time
 
 
 def add_files_in_folder(treedata, parent, dirname):
@@ -422,7 +423,7 @@ def main():
             except Exception as e:
                 sg.cprint(f'Error trying to run file.  Error info:', e, c='white on red')
             try:
-                sg.cprint(f'Waiting for results..', text_color='white', background_color='red')
+                sg.cprint(f'Prediction is running...', text_color='white', background_color='red')
             except AttributeError:
                 sg.cprint('Your version of PySimpleGUI needs to be upgraded to fully use the "WAIT" feature.', c='white on red')
 

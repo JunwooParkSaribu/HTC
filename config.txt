@@ -1,4 +1,4 @@
-data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/TrainingSample/10500samples_training.trxyt
+data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/12min/20220601_H2B Halo_h2b halo_Field11_12mins_after_crop..trxyt
 save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/result
 model_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/model
 cut_off = 5

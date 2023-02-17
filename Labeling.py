@@ -24,4 +24,5 @@ def label_from_report(histones, report):
             key = f"{dt_dic['filename']}@{dt_dic['h2b_id']}"
             if histone == key:
                 histone_label[histone] = int(dt_dic['predicted_class_id'])
+    del data
     return histone_label

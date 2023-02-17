@@ -45,59 +45,48 @@ def read_file(file, cutoff):
         del trajectory
         del time
         TrajectoryPhy.calcul_max_radius(histones)
-        return histones, file_name
+        return histones
     except Exception as e:
         print(f"{file} read err, {e}")
 
 
-def file_distrib(paths, cutoff=5, all=False, group_size=3000, chunk=True):
+def file_distrib(paths, cutoff=5, group_size=3000, chunk=True):
     if os.path.isdir(paths[0]):
         files = os.listdir(paths[0])
-        if all:
-            histones = {}
-            if len(files) > 0:
-                for file in files:
-                    if 'trxyt' in file:
-                        h, _ = read_file(paths[0] + '/' + file, cutoff=cutoff)
-                        histones |= h
-            if not chunk:
-                return [[histones]]
-            split_histones = []
-            for item in chunks(histones, group_size):
-                split_histones.append(item)
-            return [split_histones]
-        else:
-            histones = []
-            if len(files) > 0:
-                for file in files:
-                    if 'trxyt' in file:
-                        h, filename = read_file(paths[0] + '/' + file, cutoff=cutoff)
-                        histones.append(([h], filename))
-            return histones
+        histones = {}
+        if len(files) > 0:
+            for file in files:
+                if 'trxyt' in file:
+                    h = read_file(paths[0] + '/' + file, cutoff=cutoff)
+                    histones |= h
+        if not chunk:
+            return [histones]
+        split_histones = []
+        for item in chunks(histones, group_size):
+            split_histones.append(item)
+        return split_histones
     else:
         nb_files = len(paths)
         if nb_files == 1:
-            h, filename = read_file(paths[0], cutoff=cutoff)
-            return [([h], filename)]
+            h = read_file(paths[0], cutoff=cutoff)
+            if not chunk:
+                return h
+            split_histones = []
+            for item in chunks(h, group_size):
+                split_histones.append(item)
+            return split_histones
         else:
             files = paths.copy()
-            if all:
-                histones = {}
-                for file in files:
-                    h, _ = read_file(file, cutoff=cutoff)
-                    histones |= h
-                if not chunk:
-                    return [[histones]]
-                split_histones = []
-                for item in chunks(histones, group_size):
-                    split_histones.append(item)
-                return [split_histones]
-            else:
-                histones = []
-                for file in files:
-                    h, filename = read_file(file, cutoff=cutoff)
-                    histones.append(([h], filename))
-                return histones
+            histones = {}
+            for file in files:
+                h = read_file(file, cutoff=cutoff)
+                histones |= h
+            if not chunk:
+                return [histones]
+            split_histones = []
+            for item in chunks(histones, group_size):
+                split_histones.append(item)
+            return split_histones
 
 
 def chunks(data, size):

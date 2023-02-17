@@ -1,4 +1,3 @@
-import os
 import sys
 import numpy as np
 import DataLoad
@@ -33,18 +32,6 @@ def predict(gen, scaled_size, nChannel, progress_i, progress_total):
     return y_predict, y_predict_proba, progress_i
 
 
-def making_image(histones, zoomed_imgs, scaled_size, amp):
-    print(f'Generating images...')
-    for histone in histones:
-        if histones[histone].get_manuel_label() != histones[histone].get_predicted_label():
-            trajectory = histones[histone].get_trajectory()
-            histone_first_pos = [int(trajectory[0][0] * (10 ** amp)),
-                                 int(trajectory[0][1] * (10 ** amp))]
-            print(f'Name={histone}')
-            ImagePreprocessor.img_save(zoomed_imgs[histone], histones[histone], scaled_size,
-                                       histone_first_pos=histone_first_pos, amp=amp, path='img/pred_imgs')
-
-
 def main_pipe(full_histones, amp, nChannel, batch_size):
     total_n_histone = 0
     for g in full_histones:
@@ -61,7 +48,6 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
         histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=amp)
         zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
         histone_key_list = list(zoomed_imgs.keys())
-
         # Image generator
         gen = ImgGenerator.conversion(zoomed_imgs, histones_label,
                                       keylist=histone_key_list, batch_size=batch_size, eval=True)
@@ -73,53 +59,22 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
             histones[histone].set_predicted_proba(batch_y_predict_proba[index])
             histones[histone].set_manuel_label(histones_label[histone])
 
-        #making_image(histones, zoomed_imgs, scaled_size, amp)
-
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         config_path = sys.argv[1]
     else:
         config_path = '.'
-
     params = ReadParam.read(config_path)
 
     print(f'Loading the data...')
-    data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'],
-                                 all=params['all'], group_size=params['group_size'])
+    full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
     HTC_model = load_model(params['model_dir'])
     HTC_model.summary()
 
     # Main pipe start.
-    for file_num, dt in enumerate(data):
-        if params['all']:
-            print(f'Predicting all data...')
-            main_pipe(dt, params['amp'], params['nChannel'], params['batch_size'])
-
-            # Result analysis
-            histones = {}
-            for h in dt:
-                histones |= h
-            miss_classfied = 0
-            for i, histone in enumerate(histones):
-                if histones[histone].get_predicted_label() != histones[histone].get_manuel_label():
-                    miss_classfied += 1
-            print(f'Accuracy = {(i - miss_classfied) / i}')
-            print(f'Making reports... ', end=' ')
-            DataSave.save_report(dt, filename=f'eval_all.csv', path=params['save_dir'], eval=True)
-
-        else:
-            print(f'{file_num+1}/{len(data)} Predicting {dt[1]}')
-            main_pipe(dt[0], params['amp'], params['nChannel'], params['batch_size'])
-
-            # Result analysis
-            histones = {}
-            for h in dt[0]:
-                histones |= h
-            miss_classfied = 0
-            for i, histone in enumerate(histones):
-                if histones[histone].get_predicted_label() != histones[histone].get_manuel_label():
-                    miss_classfied += 1
-            print(f'Accuracy = {(i - miss_classfied) / i}')
-            print(f'Making reports... ', end=' ')
-            DataSave.save_report(dt[0], filename=f'eval_{dt[1]}.csv', path=params['save_dir'], eval=True)
+    print(f'Predicting the data...')
+    main_pipe(full_data, params['amp'], params['nChannel'], params['batch_size'])
+    print(f'Making reports... ', end=' ')
+    DataSave.save_report(full_data, path=params['save_dir'], all=params['all'], eval=True)
+    print(f'Done.')

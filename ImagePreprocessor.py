@@ -66,7 +66,9 @@ def preprocessing(histones, img_scale=None, amp=2, interpolation=True):
                     if not channel:
                         img[inter_pos[1]][inter_pos[0]] = 1
                     else:
+                        # add channels or not (val in float 0.0 ~ 1.0)
                         img[inter_pos[1]][inter_pos[0]][trajec_channel] = 1
+                        #img[inter_pos[1]][inter_pos[0]][0] = 1
         imgs[histone] = img
     return imgs, (img_size, img_size), None
 
@@ -97,7 +99,6 @@ def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=500
             t_time = int(trajectory[2] * 100)
             if not interpolation:
 
-
                 # Forcing the scailing to reduce the memory
                 shifted_time = t_time - current_time
                 scaled_y_val = img_size - y_val
@@ -112,7 +113,6 @@ def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=500
                 if x_val < 0:
                     x_val = 0
 
-
                 if not channel:
                     img[scaled_y_val][x_val][shifted_time] = 1
                 else:
@@ -124,8 +124,6 @@ def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=500
                 current_yval = y_val
                 current_time = t_time
                 for inter_pos in interpolate_pos:
-
-
                     # Forcing the scailing to reduce the memory
                     if inter_pos[2] >= time_scale:
                         inter_pos[2] = time_scale-1
@@ -137,7 +135,6 @@ def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=500
                         inter_pos[1] = img_size
                     if img_size - inter_pos[1] >= img_size:
                         inter_pos[1] = 1
-
 
                     if not channel:
                         img[img_size - inter_pos[1]][inter_pos[0]][inter_pos[2]] = 1
@@ -291,6 +288,10 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
         ps += '\nprediction = ' + pred
     if proba is not None:
         ps += '\nprobability = ' + str(proba)
+
+    plt.imshow(img)
+
+    plt.show()
 
     if histone_first_pos is None:
         plt.imshow(img, cmap='coolwarm', origin='lower')

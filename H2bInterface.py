@@ -325,28 +325,27 @@ def main():
         if stop_status == 0:
             if proc != 0:
                 cur_time = time.time()
-                if proc.poll() == 0:
-                    # End of subprocess
-                    for out in iter(proc.stdout.readline, b''):
-                        out = str(out).strip().split("\'")[1].split('\\n')[0]
-                        if out.endswith('%'):
-                            continue
-                        else:
-                            sg.cprint(out)
-
+                if proc.poll() == 0:  # End of subprocess
                     window['-ML-'].update('')
                     sg.cprint('Classification on below files...', c='white on green', end='\n')
                     for fichier in file_run_list:
                         sg.cprint(fichier, text_color='white', background_color='purple')
                     sg.cprint(f'Processing is finished', text_color='white', background_color='red')
                     sg.cprint(f'Subprocess killed : {proc}')
-                    sg.cprint(f'Total process time : {int(cur_time - start_time)} seconds',
+                    for out in iter(proc.stdout.readline, b''):
+                        out = str(out).strip().split("\'")[1].split('\\n')[0]
+                        if out.endswith('%'):
+                            continue
+                        else:
+                            sg.cprint(out)
+                    sg.cprint(f'Total process time ~ {int(cur_time - start_time)} seconds',
                               text_color='white', background_color='red')
                     start_time = 0
                     proc.kill()
                     proc = 0
                     window.refresh()
-                else:
+
+                elif proc.poll() is None:
                     window['-ML-'].update('')
                     sg.cprint('Classification on below files...', c='white on green', end='\n')
                     for fichier in file_run_list:
@@ -354,6 +353,15 @@ def main():
                     sg.cprint(f'Prediction is running...', text_color='white', background_color='red')
                     sg.cprint(f'process time : {int(cur_time - start_time)} seconds')
                     window.refresh()
+
+                else:  # Unexpected subprocess termination handling
+                    for out in iter(proc.stdout.readline, b''):
+                        out = str(out).strip().split("\'")[1].split('\\n')[0]
+                        print(out)
+                    print(proc.poll(), proc)
+                    proc.kill()
+                    proc = 0
+                    start_time = 0
 
         if event in (sg.WINDOW_CLOSED, 'Exit'):
             if proc != 0:

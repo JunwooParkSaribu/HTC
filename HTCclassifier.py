@@ -32,27 +32,7 @@ def predict(gen, scaled_size, nChannel, progress_i, progress_total):
     return y_predict, y_predict_proba, progress_i
 
 
-def making_image(histones, zoomed_imgs, scaled_size, amp, img_num, shuffle):
-    histone_ids = []
-    for histone in histones:
-        if histones[histone].get_predicted_proba() < 0.3:
-            histone_ids.append(histone)
-            img_num -= 1
-        if img_num == 0:
-            break
-    if shuffle:
-        np.random.shuffle(histone_ids)
-
-    for histone in histone_ids:
-        trajectory = histones[histone].get_trajectory()
-        histone_first_pos = [int(trajectory[0][0] * (10 ** amp)),
-                             int(trajectory[0][1] * (10 ** amp))]
-        ImagePreprocessor.img_save(zoomed_imgs[histone], histones[histone], scaled_size,
-                                   histone_first_pos=histone_first_pos,
-                                   amp=amp, path=img_save_path)
-
-
-def main_pipe(full_histones, amp, nChannel, batch_size, make_image=False, img_num=20, shuffle=True):
+def main_pipe(full_histones, amp, nChannel, batch_size):
     total_n_histone = 0
     for g in full_histones:
         total_n_histone += len(list(g.keys()))
@@ -74,40 +54,23 @@ def main_pipe(full_histones, amp, nChannel, batch_size, make_image=False, img_nu
             histones[histone].set_predicted_label(batch_y_predict[index])
             histones[histone].set_predicted_proba(batch_y_predict_proba[index])
 
-        if make_image:
-            making_image(histones, zoomed_imgs, scaled_size, amp,
-                         img_num=int(img_num/len(full_histones)), shuffle=shuffle)
-
 
 if __name__ == '__main__':
-    make_image = False
-    img_save_path = 'result/image'
-
     if len(sys.argv) > 1:
         config_path = sys.argv[1]
     else:
         config_path = '.'
-
     params = ReadParam.read(config_path)
 
     print(f'Loading the data...', end=' ')
-    data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'],
-                                 all=params['all'], group_size=params['group_size'])  # 16GB RAM
+    full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])  # 16GB RAM
     print(f'Done.\nIf number of trajectories is bigger than {params["group_size"]}, '
           f'data will be separated into groups to reduce the memory usage.')
     HTC_model = load_model(params['model_dir'])
 
     # Main pipe start.
-    for file_num, dt in enumerate(data):
-        if params['all']:
-            print(f'Predicting all data...')
-            main_pipe(dt, params['amp'], params['nChannel'], params['batch_size'], make_image)
-            print(f'Making reports... ', end=' ')
-            DataSave.save_report(dt, filename='pred_all.csv', path=params['save_dir'])
-            print(f'Done.')
-        else:
-            print(f'{file_num+1}/{len(data)} Predicting {dt[1]}')
-            main_pipe(dt[0], params['amp'], params['nChannel'], params['batch_size'], make_image)
-            print(f'Making reports... ', end=' ')
-            DataSave.save_report(dt[0], filename=f'{dt[1]}.csv', path=params['save_dir'])
-            print(f'Done.')
+    print(f'Predicting all data...')
+    main_pipe(full_data, params['amp'], params['nChannel'], params['batch_size'])
+    print(f'Making reports... ', end=' ')
+    DataSave.save_report(full_data, path=params['save_dir'], all=params['all'])
+    print(f'Done.')

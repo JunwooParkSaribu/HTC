@@ -324,6 +324,7 @@ def main():
         event, values = window.read(timeout=10000)
         if stop_status == 0:
             if proc != 0:
+                cur_time = time.time()
                 if proc.stdout != None:
                     if proc.poll() == 0:
                         # End of subprocess
@@ -337,7 +338,18 @@ def main():
                         proc.kill()
                         proc = 0
                         sg.cprint(f'Processing is finished', text_color='white', background_color='red')
-                    window.refresh()
+                        sg.cprint(f'Total process time : {int(cur_time - start_time)} seconds',
+                                  text_color='white', background_color='red')
+                        start_time = 0
+                        window.refresh()
+                    else:
+                        window['-ML-'].update('')
+                        sg.cprint('Classification on below files...', c='white on green', end='\n')
+                        for fichier in file_run_list:
+                            sg.cprint(fichier, text_color='white', background_color='purple')
+                        sg.cprint(f'Prediction is running...', text_color='white', background_color='red')
+                        sg.cprint(f'process time : {int(cur_time - start_time)} seconds')
+                        window.refresh()
 
         if event in (sg.WINDOW_CLOSED, 'Exit'):
             if proc != 0:
@@ -346,6 +358,7 @@ def main():
 
         if event == 'Kill':
             if proc != 0:
+                start_time = 0
                 sg.cprint(f'Subprocess killed : {proc}')
                 sg.cprint(f'Terminate prediction', text_color='white', background_color='red')
                 proc.stdout.flush()
@@ -408,8 +421,7 @@ def main():
                 input_str += 'group_size = 2000\n'
                 f.write(input_str)
 
-            sg.cprint('Classification on below files...', c='white on green', end='')
-            sg.cprint('')
+            sg.cprint('Classification on below files...', c='white on green', end='\n')
             for fichier in file_run_list:
                 sg.cprint(fichier, text_color='white', background_color='purple')
             try:
@@ -418,12 +430,13 @@ def main():
                     proc = run_command(['python3', 'Evaluation_main.py'])
                 else:
                     proc = run_command(['python3', 'HTCclassifier.py'])
+                start_time = time.time()
 
-                sg.cprint(f'Subprocess created : {proc}')
             except Exception as e:
                 sg.cprint(f'Error trying to run file.  Error info:', e, c='white on red')
             try:
                 sg.cprint(f'Prediction is running...', text_color='white', background_color='red')
+                sg.cprint(f'Subprocess created : {proc}')
             except AttributeError:
                 sg.cprint('Your version of PySimpleGUI needs to be upgraded to fully use the "WAIT" feature.', c='white on red')
 

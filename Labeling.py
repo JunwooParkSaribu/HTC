@@ -1,4 +1,5 @@
 import TrajectoryPhy
+import DataLoad
 
 
 def make_label(histones, radius=0.45, density=0.4) -> []:
@@ -12,4 +13,15 @@ def make_label(histones, radius=0.45, density=0.4) -> []:
         else:
             histone_label[histone] = 1  # hybrid
     del histones_balls
+    return histone_label
+
+
+def label_from_report(histones, report):
+    histone_label = {}
+    header, data = DataLoad.read_report(report)
+    for histone in histones:
+        for dt_dic in data:
+            key = f"{dt_dic['filename']}@{dt_dic['h2b_id']}"
+            if histone == key:
+                histone_label[histone] = int(dt_dic['predicted_class_id'])
     return histone_label

@@ -70,7 +70,7 @@ def file_distrib(paths, cutoff=5, group_size=3000, chunk=True):
         if nb_files == 1:
             h = read_file(paths[0], cutoff=cutoff)
             if not chunk:
-                return h
+                return [h]
             split_histones = []
             for item in chunks(h, group_size):
                 split_histones.append(item)

@@ -9,15 +9,15 @@ import matplotlib.pyplot as plt
 
 
 data_path = 'data/TrainingSample'
-model_path = '11_02_10500samples'
-report_path = 'result/'
+model_path = '17_02_10500samples_retrained'
+report_path = 'result/eval_10500samples_training.trxyt.csv'
 
 
 if __name__ == '__main__':
     epochs = 200
     params = ReadParam.read('.')
     print(f'\nLoading the data...')
-    histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], all=True, chunk=False)[0][0]
+    histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], chunk=False)[0]
     #histones_label = Labeling.make_label(histones, radius=0.45, density=0.4)
     histones_label = Labeling.label_from_report(histones, report_path)
 

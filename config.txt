@@ -1,8 +1,5 @@
-data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/30s/20220210 H2B Halo_Field2_cell3_30s_after_irradiation_crop.trxyt
-data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/30s/20220210 H2B Halo_Field5_30s_after_irradiation_crop.trxyt
-data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/30s/20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt
-data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/30s/20220210 H2B Halo_Field9_30s_after_irradiation_crop.trxyt
-save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC
+data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/TrainingSample/10500samples_training.trxyt
+save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/result
 model_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/model
 cut_off = 5
 all = True

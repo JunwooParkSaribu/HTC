@@ -339,8 +339,8 @@ def main():
                         sg.cprint('Classification on below files...', c='white on green', end='\n')
                         for fichier in file_run_list:
                             sg.cprint(fichier, text_color='white', background_color='purple')
-                        sg.cprint(f'Subprocess killed : {proc}')
                         sg.cprint(f'Processing is finished', text_color='white', background_color='red')
+                        sg.cprint(f'Subprocess killed : {proc}')
                         sg.cprint(f'Total process time : {int(cur_time - start_time)} seconds',
                                   text_color='white', background_color='red')
                         start_time = 0

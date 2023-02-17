@@ -41,7 +41,7 @@ def read_file(file, cutoff):
                 histones[histone].set_time(time[histone])
                 info = histone.strip().split('@')
                 histones[histone].set_id(info[-1])
-                histones[histone].set_file_name(info[0])
+                histones[histone].set_file_name('@'.join(info[:-1]))
         del trajectory
         del time
         TrajectoryPhy.calcul_max_radius(histones)

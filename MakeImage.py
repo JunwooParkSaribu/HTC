@@ -26,7 +26,7 @@ def recursive_fileSearch(path, filename, h2b_ids, cls, lbs, img_save_path, img_o
 
     if filename in files:
         params = ReadParam.read('.')
-        histones, _ = DataLoad.read_file(f'{path}/{filename}', 0)
+        histones = DataLoad.read_file(f'{path}/{filename}', 0)
         temp = {}
         for hist in histones:
             for index, hid in enumerate(h2b_ids):
@@ -66,7 +66,7 @@ if __name__ == '__main__':
         img_option = 1
 
     data_path = './data'
-    report_path = './result/old_eval_all_35300h2b.csv'
+    report_path = './result/retrain_label(1).csv'
     img_save_path = './result/image'
     header, data = DataLoad.read_report(report_path)
 

@@ -109,7 +109,7 @@ def bootstrapping_mean(report, repeat=1000):
 
 
 #bootstrapping_mean('./result/before/all.csv', repeat=10000)
-#confusion_matrix('./result/15min/eval_all.csv')
+#confusion_matrix('./result/retrain_label(1).csv')
 
 #histones = DataLoad.file_distrib(['./data/1_WT-H2BHalo_noIR/whole cells/20220217_h2b halo_before_irradiation_entire_Cell/20220217_h2b halo_cell6_no_ir003.rpt_tracked.trxyt'], cutoff=5)[0][0]
 #ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cell6_no_ir003.rpt_tracked.trxyt', '1846')

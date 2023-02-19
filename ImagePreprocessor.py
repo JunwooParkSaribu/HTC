@@ -289,10 +289,6 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
     if proba is not None:
         ps += '\nprobability = ' + str(proba)
 
-    plt.imshow(img)
-
-    plt.show()
-
     if histone_first_pos is None:
         plt.imshow(img, cmap='coolwarm', origin='lower')
     else:

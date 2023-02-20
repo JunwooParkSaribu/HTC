@@ -215,7 +215,7 @@ def make_simulation_data(number=3000):
 
 
 """
-histones, _ = make_simulation_data(50)
+histones, _ = make_simulation_data(150)
 ImagePreprocessor.make_channel(histones, immobile_cutoff=0.3, hybrid_cutoff=10, nChannel=3)
 histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=2, correction=True)
 zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
@@ -226,5 +226,3 @@ for histone in histones:
     ImagePreprocessor.img_save(zoomed_imgs[histone], histones[histone], scaled_size,
                                histone_first_pos=histone_first_pos, amp=2, path='./data/SimulationData/images')
 """
-
-

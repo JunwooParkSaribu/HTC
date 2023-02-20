@@ -242,7 +242,7 @@ def make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25, nChannel=3):
     del histones_velocity
 
 
-def zoom(imgs, size=800, to_size=(300, 300)):
+def zoom(imgs, size=1000, to_size=(500, 500)):
     zoomed_imgs = {}
     keys = list(imgs.keys())
     for histone in keys:
@@ -250,7 +250,6 @@ def zoom(imgs, size=800, to_size=(300, 300)):
             center_pos = [int(size[0]/2), int(size[1]/2)]
         else:
             center_pos = [int(size/2), int(size/2)]
-
         x_start = center_pos[0] - int(to_size[0] / 2)
         x_end = center_pos[0] + int(to_size[0] / 2)
         y_start = center_pos[1] - int(to_size[1] / 2)
@@ -293,10 +292,10 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
         plt.imshow(img, cmap='coolwarm', origin='lower')
     else:
         plt.imshow(img, cmap='coolwarm', origin='lower',
-                   extent=[int((histone_first_pos[0] - (img_size/2))/(10**amp)),
-                           int((histone_first_pos[0] + int(img_size/2))/(10**amp)),
-                           int((histone_first_pos[1] - int(img_size/2))/(10**amp)),
-                           int((histone_first_pos[1] + int(img_size/2))/(10**amp))])
+                   extent=[(histone_first_pos[0] - img_size/2)/(10**amp),
+                           (histone_first_pos[0] + img_size/2)/(10**amp),
+                           (histone_first_pos[1] - img_size/2)/(10**amp),
+                           (histone_first_pos[1] + img_size/2)/(10**amp)])
     plt.title(ps)
     plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png')
 

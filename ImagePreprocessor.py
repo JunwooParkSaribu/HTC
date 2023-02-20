@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 import TrajectoryPhy
 
 
-def preprocessing(histones, img_scale=None, amp=2, interpolation=True):
+def preprocessing(histones, img_scale=None, amp=2, interpolation=True, correction=False):
     if img_scale is None:
         img_size = 5 * (10 ** amp)
     else:
@@ -68,7 +68,8 @@ def preprocessing(histones, img_scale=None, amp=2, interpolation=True):
                     else:
                         # add channels or not (val in float 0.0 ~ 1.0)
                         img[inter_pos[1]][inter_pos[0]][trajec_channel] = 1
-                        #img[inter_pos[1]][inter_pos[0]][0] = 1
+                        if correction:
+                            img[inter_pos[1]][inter_pos[0]][0] = 1
         imgs[histone] = img
     return imgs, (img_size, img_size), None
 

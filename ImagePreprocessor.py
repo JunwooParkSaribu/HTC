@@ -268,26 +268,31 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
 
     if type(img_size) is tuple:
         img_size = img_size[0]
-    if label is not None:
-        if label==0:
-            label = 'immobile'
-        if label==1:
-            label = 'hybrid'
-        if label==2:
-            label = 'mobile'
-    if pred is not None:
-        if pred==0:
-            pred = 'immobile'
-        if pred==1:
-            pred = 'hybrid'
-        if pred==2:
-            pred = 'mobile'
-    if label is not None:
-        ps += 'label = ' + label
-    if pred is not None:
-        ps += '\nprediction = ' + pred
-    if proba is not None:
-        ps += '\nprobability = ' + str(proba)
+
+    if type(pred) is not list:
+        if label is not None:
+            if label==0:
+                label = 'immobile'
+            if label==1:
+                label = 'hybrid'
+            if label==2:
+                label = 'mobile'
+        if pred is not None:
+            if pred==0:
+                pred = 'immobile'
+            if pred==1:
+                pred = 'hybrid'
+            if pred==2:
+                pred = 'mobile'
+        if label is not None:
+            ps += 'label = ' + label
+        if pred is not None:
+            ps += '\nprediction = ' + pred
+        if proba is not None:
+            ps += '\nprobability = ' + str(proba)
+    else:
+        for index, prediction in enumerate(pred):
+            ps += f'Model{str(index)}:{prediction}  '
 
     if histone_first_pos is None:
         plt.imshow(img, cmap='coolwarm', origin='lower')

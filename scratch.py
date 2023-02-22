@@ -30,15 +30,14 @@ plt.show()
 """
 
 
-reports = ['./result/15min/old_eval_all.csv']
-MakeImage.comparison_from_reports(reports, img_save_path='./result')
-#MakeImage.make_image_from_single_report(reports[0], option=1, img_save_path='./result')
+#reports = ['./result/15min/old_eval_all.csv']
+#MakeImage.comparison_from_reports(reports, img_save_path='./result')
+#MakeImage.make_image_from_single_report('./result/1.csv', option=0, img_save_path='./result/image')
 
 
-"""
+
 histones, _ = DataSimulation.make_simulation_data(150)
 ImagePreprocessor.make_channel(histones, immobile_cutoff=0.3, hybrid_cutoff=10, nChannel=3)
 histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=2, correction=True)
 zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
 MakeImage.make_image(histones, zoomed_imgs, scaled_size, amp=2, img_save_path='./data/SimulationData/images')
-"""

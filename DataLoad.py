@@ -5,7 +5,7 @@ from H2B import H2B
 from itertools import islice
 
 
-def read_file(file, cutoff):
+def read_file(file: str, cutoff: int) -> dict:
     histones = {}
     trajectory = {}
     time = {}
@@ -46,7 +46,7 @@ def read_file(file, cutoff):
         print(f"{file} read err, {e}")
 
 
-def file_distrib(paths, cutoff=5, group_size=3000, chunk=True):
+def file_distrib(paths: list, cutoff=5, group_size=3000, chunk=True) -> list:
     if os.path.isdir(paths[0]):
         files = os.listdir(paths[0])
         histones = {}

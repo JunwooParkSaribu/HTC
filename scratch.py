@@ -1,11 +1,13 @@
 import DataAnalysis
 import MakeImage
+import DataSimulation
+import ImagePreprocessor
 
-#bootstrapping_mean('./result/before/all.csv', repeat=10000)
-#confusion_matrix(['./result/pred1_vs_pred2.csv'])
+#DataAnalysis.bootstrapping_mean('./result/before/all.csv', repeat=10000)
+#DataAnalysis.confusion_matrix(['./result/pred1_vs_pred2.csv'])
 #histones = DataLoad.file_distrib(['./data/1_WT-H2BHalo_noIR/whole cells/20220217_h2b halo_before_irradiation_entire_Cell/20220217_h2b halo_cell6_no_ir003.rpt_tracked.trxyt'], cutoff=5)[0][0]
 #ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cell6_no_ir003.rpt_tracked.trxyt', '1846')
-#cell_radius_map('./result/20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt.csv', [0])
+#DataAnalysis.cell_radius_map('./result/20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt.csv', [0])
 
 """
 plt.figure()
@@ -28,21 +30,15 @@ plt.show()
 """
 
 
-
 reports = ['./result/15min/old_eval_all.csv']
-#comparison_from_reports(reports, img_save_path='./result')
-MakeImage.make_image_from_single_report(reports[0], option=1, img_save_path='./result')
+MakeImage.comparison_from_reports(reports, img_save_path='./result')
+#MakeImage.make_image_from_single_report(reports[0], option=1, img_save_path='./result')
 
 
 """
-histones, _ = make_simulation_data(150)
+histones, _ = DataSimulation.make_simulation_data(150)
 ImagePreprocessor.make_channel(histones, immobile_cutoff=0.3, hybrid_cutoff=10, nChannel=3)
 histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=2, correction=True)
 zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
-for histone in histones:
-    trajectory = histones[histone].get_trajectory()
-    histone_first_pos = [int(trajectory[0][0] * (10 ** 2)),
-                         int(trajectory[0][1] * (10 ** 2))]
-    ImagePreprocessor.img_save(zoomed_imgs[histone], histones[histone], scaled_size,
-                               histone_first_pos=histone_first_pos, amp=2, path='./data/SimulationData/images')
+MakeImage.make_image(histones, zoomed_imgs, scaled_size, amp=2, img_save_path='./data/SimulationData/images')
 """

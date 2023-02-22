@@ -223,7 +223,7 @@ def interpolate3D(current_pos, next_pos):  # 3D interpolation
     return pos
 
 
-def make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=25, nChannel=3):
+def make_channel(histones, immobile_cutoff=0.3, hybrid_cutoff=10, nChannel=3):
     histones_velocity = TrajectoryPhy.velocity(histones)
     hist_channel = {}
     for histone in histones:
@@ -410,4 +410,3 @@ def make_gif(full_histones, filename, id, immobile_cutoff=0.3,
     except Exception as e:
         print(e)
         print(f'There is no matching filename and id in the data')
-

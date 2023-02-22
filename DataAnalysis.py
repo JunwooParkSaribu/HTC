@@ -1,25 +1,51 @@
-import os
-import Labeling
 import DataLoad
 import matplotlib.pyplot as plt
 import numpy as np
-import ImagePreprocessor
 from sklearn import metrics
-from sklearn import tree
 
 
-def confusion_matrix(report):
-    header, data = DataLoad.read_report(report)
-    label = []
-    pred = []
-    for dt in data:
-        label.append(dt['labeled_class_id'])
-        pred.append(dt['predicted_class_id'])
-    cm = metrics.confusion_matrix(label, pred)
-    cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=cm,
-                                                display_labels=['immobile', 'hybrid', 'mobile'])
-    cm_display.plot()
-    plt.show()
+def confusion_matrix(report: list | str) -> None:
+    if len(report) == 1:
+        report = report[0]
+    match report:
+        case str():
+            header, data = DataLoad.read_report(report)
+            label = []
+            pred = []
+            for dt in data:
+                label.append(dt['labeled_class_id'])
+                pred.append(dt['predicted_class_id'])
+            cm = metrics.confusion_matrix(label, pred)
+            cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=cm,
+                                                        display_labels=['immobile', 'hybrid', 'mobile'])
+            cm_display.plot()
+            plt.show()
+
+        case list():
+            for i in range(len(report)-1):
+                report_data = DataLoad.read_report(report[i])[1]
+                data = {}
+
+                for dt in report_data:
+                    data[f"{dt['filename']}@{dt['h2b_id']}"] = dt['predicted_class_id']
+
+                for j in range(i+1, len(report)):
+                    pred1 = []
+                    pred2 = []
+                    comp_report_data = DataLoad.read_report(report[j])[1]
+                    for comp_dt in comp_report_data:
+                        if f"{comp_dt['filename']}@{comp_dt['h2b_id']}" in data:
+                            pred1.append(data[f"{comp_dt['filename']}@{comp_dt['h2b_id']}"])
+                            pred2.append(comp_dt['predicted_class_id'])
+
+                    cm = metrics.confusion_matrix(pred1, pred2)
+                    cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=cm,
+                                                                display_labels=['immobile', 'hybrid', 'mobile'])
+                    cm_display.plot()
+
+                    plt.show()
+        case _:
+            print('Unsupported input type')
 
 
 def ratio_calcul(report):
@@ -88,7 +114,7 @@ def cell_radius_map(report, show=[0, 1, 2]):
     plt.show()
 
 
-def bootstrapping_mean(report, repeat=1000):
+def bootstrapping_mean(report: str, repeat=1000) -> dict:
     header, data = DataLoad.read_report(report)
     sample_size = len(data)
     bootstrap_mean = {'0': 0, '1': 0, '2': 0}
@@ -106,31 +132,3 @@ def bootstrapping_mean(report, repeat=1000):
     for bcl in bootstrap_mean:
         bootstrap_mean[bcl] /= repeat
     return bootstrap_mean
-
-
-#bootstrapping_mean('./result/before/all.csv', repeat=10000)
-#confusion_matrix('./result/retrain_label(1).csv')
-
-#histones = DataLoad.file_distrib(['./data/1_WT-H2BHalo_noIR/whole cells/20220217_h2b halo_before_irradiation_entire_Cell/20220217_h2b halo_cell6_no_ir003.rpt_tracked.trxyt'], cutoff=5)[0][0]
-#ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cell6_no_ir003.rpt_tracked.trxyt', '1846')
-#cell_radius_map('./result/20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt.csv', [0])
-
-"""
-plt.figure()
-immo = []
-hyb = []
-mob = []
-rpnum=1000
-for x in range(1, rpnum):
-    ratios = bootstrapping_mean('./result/15min/eval_all.csv', repeat=x)
-    immo.append(ratios['0'])
-    hyb.append(ratios['1'])
-    mob.append(ratios['2'])
-
-plt.plot(range(1, rpnum), immo, label='immobile')
-plt.plot(range(1, rpnum), hyb, label='hybrid')
-plt.plot(range(1, rpnum), mob, label='mobile')
-plt.legend()
-
-plt.show()
-"""

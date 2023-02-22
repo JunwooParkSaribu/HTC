@@ -112,3 +112,6 @@ def save_report(full_data, path='', all=False, eval=False):
                                      'maximum_radius': max_r,
                                      'first_x_position': first_x_pos, 'first_y_position': first_y_pos})
 
+
+def save_simulated_data():
+    pass

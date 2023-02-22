@@ -108,4 +108,3 @@ def calcul_max_radius(histones):
             dist = np.sqrt((first_position[0] - trajectory[0])**2 + (first_position[1] - trajectory[1])**2)
             max_r = max(max_r, dist)
         histones[histone].set_max_radius(max_r)
-

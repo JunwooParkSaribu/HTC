@@ -1,6 +1,6 @@
 data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell
 save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/result
-model_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/18_02_10500samples_retrained
+model_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/21_02_simulated_9000samples
 cut_off = 5
 all = True
 amp = 2

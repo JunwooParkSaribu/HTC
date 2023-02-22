@@ -18,14 +18,10 @@ def read_file(file, cutoff):
         file_name = file.strip().split('/')[-1].strip()
         for line in lines:
             temp = line.split('\t')
-            temp[0] = temp[0].strip()
-            temp[0] = file_name + '@' + temp[0]
-            temp[1] = temp[1].strip()
-            temp[1] = float(temp[1])
-            temp[2] = temp[2].strip()
-            temp[2] = float(temp[2])
-            temp[3] = temp[3].strip()
-            temp[3] = float(temp[3])
+            temp[0] = file_name + '@' + temp[0].strip()  # filename + h2b_id
+            temp[1] = float(temp[1].strip())
+            temp[2] = float(temp[2].strip())
+            temp[3] = float(temp[3].strip())
 
             if temp[0] in trajectory:
                 trajectory[temp[0]].append([temp[1], temp[2]])

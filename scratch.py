@@ -31,7 +31,7 @@ plt.show()
 
 reports = ['./result/15min/old_eval_all.csv']
 #comparison_from_reports(reports, img_save_path='./result')
-make_image_from_single_report(reports[0], option=1, img_save_path='./result')
+MakeImage.make_image_from_single_report(reports[0], option=1, img_save_path='./result')
 
 
 """

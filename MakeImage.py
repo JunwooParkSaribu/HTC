@@ -75,7 +75,6 @@ def comparison_from_reports(reports: list, data_path='.', img_save_path='.') -> 
     for filename in list(img_list.keys()):
         for dt in img_list[filename]:
             h2b_id, cls = dt[0], dt[1]
-            print(cls)
             # add conditions of classes (cls)
 
             recursive_filesearch(data_path, filename, [h2b_id], cls, img_save_path, lbs=None)
@@ -122,9 +121,7 @@ def make_image_from_single_report(report: str, option=1, data_path='.', img_save
     for filename in list(img_list.keys()):
         if option == 1:
             h2b_ids, cls, lbs = img_list[filename]
-            print(cls)
         else:
             h2b_ids, cls = img_list[filename]
-            print(cls)
             lbs = []
         recursive_filesearch(data_path, filename, h2b_ids, cls, img_save_path, lbs, img_option=option)

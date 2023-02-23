@@ -2,7 +2,7 @@ import numpy as np
 from H2B import H2B
 
 
-def make_immobile(histones, histones_label, nb=5, radius=0.45, max_distance=0.05, cond=(50, 100)):
+def make_immobile(histones, histones_label, nb=5, radius=0.45, max_distance=0.085, cond=(5, 50)):
     for i in range(nb):
         h2b = H2B()
         n_trajectory = int(np.random.uniform(cond[0], cond[1]))
@@ -43,7 +43,7 @@ def make_immobile(histones, histones_label, nb=5, radius=0.45, max_distance=0.05
             histones_label[str(0)] = 0
 
 
-def make_mobile(histones, histones_label, nb=5, max_distance=0.5, cond=(10, 40)):
+def make_mobile(histones, histones_label, nb=5, max_distance=0.45, cond=(2, 10)):
     for i in range(nb):
         h2b = H2B()
         n_trajectory = int(np.random.uniform(cond[0], cond[1]))
@@ -76,17 +76,17 @@ def make_mobile(histones, histones_label, nb=5, max_distance=0.5, cond=(10, 40))
     return histones
 
 
-def make_hybrid(histones, histones_label, nb=5, radius=0.45, max_dist_immobile=0.01, max_dist_mobile=0.3, type=0):
+def make_hybrid(histones, histones_label, nb=5, radius=0.45, max_dist_immobile=0.085, max_dist_mobile=0.45, type=0):
     for i in range(nb):
         h2b = H2B()
-        n_trajectory = int(np.random.uniform(50, 100))
-        intermediate_trajectory = int(np.random.randint(5, 20))
+        n_trajectory = int(np.random.uniform(15, 100))
+        intermediate_trajectory = int(np.random.randint(2, 10))
         trajectory = [[10, 10]]
         prev_xy = trajectory[0]
 
         while len(trajectory) < n_trajectory:
             if type == 0:
-                if len(trajectory) < n_trajectory/3:
+                if len(trajectory) < n_trajectory/2.5:
                     x = np.random.uniform(prev_xy[0]-max_dist_immobile, prev_xy[0]+max_dist_immobile)
                     y = np.random.uniform(prev_xy[1]-max_dist_immobile, prev_xy[1]+max_dist_immobile)
                     xy = np.array([x, y])
@@ -101,7 +101,7 @@ def make_hybrid(histones, histones_label, nb=5, radius=0.45, max_dist_immobile=0
                             trajectory.append(xy)
                             prev_direction = xy - prev_xy
                             prev_xy = xy
-                elif len(trajectory) < (n_trajectory/3 + intermediate_trajectory):
+                elif len(trajectory) < (n_trajectory/2.5 + intermediate_trajectory):
                     x = np.random.uniform(prev_xy[0] - max_dist_mobile, prev_xy[0] + max_dist_mobile)
                     y = np.random.uniform(prev_xy[1] - max_dist_mobile, prev_xy[1] + max_dist_mobile)
                     xy = np.array([x, y])
@@ -189,24 +189,16 @@ def make_simulation_data(number=3000):
     histones_label = {}
 
     # make immobile H2Bs
-    for dist_immo in range(3, 13):
-        dist_immo /= 100
-        make_immobile(histones, histones_label, nb=int(number/10), radius=0.45, max_distance=dist_immo)
+    make_immobile(histones, histones_label, nb=int(number), radius=0.45, max_distance=0.085)
 
     # make hybrid H2Bs
-    for dist_immo in range(3, 13):
-        dist_immo /= 100
-        for dist_mob in range(2, 4):
-            dist_mob /= 10
-            make_hybrid(histones, histones_label, nb=int(number/60), radius=0.45, max_dist_immobile=dist_immo,
-                        max_dist_mobile=dist_mob, type=0)
-            make_hybrid(histones, histones_label, nb=int(number/60), radius=0.45, max_dist_immobile=dist_immo,
-                        max_dist_mobile=dist_mob, type=1)
-            make_hybrid(histones, histones_label, nb=int(number/60), radius=0.45, max_dist_immobile=dist_immo,
-                        max_dist_mobile=dist_mob, type=2)
+    make_hybrid(histones, histones_label, nb=int(number/3), radius=0.45, max_dist_immobile=0.085,
+                max_dist_mobile=0.45, type=0)
+    make_hybrid(histones, histones_label, nb=int(number/3), radius=0.45, max_dist_immobile=0.085,
+                max_dist_mobile=0.45, type=1)
+    make_hybrid(histones, histones_label, nb=int(number/3), radius=0.45, max_dist_immobile=0.085,
+                max_dist_mobile=0.45, type=2)
 
     # make mobile H2Bs
-    for dist_mob in range(3, 6):
-        dist_mob /= 10
-        make_mobile(histones, histones_label, nb=int(number/3), max_distance=dist_mob)
+    make_mobile(histones, histones_label, nb=int(number), max_distance=0.45)
     return histones, histones_label

@@ -223,8 +223,12 @@ def interpolate3D(current_pos, next_pos):  # 3D interpolation
     return pos
 
 
-def make_channel(histones, immobile_cutoff=0.3, hybrid_cutoff=10, nChannel=3):
+def make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=10, nChannel=3):
     histones_velocity = TrajectoryPhy.velocity(histones)
+
+    ab = list(histones.keys())[0]
+    print(len(histones_velocity[ab]))
+    print(len(histones[ab].get_trajectory()))
     hist_channel = {}
     for histone in histones:
         hist_channel[histone] = []
@@ -290,9 +294,11 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
             ps += '\nprediction = ' + pred
         if proba is not None:
             ps += '\nprobability = ' + str(proba)
+        ps += f'\n{str(h2b.get_time_duration())}'
     else:
         for index, prediction in enumerate(pred):
-            ps += f'Model{str(index)}:{prediction}  '
+            ps += f'Model{str(index)}:{prediction}\n'
+        ps += f'{str(h2b.get_time_duration())}'
 
     if histone_first_pos is None:
         plt.imshow(img, cmap='coolwarm', origin='lower')

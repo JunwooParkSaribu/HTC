@@ -24,7 +24,7 @@ if __name__ == '__main__':
     histones, histones_label = DataSimulation.make_simulation_data(number=3000)
 
     print(f'Image processing...')
-    ImagePreprocessor.make_channel(histones, immobile_cutoff=0.3, hybrid_cutoff=10, nChannel=params['nChannel'])
+    ImagePreprocessor.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=10, nChannel=params['nChannel'])
     histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=params['amp'])
     zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
     print(f'Number of training items:{len(zoomed_imgs)}, processed shape:{scaled_size}, time scale:{time_scale}\n')

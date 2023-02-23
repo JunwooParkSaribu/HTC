@@ -42,7 +42,7 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
     ProgressBar.printProgressBar(progress_i, progress_total)
 
     for g_num, histones in enumerate(full_histones):
-        ImagePreprocessor.make_channel(histones, immobile_cutoff=0.3, hybrid_cutoff=10, nChannel=nChannel)
+        ImagePreprocessor.make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=10, nChannel=nChannel)
         histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=amp)
         zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
         histone_key_list = list(zoomed_imgs.keys())

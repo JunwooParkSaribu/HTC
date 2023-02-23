@@ -2,7 +2,7 @@ import numpy as np
 from H2B import H2B
 
 
-def make_immobile(histones, histones_label, nb=5, radius=0.45, max_distance=0.085, cond=(5, 50)):
+def make_immobile(histones, histones_label, nb=5, radius=0.45, max_distance=0.085, cond=(5, 100)):
     for i in range(nb):
         h2b = H2B()
         n_trajectory = int(np.random.uniform(cond[0], cond[1]))
@@ -43,7 +43,7 @@ def make_immobile(histones, histones_label, nb=5, radius=0.45, max_distance=0.08
             histones_label[str(0)] = 0
 
 
-def make_mobile(histones, histones_label, nb=5, max_distance=0.45, cond=(3, 10)):
+def make_mobile(histones, histones_label, nb=5, max_distance=0.45, cond=(4, 15)):
     for i in range(nb):
         h2b = H2B()
         n_trajectory = int(np.random.uniform(cond[0], cond[1]))
@@ -79,8 +79,8 @@ def make_mobile(histones, histones_label, nb=5, max_distance=0.45, cond=(3, 10))
 def make_hybrid(histones, histones_label, nb=5, radius=0.45, max_dist_immobile=0.085, max_dist_mobile=0.45, type=0):
     for i in range(nb):
         h2b = H2B()
-        n_trajectory = int(np.random.uniform(15, 100))
-        intermediate_trajectory = int(np.random.randint(3, 10))
+        n_trajectory = int(np.random.uniform(15, 110))
+        intermediate_trajectory = int(np.random.randint(4, 15))
         trajectory = [[10, 10]]
         prev_xy = trajectory[0]
 

@@ -226,9 +226,6 @@ def interpolate3D(current_pos, next_pos):  # 3D interpolation
 def make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=10, nChannel=3):
     histones_velocity = TrajectoryPhy.velocity(histones)
 
-    ab = list(histones.keys())[0]
-    print(len(histones_velocity[ab]))
-    print(len(histones[ab].get_trajectory()))
     hist_channel = {}
     for histone in histones:
         hist_channel[histone] = []

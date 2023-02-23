@@ -43,7 +43,7 @@ def make_immobile(histones, histones_label, nb=5, radius=0.45, max_distance=0.08
             histones_label[str(0)] = 0
 
 
-def make_mobile(histones, histones_label, nb=5, max_distance=0.45, cond=(2, 10)):
+def make_mobile(histones, histones_label, nb=5, max_distance=0.45, cond=(3, 10)):
     for i in range(nb):
         h2b = H2B()
         n_trajectory = int(np.random.uniform(cond[0], cond[1]))
@@ -80,7 +80,7 @@ def make_hybrid(histones, histones_label, nb=5, radius=0.45, max_dist_immobile=0
     for i in range(nb):
         h2b = H2B()
         n_trajectory = int(np.random.uniform(15, 100))
-        intermediate_trajectory = int(np.random.randint(2, 10))
+        intermediate_trajectory = int(np.random.randint(3, 10))
         trajectory = [[10, 10]]
         prev_xy = trajectory[0]
 

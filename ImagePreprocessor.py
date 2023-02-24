@@ -291,21 +291,21 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
             ps += '\nprediction = ' + pred
         if proba is not None:
             ps += '\nprobability = ' + str(proba)
-        ps += f'\n{str(h2b.get_time_duration())}'
+        ps += f'\n{str(round(h2b.get_time_duration(), 5))}'
     else:
         for index, prediction in enumerate(pred):
-            ps += f'Model{str(index)}:{prediction}\n'
-        ps += f'{str(h2b.get_time_duration())}'
+            ps += f'Model{str(index+1)}:{prediction}\n'
+        ps += f'{str(round(h2b.get_time_duration(), 5))}'
 
     if histone_first_pos is None:
-        plt.imshow(img, cmap='coolwarm', origin='lower')
+        plt.imshow(img, cmap='coolwarm', origin='lower', label='a')
     else:
         plt.imshow(img, cmap='coolwarm', origin='lower',
                    extent=[(histone_first_pos[0] - img_size/2)/(10**amp),
                            (histone_first_pos[0] + img_size/2)/(10**amp),
                            (histone_first_pos[1] - img_size/2)/(10**amp),
-                           (histone_first_pos[1] + img_size/2)/(10**amp)])
-    plt.title(ps)
+                           (histone_first_pos[1] + img_size/2)/(10**amp)], label='a')
+    plt.legend(title=ps)
     plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png')
 
 

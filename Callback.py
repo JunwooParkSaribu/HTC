@@ -24,7 +24,7 @@ class EarlyStoppingAtMinLoss():
             # Record the best weights if current results is better (less).
             self.best_weights = weights
             self.best_epoch = epoch
-            print(f' saved epoch={self.best_epoch}')
+            print(f' Epoch saved={self.best_epoch + 1}')
             return None
         else:
             self.wait += 1

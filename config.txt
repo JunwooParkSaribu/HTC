@@ -1,6 +1,6 @@
 data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell
 save_dir = ./result/pred_wholecells_by_cutoff
-model_dir = ./24_02_simulated_9000samples
+model_dir = ./model3
 cut_off = 5
 all = True
 amp = 2

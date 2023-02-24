@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 
 data_path = 'data/TrainingSample'
-model_path = '25_02_simulated_9000samples'
+model_path = 'model4_lab'
 report_path = 'result/eval_10500samples_training.trxyt.csv'
 
 

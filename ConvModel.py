@@ -129,7 +129,8 @@ class HTC(keras.Model):
                 f'Loss:{self.train_loss.result() : <9.5f}, '
                 f'Accuracy:{self.train_accuracy.result() * 100 : <9.5f}, '
                 f'Test Loss:{self.test_loss.result() : <9.5f}, '
-                f'Test Accuracy:{self.test_accuracy.result() * 100 : <9.5f}'
+                f'Test Accuracy:{self.test_accuracy.result() * 100 : <9.5f}',
+                end=' '
             )
 
             # Callback

@@ -14,6 +14,7 @@ class EarlyStoppingAtMinLoss():
         self.stopped_epoch = 0
         # Initialize the best as infinity.
         self.best = np.Inf
+        self.best_epoch = 0
 
     def on_epoch_end(self, epoch, weights, loss=None):
         current = loss
@@ -22,6 +23,8 @@ class EarlyStoppingAtMinLoss():
             self.wait = 0
             # Record the best weights if current results is better (less).
             self.best_weights = weights
+            self.best_epoch = epoch
+            print(f' saved epoch={self.best_epoch}')
             return None
         else:
             self.wait += 1
@@ -30,6 +33,7 @@ class EarlyStoppingAtMinLoss():
                 print("Restoring model weights from the end of the best epoch.")
                 print(f'Best epoch={self.stopped_epoch + 1 - self.patience}')
                 return self.best_weights
+            print(' ')
             return None
 
     def on_train_end(self):

@@ -19,7 +19,7 @@ if __name__ == '__main__':
     params = ReadParam.read('.')
     print(f'\nLoading the data...')
     histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], chunk=False)[0]
-    histones_label = Labeling.make_label(histones, radius=0.45, density=0.4)
+    histones_label = Labeling.make_label(histones, radius=0.45, density=0.6)
     #histones_label = Labeling.label_from_report(histones, report_path)
     #histones, histones_label = DataSimulation.make_simulation_data(number=3000)
 

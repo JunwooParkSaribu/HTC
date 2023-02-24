@@ -73,7 +73,7 @@ def accumulate(histone):
     return acc_histone
 
 
-def check_balls(histones, radius=0.45, density=0.4) -> dict:
+def check_balls(histones, radius=0.45, density=0.5) -> dict:
     histones_balls = {}
     for histone in histones:
         n_balls = 0

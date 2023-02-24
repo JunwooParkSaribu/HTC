@@ -2,6 +2,8 @@ import DataAnalysis
 import MakeImage
 import DataSimulation
 import ImagePreprocessor
+import DataLoad
+import Labeling
 
 #DataAnalysis.bootstrapping_mean('./result/before/all.csv', repeat=10000)
 #DataAnalysis.confusion_matrix(['./result/pred1_vs_pred2.csv'])
@@ -34,7 +36,7 @@ reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
            './result/pred_wholecells_by_cutoff/cutoff5_model2.csv',
            './result/pred_wholecells_by_cutoff/cutoff5_model3_lab.csv']
 #DataAnalysis.confusion_matrix(reports)
-MakeImage.comparison_from_reports(reports, img_save_path='./result/image')
+#MakeImage.comparison_from_reports(reports, img_save_path='./result/image')
 #MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/eval_all.csv', option=0, img_save_path='./result/image')
 
 

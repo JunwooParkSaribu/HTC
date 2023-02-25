@@ -19,12 +19,12 @@ if __name__ == '__main__':
     params = ReadParam.read('.')
     print(f'\nLoading the data...')
     histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], chunk=False)[0]
-    histones_label = Labeling.make_label(histones, radius=0.45, density=0.6)
+    histones_label = Labeling.make_label(histones, radius=0.40, density=0.6)
     #histones_label = Labeling.label_from_report(histones, report_path)
     #histones, histones_label = DataSimulation.make_simulation_data(number=3000)
 
     print(f'Image processing...')
-    ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=12, nChannel=params['nChannel'])
+    ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=params['nChannel'])
     histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=params['amp'])
     zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(300, 300))
     print(f'Number of training items:{len(zoomed_imgs)}, processed shape:{scaled_size}, time scale:{time_scale}\n')

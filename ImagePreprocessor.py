@@ -223,7 +223,7 @@ def interpolate3D(current_pos, next_pos):  # 3D interpolation
     return pos
 
 
-def make_channel(histones, immobile_cutoff=3, hybrid_cutoff=12, nChannel=3):
+def make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=3):
     histones_velocity = TrajectoryPhy.velocity(histones)
 
     hist_channel = {}

@@ -46,7 +46,7 @@ def read_file(file: str, cutoff: int) -> dict:
         print(f"{file} read err, {e}")
 
 
-def file_distrib(paths: list, cutoff=5, group_size=3000, chunk=True) -> list:
+def file_distrib(paths: list, cutoff=5, group_size=2000, chunk=True) -> list:
     if os.path.isdir(paths[0]):
         files = os.listdir(paths[0])
         histones = {}

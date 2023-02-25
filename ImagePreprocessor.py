@@ -223,7 +223,7 @@ def interpolate3D(current_pos, next_pos):  # 3D interpolation
     return pos
 
 
-def make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=10, nChannel=3):
+def make_channel(histones, immobile_cutoff=3, hybrid_cutoff=12, nChannel=3):
     histones_velocity = TrajectoryPhy.velocity(histones)
 
     hist_channel = {}
@@ -244,7 +244,7 @@ def make_channel(histones, immobile_cutoff=0.5, hybrid_cutoff=10, nChannel=3):
     del histones_velocity
 
 
-def zoom(imgs, size=1000, to_size=(500, 500)):
+def zoom(imgs, size=1000, to_size=(300, 300)):
     zoomed_imgs = {}
     keys = list(imgs.keys())
     for histone in keys:

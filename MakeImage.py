@@ -40,7 +40,7 @@ def recursive_filesearch(path, filename, h2b_ids, cls, img_save_path, lbs: list 
         ImagePreprocessor.make_channel(temp, immobile_cutoff=3, hybrid_cutoff=8, nChannel=params['nChannel'])
         histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(temp, img_scale=10, amp=params['amp']
                                                                               , correction=True)
-        zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(300, 300))
+        zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
         make_image(temp, zoomed_imgs, scaled_size, params['amp'], img_save_path)
         return 0
 

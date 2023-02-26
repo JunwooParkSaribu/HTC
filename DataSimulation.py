@@ -43,7 +43,7 @@ def make_immobile(histones, histones_label, nb=5, radius=0.4, max_distance=0.085
             histones_label[str(0)] = 0
 
 
-def make_mobile(histones, histones_label, nb=5, max_distance=0.45, cond=(3, 10)):
+def make_mobile(histones, histones_label, nb=5, max_distance=0.45, cond=(3, 15)):
     for i in range(nb):
         h2b = H2B()
         n_trajectory = int(np.random.uniform(cond[0], cond[1]))

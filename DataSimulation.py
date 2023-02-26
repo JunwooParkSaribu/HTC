@@ -43,7 +43,7 @@ def make_immobile(histones, histones_label, nb=5, radius=0.4, max_distance=0.085
             histones_label[str(0)] = 0
 
 
-def make_mobile(histones, histones_label, nb=5, max_distance=0.45, cond=(4, 15)):
+def make_mobile(histones, histones_label, nb=5, max_distance=0.45, cond=(3, 10)):
     for i in range(nb):
         h2b = H2B()
         n_trajectory = int(np.random.uniform(cond[0], cond[1]))
@@ -79,8 +79,8 @@ def make_mobile(histones, histones_label, nb=5, max_distance=0.45, cond=(4, 15))
 def make_hybrid(histones, histones_label, nb=5, radius=0.4, max_dist_immobile=0.085, max_dist_mobile=0.45, type=0):
     for i in range(nb):
         h2b = H2B()
-        n_trajectory = int(np.random.uniform(15, 110))
-        intermediate_trajectory = int(np.random.randint(4, 15))
+        n_trajectory = int(np.random.uniform(30, 110))
+        intermediate_trajectory = int(np.random.randint(2, 5))
         trajectory = [[10, 10]]
         prev_xy = trajectory[0]
 
@@ -104,10 +104,15 @@ def make_hybrid(histones, histones_label, nb=5, radius=0.4, max_dist_immobile=0.
                 elif len(trajectory) < (n_trajectory/2.5 + intermediate_trajectory):
                     x = np.random.uniform(prev_xy[0] - max_dist_mobile, prev_xy[0] + max_dist_mobile)
                     y = np.random.uniform(prev_xy[1] - max_dist_mobile, prev_xy[1] + max_dist_mobile)
-                    xy = np.array([x, y])
-                    trajectory.append(xy)
-                    prev_direction = xy - prev_xy
-                    prev_xy = xy
+                    flag = 1
+                    for traj in trajectory:
+                        if np.sqrt((traj[0] - x) ** 2 + (traj[1] - y) ** 2) < radius:
+                            flag = 0
+                    if flag == 1:
+                        xy = np.array([x, y])
+                        trajectory.append(xy)
+                        prev_direction = xy - prev_xy
+                        prev_xy = xy
                 else:
                     new_center = prev_xy
                     x = np.random.uniform(prev_xy[0]-max_dist_immobile, prev_xy[0]+max_dist_immobile)
@@ -140,19 +145,29 @@ def make_hybrid(histones, histones_label, nb=5, radius=0.4, max_dist_immobile=0.
                 else:
                     x = np.random.uniform(prev_xy[0] - max_dist_mobile, prev_xy[0] + max_dist_mobile)
                     y = np.random.uniform(prev_xy[1] - max_dist_mobile, prev_xy[1] + max_dist_mobile)
-                    xy = np.array([x, y])
-                    trajectory.append(xy)
-                    prev_direction = xy - prev_xy
-                    prev_xy = xy
+                    flag = 1
+                    for traj in trajectory:
+                        if np.sqrt((traj[0] - x) ** 2 + (traj[1] - y) ** 2) < radius:
+                            flag = 0
+                    if flag == 1:
+                        xy = np.array([x, y])
+                        trajectory.append(xy)
+                        prev_direction = xy - prev_xy
+                        prev_xy = xy
 
             else:
-                if len(trajectory) < n_trajectory/10:
+                if len(trajectory) < intermediate_trajectory:
                     x = np.random.uniform(prev_xy[0] - max_dist_mobile, prev_xy[0] + max_dist_mobile)
                     y = np.random.uniform(prev_xy[1] - max_dist_mobile, prev_xy[1] + max_dist_mobile)
-                    xy = np.array([x, y])
-                    trajectory.append(xy)
-                    prev_direction = xy - prev_xy
-                    prev_xy = xy
+                    flag = 1
+                    for traj in trajectory:
+                        if np.sqrt((traj[0] - x) ** 2 + (traj[1] - y) ** 2) < radius:
+                            flag = 0
+                    if flag == 1:
+                        xy = np.array([x, y])
+                        trajectory.append(xy)
+                        prev_direction = xy - prev_xy
+                        prev_xy = xy
                 else:
                     new_center = prev_xy
                     x = np.random.uniform(prev_xy[0]-max_dist_immobile, prev_xy[0]+max_dist_immobile)
@@ -189,14 +204,16 @@ def make_simulation_data(number=3000):
     histones_label = {}
 
     # make immobile H2Bs
-    make_immobile(histones, histones_label, nb=int(number), radius=0.4, max_distance=0.085)
+    make_immobile(histones, histones_label, nb=int(number/3), radius=0.1, max_distance=0.085)
+    make_immobile(histones, histones_label, nb=int(number/3), radius=0.2, max_distance=0.085)
+    make_immobile(histones, histones_label, nb=int(number/3), radius=0.3, max_distance=0.085)
 
     # make hybrid H2Bs
-    make_hybrid(histones, histones_label, nb=int(number/3), radius=0.4, max_dist_immobile=0.085,
+    make_hybrid(histones, histones_label, nb=int(number/3), radius=0.3, max_dist_immobile=0.085,
                 max_dist_mobile=0.45, type=0)
-    make_hybrid(histones, histones_label, nb=int(number/3), radius=0.4, max_dist_immobile=0.085,
+    make_hybrid(histones, histones_label, nb=int(number/3), radius=0.3, max_dist_immobile=0.085,
                 max_dist_mobile=0.45, type=1)
-    make_hybrid(histones, histones_label, nb=int(number/3), radius=0.4, max_dist_immobile=0.085,
+    make_hybrid(histones, histones_label, nb=int(number/3), radius=0.3, max_dist_immobile=0.085,
                 max_dist_mobile=0.45, type=2)
 
     # make mobile H2Bs

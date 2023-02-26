@@ -90,8 +90,12 @@ def check_balls(histones, radius=0.45, density=0.5) -> dict:
                 else:
                     hybrid_flag = 1
             if trajec_density == all_trajec_n:
-                n_balls = 1  # immobile
-                break
+                if histones[histone].get_time_duration() < 20 and histones[histone].get_max_radius > 0.2:
+                    n_balls = 0  # mobile
+                    break
+                else:
+                    n_balls = 1  # immobile
+                    break
             if trajec_density/all_trajec_n > density and all_trajec_n > 15:
                 n_balls += 1
         histones_balls[histone] = [n_balls, hybrid_flag]

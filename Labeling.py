@@ -8,10 +8,13 @@ def make_label(histones, radius=0.4, density=0.5) -> []:
     for histone in histones:
         if histones_balls[histone][0] == 1 and histones_balls[histone][1] == 0:
             histone_label[histone] = 0  # immobile
+            histones[histone].set_manuel_label(0)
         elif histones_balls[histone][0] == 0:
             histone_label[histone] = 2  # mobile
+            histones[histone].set_manuel_label(2)
         else:
             histone_label[histone] = 1  # hybrid
+            histones[histone].set_manuel_label(1)
 
     del histones_balls
     return histone_label

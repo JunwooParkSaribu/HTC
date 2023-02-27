@@ -2,7 +2,7 @@ import numpy as np
 
 
 class DataGenerator:
-    def __init__(self, inputs, ratio=0.8, shuffle=True):
+    def __init__(self, histones, inputs, ratio=0.8, shuffle=True):
         self.train_X = []
         self.train_Y = []
         self.test_X = []
@@ -10,16 +10,16 @@ class DataGenerator:
         self.keys = list(inputs.keys())
         self.size = len(inputs)
         self.split_index = int(self.size * ratio)
-        self.n_class = len(set([inputs[key].get_manuel_label() for key in self.keys]))
+        self.n_class = len(set([histones[key].get_manuel_label() for key in self.keys]))
         n_c_check = [0] * self.n_class
 
         if shuffle:
             np.random.shuffle(self.keys)
 
-        if inputs[self.keys[0]].get_manuel_label() is not None:
+        if histones[self.keys[0]].get_manuel_label() is not None:
             for i, key in enumerate(self.keys):
                 img = inputs[key]
-                label = inputs[key].get_manuel_label()
+                label = histones[key].get_manuel_label()
                 if n_c_check[label] < int(self.split_index/self.n_class):
                     self.train_X.append(img)
                     self.train_Y.append(label)
@@ -50,7 +50,7 @@ class DataGenerator:
             i += 1
 
 
-def conversion(training_set, keylist=None, batch_size=1000, eval=True):
+def conversion(histones, training_set, keylist=None, batch_size=1000, eval=True):
     size = len(training_set)
     train_X = []
     train_Y = []
@@ -82,7 +82,7 @@ def conversion(training_set, keylist=None, batch_size=1000, eval=True):
                 return
             while i < size:
                 train_X.append(training_set[keys[i]])
-                train_Y.append(training_set[keys[i]].get_manuel_label())
+                train_Y.append(histones[keys[i]].get_manuel_label())
                 i += 1
                 if i % batch_size == 0:
                     break

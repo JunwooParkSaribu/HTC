@@ -51,7 +51,7 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
         zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
         histone_key_list = list(zoomed_imgs.keys())
         # Image generator
-        gen = ImgGenerator.conversion(zoomed_imgs, keylist=histone_key_list, batch_size=batch_size, eval=True)
+        gen = ImgGenerator.conversion(histones, zoomed_imgs, keylist=histone_key_list, batch_size=batch_size, eval=True)
         # Prediction
         batch_y_predict, batch_y_predict_proba, progress_i = predict(gen, scaled_size, nChannel, progress_i, progress_total)
 

@@ -31,9 +31,8 @@ if __name__ == '__main__':
 
     with ConvModel.tf.device('/cpu:0'):
         print(f'Generator building...')
-        gen = ImgGenerator.DataGenerator(zoomed_imgs, ratio=0.8)
+        gen = ImgGenerator.DataGenerator(histones, zoomed_imgs, ratio=0.8)
         print(f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
-        del histones_imgs; del histones;
         train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,
                                                             output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
                                                             output_shapes=((scaled_size[0], scaled_size[1], params['nChannel']), ())

@@ -19,9 +19,9 @@ if __name__ == '__main__':
     params = ReadParam.read('.')
     print(f'\nLoading the data...')
     #histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], chunk=False)[0]
-    #histones_label = Labeling.make_label(histones, radius=0.40, density=0.6)
-    #histones_label = Labeling.label_from_report(histones, report_path)
-    histones, histones_label = DataSimulation.make_simulation_data(number=3900)
+    #Labeling.make_label(histones, radius=0.40, density=0.6)
+    #Labeling.label_from_report(histones, report_path)
+    histones = DataSimulation.make_simulation_data(number=3900)
 
     print(f'Image processing...')
     ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=params['nChannel'])
@@ -31,9 +31,9 @@ if __name__ == '__main__':
 
     with ConvModel.tf.device('/cpu:0'):
         print(f'Generator building...')
-        gen = ImgGenerator.DataGenerator(zoomed_imgs, histones_label, ratio=0.8)
+        gen = ImgGenerator.DataGenerator(zoomed_imgs, ratio=0.8)
         print(f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
-        del histones_imgs; del histones_label; del histones;
+        del histones_imgs; del histones;
         train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,
                                                             output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
                                                             output_shapes=((scaled_size[0], scaled_size[1], params['nChannel']), ())

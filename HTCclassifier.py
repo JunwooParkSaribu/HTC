@@ -48,7 +48,8 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
         histone_key_list = list(zoomed_imgs.keys())
 
         gen = ImgGenerator.conversion(zoomed_imgs, keylist=histone_key_list, batch_size=batch_size, eval=False)
-        batch_y_predict, batch_y_predict_proba, progress_i = predict(gen, scaled_size, nChannel, progress_i, progress_total)
+        batch_y_predict, batch_y_predict_proba, progress_i = predict(gen, scaled_size,
+                                                                     nChannel, progress_i, progress_total)
 
         for index, histone in enumerate(histone_key_list):
             histones[histone].set_predicted_label(batch_y_predict[index])

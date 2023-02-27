@@ -291,11 +291,11 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
             ps += '\nprediction = ' + pred
         if proba is not None:
             ps += '\nprobability = ' + str(proba)
-        ps += f'\n{str(round(h2b.get_time_duration(), 5))}'
+        ps += f'\nDuration:{str(round(h2b.get_time_duration(), 5))}sec'
     else:
         for index, prediction in enumerate(pred):
             ps += f'Model{str(index+1)}:{prediction}\n'
-        ps += f'{str(round(h2b.get_time_duration(), 5))}'
+        ps += f'Duration:{str(round(h2b.get_time_duration(), 5))}sec'
 
     if histone_first_pos is None:
         plt.imshow(img, cmap='coolwarm', origin='lower', label='a')
@@ -309,8 +309,8 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
     plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png')
 
 
-def make_gif(full_histones, filename, id, immobile_cutoff=0.3,
-             hybrid_cutoff=10, nChannel=3, img_scale=5, amp=2):
+def make_gif(full_histones, filename, id, immobile_cutoff=3,
+             hybrid_cutoff=8, nChannel=3, img_scale=5, amp=2):
     try:
         histones = {}
         if type(full_histones) is list:

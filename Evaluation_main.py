@@ -43,23 +43,21 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
 
     for g_num, histones in enumerate(full_histones):
         # Image Processing
-        histones_label = Labeling.make_label(histones, radius=0.4, density=0.6)
-        #histones_label = Labeling.label_from_report(histones, './result/old_eval_all_35300h2b.csv')
+        Labeling.make_label(histones, radius=0.4, density=0.6)
+        #Labeling.label_from_report(histones, './result/old_eval_all_35300h2b.csv')
 
         ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=nChannel)
         histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=amp)
         zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
         histone_key_list = list(zoomed_imgs.keys())
         # Image generator
-        gen = ImgGenerator.conversion(zoomed_imgs, histones_label,
-                                      keylist=histone_key_list, batch_size=batch_size, eval=True)
+        gen = ImgGenerator.conversion(zoomed_imgs, keylist=histone_key_list, batch_size=batch_size, eval=True)
         # Prediction
         batch_y_predict, batch_y_predict_proba, progress_i = predict(gen, scaled_size, nChannel, progress_i, progress_total)
 
         for index, histone in enumerate(histone_key_list):
             histones[histone].set_predicted_label(batch_y_predict[index])
             histones[histone].set_predicted_proba(batch_y_predict_proba[index])
-            histones[histone].set_manuel_label(histones_label[histone])
 
 
 if __name__ == '__main__':

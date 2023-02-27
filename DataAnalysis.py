@@ -64,7 +64,9 @@ def ratio_calcul(report):
     return immobile/total, hybrid/total, mobile/total
 
 
-def cell_class_map(report, show=[0, 1, 2]):
+def cell_class_map(report, show=None):
+    if show is None:
+        show = [0, 1, 2]
     header, data = DataLoad.read_report(report)
     plt.figure()
     ax = plt.axes()
@@ -87,7 +89,9 @@ def cell_class_map(report, show=[0, 1, 2]):
     plt.show()
 
 
-def cell_radius_map(report, show=[0, 1, 2]):
+def cell_radius_map(report, show=None):
+    if show is None:
+        show = [0, 1, 2]
     header, data = DataLoad.read_report(report)
     plt.figure()
     ax = plt.axes()

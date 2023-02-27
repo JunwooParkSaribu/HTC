@@ -15,6 +15,10 @@ def confusion_matrix(report: list | str) -> None:
             for dt in data:
                 label.append(dt['labeled_class_id'])
                 pred.append(dt['predicted_class_id'])
+
+            similarity = [1 if x1 == x2 else 0 for x1, x2 in zip(label, pred)]
+            print(f'Similarity:{np.sum(similarity) / len(similarity)}')
+
             cm = metrics.confusion_matrix(label, pred)
             cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=cm,
                                                         display_labels=['immobile', 'hybrid', 'mobile'])
@@ -37,6 +41,9 @@ def confusion_matrix(report: list | str) -> None:
                         if f"{comp_dt['filename']}@{comp_dt['h2b_id']}" in data:
                             pred1.append(data[f"{comp_dt['filename']}@{comp_dt['h2b_id']}"])
                             pred2.append(comp_dt['predicted_class_id'])
+
+                    similarity = [1 if x1==x2 else 0 for x1, x2 in zip(pred1, pred2)]
+                    print(f'Similarity:{np.sum(similarity)/len(similarity)}')
 
                     cm = metrics.confusion_matrix(pred1, pred2)
                     cm_display = metrics.ConfusionMatrixDisplay(confusion_matrix=cm,

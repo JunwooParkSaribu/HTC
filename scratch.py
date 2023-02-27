@@ -32,11 +32,8 @@ plt.show()
 """
 
 
-reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
-           './result/pred_wholecells_by_cutoff/cutoff5_model2.csv',
-           './result/pred_wholecells_by_cutoff/cutoff5_model3_lab.csv',
-           './result/pred_wholecells_by_cutoff/cutoff5_model4.csv',
-           './result/pred_wholecells_by_cutoff/cutoff5_model5.csv']
+reports = ['./result/pred_wholecells_by_cutoff/cutoff15_model1.csv',
+           './result/pred_wholecells_by_cutoff/cutoff15_model2.csv',]
 
 
 DataAnalysis.confusion_matrix(reports)

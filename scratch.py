@@ -31,14 +31,17 @@ plt.legend()
 plt.show()
 """
 
-
+"""
 reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
            './result/pred_wholecells_by_cutoff/cutoff5_model2.csv',
            './result/pred_wholecells_by_cutoff/cutoff5_model3_lab.csv',
            './result/pred_wholecells_by_cutoff/cutoff5_model4.csv',
            './result/pred_wholecells_by_cutoff/cutoff5_model5.csv']
-#DataAnalysis.confusion_matrix(reports)
-MakeImage.comparison_from_reports(reports, img_save_path='./result/image')
+"""
+reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
+           './result/pred_wholecells_by_cutoff/pred_all.csv']
+DataAnalysis.confusion_matrix(reports)
+#MakeImage.comparison_from_reports(reports, img_save_path='./result/image')
 #MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model1.csv', option=0, img_save_path='./result/image')#
 
 

@@ -2,9 +2,9 @@ class H2B():
     def __init__(self):
         self.trajectory = []
         self.time = []
-        self.max_radius = None
         self.channel = []
         self.channel_size = 0
+        self.max_radius = None
         self.file_name = None
         self.id = None
         self.predicted_label = None

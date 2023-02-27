@@ -10,7 +10,7 @@ class DataGenerator:
         self.keys = list(inputs.keys())
         self.size = len(inputs)
         self.split_index = int(self.size * ratio)
-        self.n_class = len(set(inputs[key].get_manuel_label() for key in self.keys))
+        self.n_class = len(set([inputs[key].get_manuel_label() for key in self.keys]))
         n_c_check = [0] * self.n_class
 
         if shuffle:

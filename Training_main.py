@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 
 data_path = 'data/TrainingSample'
-model_path = 'model5'
+model_path = 'model6'
 report_path = 'result/eval_10500samples_training.trxyt.csv'
 
 
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     #histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], chunk=False)[0]
     #histones_label = Labeling.make_label(histones, radius=0.40, density=0.6)
     #histones_label = Labeling.label_from_report(histones, report_path)
-    histones, histones_label = DataSimulation.make_simulation_data(number=3000)
+    histones, histones_label = DataSimulation.make_simulation_data(number=3900)
 
     print(f'Image processing...')
     ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=params['nChannel'])
@@ -46,7 +46,7 @@ if __name__ == '__main__':
         training_model = ConvModel.HTC()
         training_model.compile(jit_compile=True)
         train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,
-                                                         callback=Callback.EarlyStoppingAtMinLoss(patience=50),
+                                                         callback=Callback.EarlyStoppingAtMinLoss(patience=30),
                                                          trace='training_test_loss')
         training_model.save(model_path)
 

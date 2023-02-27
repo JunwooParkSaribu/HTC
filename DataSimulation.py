@@ -199,14 +199,16 @@ def make_hybrid(histones, histones_label, nb=5, radius=0.4, max_dist_immobile=0.
             histones_label[str(0)] = 1
 
 
-def make_simulation_data(number=3000):
+def make_simulation_data(number=3900):
     histones = {}
     histones_label = {}
 
     # make immobile H2Bs
-    make_immobile(histones, histones_label, nb=int(number/3), radius=0.1, max_distance=0.085)
-    make_immobile(histones, histones_label, nb=int(number/3), radius=0.2, max_distance=0.085)
-    make_immobile(histones, histones_label, nb=int(number/3), radius=0.3, max_distance=0.085)
+    make_immobile(histones, histones_label, nb=int(number/5), radius=0.05, max_distance=0.085)
+    make_immobile(histones, histones_label, nb=int(number/5), radius=0.1, max_distance=0.085)
+    make_immobile(histones, histones_label, nb=int(number/5), radius=0.2, max_distance=0.085)
+    make_immobile(histones, histones_label, nb=int(number/5), radius=0.3, max_distance=0.085)
+    make_immobile(histones, histones_label, nb=int(number/5), radius=0.4, max_distance=0.085)
 
     # make hybrid H2Bs
     make_hybrid(histones, histones_label, nb=int(number/3), radius=0.3, max_dist_immobile=0.085,

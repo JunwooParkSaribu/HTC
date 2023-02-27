@@ -18,10 +18,10 @@ if __name__ == '__main__':
     epochs = 200
     params = ReadParam.read('.')
     print(f'\nLoading the data...')
-    #histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], chunk=False)[0]
-    #Labeling.make_label(histones, radius=0.40, density=0.6)
+    histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], chunk=False)[0]
+    Labeling.make_label(histones, radius=0.4, density=0.6)
     #Labeling.label_from_report(histones, report_path)
-    histones = DataSimulation.make_simulation_data(number=3900)
+    #histones = DataSimulation.make_simulation_data(number=3900)
 
     print(f'Image processing...')
     ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=params['nChannel'])

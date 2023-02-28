@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 
 data_path = 'data/TrainingSample'
-model_path = 'model6'
+model_path = 'model7'
 report_path = 'result/eval_10500samples_training.trxyt.csv'
 
 
@@ -21,7 +21,7 @@ if __name__ == '__main__':
     #histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], chunk=False)[0]
     #Labeling.make_label(histones, radius=0.4, density=0.6)
     #Labeling.label_from_report(histones, report_path)
-    histones = DataSimulation.make_simulation_data(number=3900)
+    histones = DataSimulation.make_simulation_data(number=4200)
 
     print(f'Image processing...')
     ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=params['nChannel'])

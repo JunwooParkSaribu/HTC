@@ -1,53 +1,63 @@
 import numpy as np
+import ImagePreprocessor
 
 
 class DataGenerator:
-    def __init__(self, histones, inputs, ratio=0.8, shuffle=True):
-        self.train_X = []
-        self.train_Y = []
-        self.test_X = []
-        self.test_Y = []
-        self.keys = list(inputs.keys())
-        self.size = len(inputs)
-        self.split_index = int(self.size * ratio)
+    def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, shuffle=True):
+        self.histones = histones
+        self.train_keys = []
+        self.test_keys = []
+        self.amp = amp
+        self.to_size = to_size
+        self.keys = list(histones.keys())
+        self.size = len(histones)
+        self.train_size = int(self.size * ratio)
+        self.test_size = self.size - self.train_size
         self.n_class = len(set([histones[key].get_manuel_label() for key in self.keys]))
         n_c_check = [0] * self.n_class
-
         if shuffle:
             np.random.shuffle(self.keys)
 
-        if histones[self.keys[0]].get_manuel_label() is not None:
-            for i, key in enumerate(self.keys):
-                img = inputs[key]
-                label = histones[key].get_manuel_label()
-                if n_c_check[label] < int(self.split_index/self.n_class):
-                    self.train_X.append(img)
-                    self.train_Y.append(label)
-                    n_c_check[label] += 1
-                else:
-                    self.test_X.append(img)
-                    self.test_Y.append(label)
-        else:
-            for i, key in enumerate(self.keys):
-                self.test_X.append(inputs[key])
+        for i, key in enumerate(self.keys):
+            label = self.histones[key].get_manuel_label()
+            if n_c_check[label] < int(self.train_size/self.n_class):
+                self.train_keys.append(key)
+                n_c_check[label] += 1
+            else:
+                self.test_keys.append(key)
 
     def get_keys(self):
         return self.keys
 
     def get_size(self):
-        return len(self.train_X), len(self.test_X)
+        return self.train_size, self.test_size
+
+    def get_scaled_size(self):
+        return self.to_size
 
     def train_generator(self):
-        i = 0
-        while i < len(self.train_X):
-            yield self.train_X[i], self.train_Y[i]
-            i += 1
+        train_i = 0
+        while train_i < self.train_size:
+            trainable_histone = {}
+            histone_id = self.train_keys[train_i]
+            trainable_histone[histone_id] = self.histones[histone_id]
+            histones_imgs, img_size, time_scale =\
+                ImagePreprocessor.preprocessing(trainable_histone, img_scale=10, amp=self.amp)
+            zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=self.to_size)
+            yield zoomed_imgs[histone_id], self.histones[histone_id].get_manuel_label()
+            train_i += 1
 
     def test_generator(self):
-        i = 0
-        while i < len(self.test_X):
-            yield self.test_X[i], self.test_Y[i]
-            i += 1
+        test_i = 0
+        while test_i < self.test_size:
+            test_histone = {}
+            histone_id = self.test_keys[test_i]
+            test_histone[histone_id] = self.histones[histone_id]
+            histones_imgs, img_size, time_scale =\
+                ImagePreprocessor.preprocessing(test_histone, img_scale=10, amp=self.amp)
+            zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=self.to_size)
+            yield zoomed_imgs[histone_id], self.histones[histone_id].get_manuel_label()
+            test_i += 1
 
 
 def conversion(histones, training_set, keylist=None, batch_size=1000, eval=True):

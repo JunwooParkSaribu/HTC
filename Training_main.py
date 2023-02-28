@@ -23,23 +23,25 @@ if __name__ == '__main__':
     #Labeling.label_from_report(histones, report_path)
     histones = DataSimulation.make_simulation_data(number=4200)
 
-    print(f'Image processing...')
+    print(f'Channel processing...')
     ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=params['nChannel'])
-    histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=params['amp'])
-    zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
-    print(f'Number of training items:{len(zoomed_imgs)}, processed shape:{scaled_size}, time scale:{time_scale}\n')
 
     with ConvModel.tf.device('/cpu:0'):
         print(f'Generator building...')
-        gen = ImgGenerator.DataGenerator(histones, zoomed_imgs, ratio=0.8)
-        print(f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
+        gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8)
+        print(f'Number of training items:{sum(gen.get_size())}, processed shape:{gen.get_scaled_size()}\n'
+              f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
         train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,
                                                             output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
-                                                            output_shapes=((scaled_size[0], scaled_size[1], params['nChannel']), ())
+                                                            output_shapes=((gen.get_scaled_size()[0],
+                                                                            gen.get_scaled_size()[1],
+                                                                            params['nChannel']), ())
                                                             ).batch(32)
         test_ds = ConvModel.tf.data.Dataset.from_generator(gen.test_generator,
                                                            output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
-                                                           output_shapes=((scaled_size[0], scaled_size[1], params['nChannel']), ())
+                                                           output_shapes=((gen.get_scaled_size()[0],
+                                                                           gen.get_scaled_size()[1],
+                                                                           params['nChannel']), ())
                                                            ).batch(32)
         print(f'Training the data...')
         training_model = ConvModel.HTC()

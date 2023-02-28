@@ -3,10 +3,12 @@ import ImagePreprocessor
 
 
 class DataGenerator:
-    def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, shuffle=True):
+    def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, split_size=5000, shuffle=True):
         self.histones = histones
         self.train_keys = []
         self.test_keys = []
+        self.train_split = []
+        self.test_split = []
         self.amp = amp
         self.to_size = to_size
         self.keys = list(histones.keys())
@@ -14,6 +16,9 @@ class DataGenerator:
         self.train_size = int(self.size * ratio)
         self.test_size = self.size - self.train_size
         self.n_class = len(set([histones[key].get_manuel_label() for key in self.keys]))
+        self.split_num = int(self.size/split_size) if self.size % split_size == 0 else int(self.size/split_size) + 1
+        self.train_split_indices = []
+        self.test_split_indices = []
         n_c_check = [0] * self.n_class
         if shuffle:
             np.random.shuffle(self.keys)
@@ -26,6 +31,12 @@ class DataGenerator:
             else:
                 self.test_keys.append(key)
 
+        self.train_split_indices = [int(i * len(self.train_keys)/self.split_num) for i in range(1, self.split_num)]
+        self.test_split_indices = [int(i * len(self.test_keys) / self.split_num) for i in range(1, self.split_num)]
+
+        self.train_split = np.split(np.array(self.train_keys), self.train_split_indices)
+        self.test_split = np.split(np.array(self.test_keys), self.test_split_indices)
+
     def get_keys(self):
         return self.keys
 
@@ -36,28 +47,28 @@ class DataGenerator:
         return self.to_size
 
     def train_generator(self):
-        train_i = 0
-        while train_i < self.train_size:
-            trainable_histone = {}
-            histone_id = self.train_keys[train_i]
-            trainable_histone[histone_id] = self.histones[histone_id]
+        for i in range(len(self.train_split)):
+            train_histones = {}
+            histones_id = self.train_split[i]
+            for histone_id in histones_id:
+                train_histones[histone_id] = self.histones[histone_id]
             histones_imgs, img_size, time_scale =\
-                ImagePreprocessor.preprocessing(trainable_histone, img_scale=10, amp=self.amp)
-            zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=self.to_size)
-            yield zoomed_imgs[histone_id], self.histones[histone_id].get_manuel_label()
-            train_i += 1
+                ImagePreprocessor.preprocessing(train_histones, img_scale=10, amp=self.amp)
+            zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=self.to_size)
+            for histone_id in histones_id:
+                yield zoomed_imgs[histone_id], self.histones[histone_id].get_manuel_label()
 
     def test_generator(self):
-        test_i = 0
-        while test_i < self.test_size:
-            test_histone = {}
-            histone_id = self.test_keys[test_i]
-            test_histone[histone_id] = self.histones[histone_id]
+        for i in range(len(self.test_split)):
+            test_histones = {}
+            histones_id = self.test_split[i]
+            for histone_id in histones_id:
+                test_histones[histone_id] = self.histones[histone_id]
             histones_imgs, img_size, time_scale =\
-                ImagePreprocessor.preprocessing(test_histone, img_scale=10, amp=self.amp)
-            zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=self.to_size)
-            yield zoomed_imgs[histone_id], self.histones[histone_id].get_manuel_label()
-            test_i += 1
+                ImagePreprocessor.preprocessing(test_histones, img_scale=10, amp=self.amp)
+            zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=self.to_size)
+            for histone_id in histones_id:
+                yield zoomed_imgs[histone_id], self.histones[histone_id].get_manuel_label()
 
 
 def conversion(histones, training_set, keylist=None, batch_size=1000, eval=True):

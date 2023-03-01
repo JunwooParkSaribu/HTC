@@ -36,7 +36,7 @@ plt.show()
 
 reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
            './result/pred_wholecells_by_cutoff/cutoff5_model2.csv',
-           './result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv']
+           './result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', './result/pred_wholecells_by_cutoff/cutoff5_model7.csv']
 
 
 #DataAnalysis.confusion_matrix(reports)

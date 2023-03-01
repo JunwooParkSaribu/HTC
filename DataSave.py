@@ -113,5 +113,23 @@ def save_report(full_data, path='', all=False, eval=False):
                                      'first_x_position': first_x_pos, 'first_y_position': first_y_pos})
 
 
-def save_simulated_data():
-    pass
+def save_simulated_data(histones, filepath):
+    try:
+        with open(filepath, 'w', encoding="utf-8") as f:
+            for histone in histones:
+                for traj, time in zip(histones[histone].get_trajectory(), histones[histone].get_time()):
+                    line = ''
+                    line += histones[histone].get_id()
+                    line += '\t'
+                    line += str(traj[0])
+                    line += '\t'
+                    line += str(traj[1])
+                    line += '\t'
+                    line += str(time)
+                    line += '\t'
+                    line += str(histones[histone].get_manuel_label())
+                    f.write(f'{line}\n')
+
+    except Exception as e:
+        print('Simulated data save err')
+        print(e)

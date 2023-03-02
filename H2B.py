@@ -76,3 +76,18 @@ class H2B():
 
     def get_manuel_label(self):
         return self.manuel_label
+
+    def copy(self):
+        copy_h2b = H2B()
+        copy_h2b.set_id(self.get_id())
+        copy_h2b.set_trajectory(self.get_trajectory())
+        copy_h2b.set_time(self.get_time())
+        copy_h2b.set_channel(self.get_channel())
+        copy_h2b.set_channel_size(self.get_channel_size())
+        copy_h2b.set_max_radius(self.get_max_radius())
+        copy_h2b.set_file_name(self.get_file_name())
+        copy_h2b.set_id(self.get_id())
+        copy_h2b.set_predicted_label(self.get_predicted_label())
+        copy_h2b.set_manuel_label(self.get_manuel_label())
+        copy_h2b.set_predicted_proba(self.get_predicted_proba())
+        return copy_h2b

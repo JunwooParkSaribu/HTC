@@ -27,7 +27,7 @@ def preprocessing(histones, img_scale=None, amp=2, interpolation=True, correctio
             if index < len(histones_channel):
                 trajec_channel = histones_channel[index]
             else:
-                trajec_channel = histones_channel[index-1]
+                trajec_channel = histones_channel[index - 1]
 
             x_val = x_shift + int(trajectory[0] * (10 ** amp))
             y_val = y_shift + int(trajectory[1] * (10 ** amp))
@@ -35,11 +35,11 @@ def preprocessing(histones, img_scale=None, amp=2, interpolation=True, correctio
 
                 # Forcing the scailing to reduce the memory
                 if y_val >= img_size:
-                    y_val = img_size-1
+                    y_val = img_size - 1
                 if y_val < 0:
                     y_val = 0
                 if x_val >= img_size:
-                    x_val = img_size-1
+                    x_val = img_size - 1
                 if x_val < 0:
                     x_val = 0
 
@@ -57,11 +57,11 @@ def preprocessing(histones, img_scale=None, amp=2, interpolation=True, correctio
                     if inter_pos[0] < 0:
                         inter_pos[0] = 0
                     if inter_pos[0] >= img_size:
-                        inter_pos[0] = img_size-1
+                        inter_pos[0] = img_size - 1
                     if inter_pos[1] < 0:
                         inter_pos[1] = 0
                     if inter_pos[1] >= img_size:
-                        inter_pos[1] = img_size-1
+                        inter_pos[1] = img_size - 1
 
                     if not channel:
                         img[inter_pos[1]][inter_pos[0]] = 1
@@ -85,7 +85,7 @@ def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=500
     for histone in histones:
         current_xval = central_point[0]
         current_yval = central_point[1]
-        start_time =  int(histones[histone][0][2] * 100)
+        start_time = int(histones[histone][0][2] * 100)
         current_time = int(histones[histone][0][2] * 100)
         if not channel:
             img = np.zeros((img_size, img_size, time_scale))
@@ -104,13 +104,13 @@ def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=500
                 shifted_time = t_time - current_time
                 scaled_y_val = img_size - y_val
                 if shifted_time >= time_scale:
-                    shifted_time = time_scale-1
+                    shifted_time = time_scale - 1
                 if scaled_y_val >= img_size:
-                    scaled_y_val = img_size-1
+                    scaled_y_val = img_size - 1
                 if scaled_y_val < 0:
                     scaled_y_val = 0
                 if x_val >= img_size:
-                    x_val = img_size-1
+                    x_val = img_size - 1
                 if x_val < 0:
                     x_val = 0
 
@@ -119,19 +119,19 @@ def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=500
                 else:
                     img[scaled_y_val][x_val][shifted_time][channel_vals] = 1
             else:
-                interpolate_pos = interpolate3D([current_xval, current_yval, current_time-start_time],
-                                                [x_val, y_val, t_time-start_time])
+                interpolate_pos = interpolate3D([current_xval, current_yval, current_time - start_time],
+                                                [x_val, y_val, t_time - start_time])
                 current_xval = x_val
                 current_yval = y_val
                 current_time = t_time
                 for inter_pos in interpolate_pos:
                     # Forcing the scailing to reduce the memory
                     if inter_pos[2] >= time_scale:
-                        inter_pos[2] = time_scale-1
+                        inter_pos[2] = time_scale - 1
                     if inter_pos[0] < 0:
                         inter_pos[0] = 0
                     if inter_pos[0] >= img_size:
-                        inter_pos[0] = img_size-1
+                        inter_pos[0] = img_size - 1
                     if img_size - inter_pos[1] < 0:
                         inter_pos[1] = img_size
                     if img_size - inter_pos[1] >= img_size:
@@ -203,14 +203,14 @@ def interpolate3D(current_pos, next_pos):  # 3D interpolation
         ## need to add time slope
         if next_yval < current_yval:
             for yval in range(current_yval, next_yval, -1):
-                pos.append([next_xval, yval, next_time]) ## this is wrong
+                pos.append([next_xval, yval, next_time])  ## this is wrong
         else:
             for yval in range(current_yval, next_yval):
-                pos.append([next_xval, yval, next_time]) ## this is wrong
+                pos.append([next_xval, yval, next_time])  ## this is wrong
         return pos
 
     xy_slope = (next_yval - current_yval) / (next_xval - current_xval)
-    z_slope = np.around(np.linspace(current_time, next_time+1, num=abs(current_xval - next_xval))).astype(int)
+    z_slope = np.around(np.linspace(current_time, next_time + 1, num=abs(current_xval - next_xval))).astype(int)
     if next_xval < current_xval:
         for xval, time in zip(range(current_xval, next_xval, -1), z_slope):
             yval = int(xy_slope * (xval - current_xval)) + current_yval
@@ -249,9 +249,9 @@ def zoom(imgs, size=1000, to_size=(300, 300)):
     keys = list(imgs.keys())
     for histone in keys:
         if type(size) is not int:
-            center_pos = [int(size[0]/2), int(size[1]/2)]
+            center_pos = [int(size[0] / 2), int(size[1] / 2)]
         else:
-            center_pos = [int(size/2), int(size/2)]
+            center_pos = [int(size / 2), int(size / 2)]
         x_start = center_pos[0] - int(to_size[0] / 2)
         x_end = center_pos[0] + int(to_size[0] / 2)
         y_start = center_pos[1] - int(to_size[1] / 2)
@@ -272,18 +272,18 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
 
     if type(pred) is not list:
         if label is not None:
-            if label==0:
+            if label == 0:
                 label = 'immobile'
-            if label==1:
+            if label == 1:
                 label = 'hybrid'
-            if label==2:
+            if label == 2:
                 label = 'mobile'
         if pred is not None:
-            if pred==0:
+            if pred == 0:
                 pred = 'immobile'
-            if pred==1:
+            if pred == 1:
                 pred = 'hybrid'
-            if pred==2:
+            if pred == 2:
                 pred = 'mobile'
         if label is not None:
             ps += 'label = ' + label
@@ -294,17 +294,17 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
         ps += f'\nDuration:{str(round(h2b.get_time_duration(), 5))}sec'
     else:
         for index, prediction in enumerate(pred):
-            ps += f'Model{str(index+1)}:{prediction}\n'
+            ps += f'Model{str(index + 1)}:{prediction}\n'
         ps += f'Duration:{str(round(h2b.get_time_duration(), 5))}sec'
 
     if histone_first_pos is None:
         plt.imshow(img, cmap='coolwarm', origin='lower', label='a')
     else:
         plt.imshow(img, cmap='coolwarm', origin='lower',
-                   extent=[(histone_first_pos[0] - img_size/2)/(10**amp),
-                           (histone_first_pos[0] + img_size/2)/(10**amp),
-                           (histone_first_pos[1] - img_size/2)/(10**amp),
-                           (histone_first_pos[1] + img_size/2)/(10**amp)], label='a')
+                   extent=[(histone_first_pos[0] - img_size / 2) / (10 ** amp),
+                           (histone_first_pos[0] + img_size / 2) / (10 ** amp),
+                           (histone_first_pos[1] - img_size / 2) / (10 ** amp),
+                           (histone_first_pos[1] + img_size / 2) / (10 ** amp)], label='a')
     plt.legend(title=ps)
     plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png')
 
@@ -356,13 +356,13 @@ def make_gif(full_histones, filename, id, immobile_cutoff=3,
 
             for mod, inter_pos in enumerate(interpolate_pos):
                 if trajec_channel == 0:
-                    if mod%2 == 0:
+                    if mod % 2 == 0:
                         gif.append(img.copy())
                 elif trajec_channel == 1:
-                    if mod%3 == 0:
+                    if mod % 3 == 0:
                         gif.append(img.copy())
                 else:
-                    if mod%5 == 0:
+                    if mod % 5 == 0:
                         gif.append(img.copy())
 
                 # Forcing the scailing to reduce the memory

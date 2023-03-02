@@ -1,6 +1,33 @@
 import numpy as np
 
 
+def trjaectory_rotation(histones: dict, nb: int) -> dict:
+    if 360 % nb != 0:
+        print('360%nb should be 0')
+        raise Exception
+
+    thetas = [theta * (int(360 / nb)) for theta in range(nb)]
+    rotation = lambda theta: np.array([
+        [np.cos((np.pi * theta) / 180), np.sin((np.pi * theta) / 180)],
+        [-np.sin((np.pi * theta) / 180), np.cos((np.pi * theta) / 180)]
+    ])
+    rotation_matrix = [rotation(theta) for theta in thetas]
+
+    augmented_histones = {}
+    for histone in histones:
+        for theta, rot_mat in zip(thetas, rotation_matrix):
+            rotated_histone = histones[histone].copy()
+            rotated_histone.set_id(f'{rotated_histone.get_id()}_{theta}deg')
+            trajectory = histones[histone].get_trajectory()
+            trajectory_temp = []
+            for traj in trajectory:
+                trajectory_temp.append(np.dot(rot_mat, traj))
+            rotated_histone.set_trajectory(trajectory_temp)
+            augmented_histones[f'{rotated_histone.get_file_name()}@{rotated_histone.get_id()}'] = rotated_histone
+    del histones
+    return augmented_histones
+
+
 def distance(histones):
     distances = {}
     for histone in histones:

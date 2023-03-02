@@ -203,6 +203,7 @@ def make_simulation_data(number=4200):
     make_immobile(histones, nb=int(number/6), radius=0.2, max_distance=0.085)
     make_immobile(histones, nb=int(number/6), radius=0.3, max_distance=0.085)
     make_immobile(histones, nb=int(number/6), radius=0.4, max_distance=0.085)
+    print("Immobile generated")
 
     # make hybrid H2Bs
     make_hybrid(histones, nb=int(number/3), radius=0.2, max_dist_immobile=0.085,
@@ -211,7 +212,9 @@ def make_simulation_data(number=4200):
                 max_dist_mobile=0.45, type=1)
     make_hybrid(histones, nb=int(number/3), radius=0.2, max_dist_immobile=0.085,
                 max_dist_mobile=0.45, type=2)
+    print("Hybrid generated")
 
     # make mobile H2Bs
     make_mobile(histones, nb=int(number), max_distance=0.45)
+    print("Mobile generated")
     return histones

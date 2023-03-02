@@ -6,6 +6,8 @@ import DataLoad
 import Labeling
 import DataSave
 import ReadParam
+import TrajectoryPhy
+
 
 #DataAnalysis.bootstrapping_mean('./result/before/all.csv', repeat=10000)
 #DataAnalysis.confusion_matrix(['./result/pred1_vs_pred2.csv'])
@@ -36,10 +38,11 @@ plt.show()
 
 reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
            './result/pred_wholecells_by_cutoff/cutoff5_model2.csv',
-           './result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', './result/pred_wholecells_by_cutoff/cutoff5_model7.csv']
+           './result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv',
+           './result/pred_wholecells_by_cutoff/cutoff5_model7.csv']
 
 
-DataAnalysis.confusion_matrix(reports)
+#DataAnalysis.confusion_matrix(reports)
 #MakeImage.comparison_from_reports(reports, img_save_path='./result/image')
 #MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model1.csv', option=0, img_save_path='./result/image')#
 
@@ -50,6 +53,7 @@ params = ReadParam.read('.')
 
 #histones = DataSimulation.make_simulation_data(30)
 #DataSave.save_simulated_data(histones, './data/SimulationData/30_simulated_data.trxyt')
+#histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
 #ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=3)
 #histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=2, correction=True)
 #zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))

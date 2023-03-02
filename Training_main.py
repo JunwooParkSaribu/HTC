@@ -6,8 +6,10 @@ import DataSimulation
 import ConvModel
 import Callback
 import ReadParam
+import DataSave
 import matplotlib.pyplot as plt
 
+import TrajectoryPhy
 
 data_path = 'data/TrainingSample'
 model_path = 'model7'
@@ -21,7 +23,11 @@ if __name__ == '__main__':
     #histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], chunk=False)[0]
     #Labeling.make_label(histones, radius=0.4, density=0.6)
     #Labeling.label_from_report(histones, report_path)
-    histones = DataSimulation.make_simulation_data(number=4200)
+    #histones = DataSimulation.make_simulation_data(number=9000)
+    #DataSave.save_simulated_data(histones, './data/SimulationData/27000_simulated_data.trxyt')
+    histones = DataLoad.file_distrib(paths=['./data/SimulationData/27000_simulated_data.trxyt'], cutoff=2,
+                                     chunk=False)[0]
+    histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
 
     print(f'Channel processing...')
     ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=params['nChannel'])

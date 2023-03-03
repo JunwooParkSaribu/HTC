@@ -1,12 +1,9 @@
 import sys
 import numpy as np
-import DataLoad
-import Labeling
-import ImagePreprocessor
-import ImgGenerator
-import ReadParam
+from fileIO import DataLoad, DataSave, ReadParam
+from label import Labeling
+from imageProcessor import ImagePreprocessor, ImgGenerator
 import ProgressBar
-import DataSave
 from keras.models import load_model
 from tensorflow import device
 

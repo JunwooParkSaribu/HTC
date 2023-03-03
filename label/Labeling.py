@@ -1,5 +1,5 @@
-import TrajectoryPhy
-import DataLoad
+from physics import TrajectoryPhy
+from fileIO import DataLoad
 
 
 def make_label(histones, radius=0.4, density=0.5) -> []:

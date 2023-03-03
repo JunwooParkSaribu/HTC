@@ -1,7 +1,7 @@
 import os
 import csv
-import TrajectoryPhy
-from H2B import H2B
+from physics import TrajectoryPhy
+from histone.H2B import H2B
 from itertools import islice
 
 

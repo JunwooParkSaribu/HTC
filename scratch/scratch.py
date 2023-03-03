@@ -1,13 +1,6 @@
-import DataAnalysis
-import MakeImage
-import DataSimulation
-import ImagePreprocessor
-import DataLoad
-import Labeling
-import DataSave
-import ReadParam
-import TrajectoryPhy
-
+from physics import DataSimulation, TrajectoryPhy
+from imageProcessor import ImagePreprocessor, MakeImage
+from fileIO import ReadParam
 
 #DataAnalysis.bootstrapping_mean('./result/before/all.csv', repeat=10000)
 #DataAnalysis.confusion_matrix(['./result/pred1_vs_pred2.csv'])
@@ -47,7 +40,7 @@ reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
 #MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model1.csv', option=0, img_save_path='./result/image')#
 
 
-params = ReadParam.read('.')
+params = ReadParam.read('..')
 #histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'])  # 16GB RAM
 #ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cel9_no_ir.rpt_tracked.trxyt', '1820')
 
@@ -57,5 +50,5 @@ histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
 ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=3)
 histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=2, correction=True)
 zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
-MakeImage.make_image(histones, zoomed_imgs, scaled_size, amp=2, img_save_path='./scratch')
+MakeImage.make_image(histones, zoomed_imgs, scaled_size, amp=2, img_save_path='')
 

@@ -1,6 +1,5 @@
 import os
-import ReadParam
-import DataLoad
+from fileIO import DataLoad, ReadParam
 import ImagePreprocessor
 
 
@@ -24,7 +23,7 @@ def recursive_filesearch(path, filename, h2b_ids, cls, img_save_path, lbs: list 
             files.append(f)
 
     if filename in files:
-        params = ReadParam.read('.')
+        params = ReadParam.read('..')
         histones = DataLoad.read_file(f'{path}/{filename}', cutoff=0)
         temp = {}
         for hist in histones:

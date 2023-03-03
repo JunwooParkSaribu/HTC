@@ -1,5 +1,5 @@
 import numpy as np
-from H2B import H2B
+from histone.H2B import H2B
 
 
 def make_immobile(histones, nb=5, radius=0.4, max_distance=0.085, cond=(5, 150)):

@@ -1,7 +1,7 @@
 import imageio
 import numpy as np
 from matplotlib import pyplot as plt
-import TrajectoryPhy
+from physics import TrajectoryPhy
 
 
 def preprocessing(histones, img_scale=None, amp=2, interpolation=True, correction=False):

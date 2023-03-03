@@ -1,18 +1,12 @@
-import ImagePreprocessor
-import Labeling
-import ImgGenerator
-import DataLoad
-import DataSimulation
-import ConvModel
-import Callback
-import ReadParam
-import DataSave
+from imageProcessor import ImagePreprocessor, ImgGenerator
+from fileIO import DataLoad, ReadParam
+from model import ConvModel, Callback
 import matplotlib.pyplot as plt
 
-import TrajectoryPhy
+from physics import TrajectoryPhy
 
 data_path = 'data/TrainingSample'
-model_path = 'model7'
+model_path = 'model/model7'
 report_path = 'result/eval_10500samples_training.trxyt.csv'
 
 

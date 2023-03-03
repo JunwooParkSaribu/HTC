@@ -16,12 +16,19 @@ def trjaectory_rotation(histones: dict, nb: int) -> dict:
     augmented_histones = {}
     for histone in histones:
         for theta, rot_mat in zip(thetas, rotation_matrix):
+            trajectory = histones[histone].get_trajectory().copy()
+            initial_positions = trajectory[0].copy()
             rotated_histone = histones[histone].copy()
             rotated_histone.set_id(f'{rotated_histone.get_id()}_{theta}deg')
-            trajectory = histones[histone].get_trajectory()
             trajectory_temp = []
+
+            for i in range(len(trajectory)):
+                trajectory[i] -= initial_positions
             for traj in trajectory:
                 trajectory_temp.append(np.dot(rot_mat, traj))
+            for i in range(len(trajectory_temp)):
+                trajectory_temp[i] += initial_positions
+
             rotated_histone.set_trajectory(trajectory_temp)
             augmented_histones[f'{rotated_histone.get_file_name()}@{rotated_histone.get_id()}'] = rotated_histone
     del histones

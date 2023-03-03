@@ -7,7 +7,7 @@ from physics import TrajectoryPhy
 
 data_path = 'data/TrainingSample'
 model_path = 'model/model8'
-report_path = 'result/eval_10500samples_training.trxyt.csv'
+report_path = 'result/eval_10500samples_training.trxyt.csva'
 
 
 if __name__ == '__main__':

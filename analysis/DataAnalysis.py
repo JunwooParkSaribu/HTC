@@ -1,6 +1,6 @@
-from fileIO import DataLoad
 import matplotlib.pyplot as plt
 import numpy as np
+from fileIO import DataLoad
 from sklearn import metrics
 
 

@@ -2,11 +2,11 @@ from imageProcessor import ImagePreprocessor, ImgGenerator
 from fileIO import DataLoad, ReadParam
 from model import ConvModel, Callback
 import matplotlib.pyplot as plt
-
 from physics import TrajectoryPhy
 
+
 data_path = 'data/TrainingSample'
-model_path = 'model/model7'
+model_path = 'model/model8'
 report_path = 'result/eval_10500samples_training.trxyt.csv'
 
 

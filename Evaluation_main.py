@@ -1,9 +1,9 @@
 import sys
 import numpy as np
+import ProgressBar
 from fileIO import DataLoad, DataSave, ReadParam
 from label import Labeling
 from imageProcessor import ImagePreprocessor, ImgGenerator
-import ProgressBar
 from keras.models import load_model
 from tensorflow import device
 

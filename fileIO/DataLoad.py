@@ -1,5 +1,6 @@
 import os
 import csv
+import numpy as np
 from physics import TrajectoryPhy
 from histone.H2B import H2B
 from itertools import islice
@@ -40,8 +41,8 @@ def read_file(file: str, cutoff: int) -> dict:
         for histone in trajectory:
             if len(trajectory[histone]) >= cutoff:
                 histones[histone] = H2B()
-                histones[histone].set_trajectory(trajectory[histone])
-                histones[histone].set_time(time[histone])
+                histones[histone].set_trajectory(np.array(trajectory[histone]))
+                histones[histone].set_time(np.array(time[histone]))
                 info = histone.strip().split('@')
                 histones[histone].set_id(info[-1])
                 histones[histone].set_file_name('@'.join(info[:-1]))

@@ -3,8 +3,13 @@ import csv
 
 def save_report(full_data, path='', all=False, eval=False):
     histones = {}
-    for chunked_data in full_data:
-        histones |= chunked_data
+
+    if type(full_data) is list:
+        for chunked_data in full_data:
+            histones |= chunked_data
+    else:
+        histones = full_data
+
     # Accuracy only for evaluation
     if eval == True:
         miss_classfied = 0

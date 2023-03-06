@@ -41,7 +41,7 @@ plt.show()
 
 
 reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv',
-           './result/pred_wholecells_by_cutoff/xgboost_model3.csv']
+           './result/pred_wholecells_by_cutoff/pred_all.csv']
 
 
 #DataAnalysis.confusion_matrix(reports)
@@ -60,7 +60,12 @@ params = ReadParam.read('.')
 #zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
 #MakeImage.make_image(histones, zoomed_imgs, scaled_size, amp=2, img_save_path='./scratch')
 
-"""
+
+
+#histones = DataSimulation.make_simulation_data(9000)
+#DataSave.save_simulated_data(histones, './data/SimulationData/27000_resimulated_data.trxyt')
+
+""""
 histones = DataLoad.file_distrib(paths=['./data/SimulationData/27000_resimulated_data.trxyt'], cutoff=2,
                                  chunk=False)[0]
 histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
@@ -90,7 +95,7 @@ for histone in key_list:
     avg_speed = np.mean(speed)
 
     trainable_histones_X.append([x_std, y_std, x_mean, y_mean, x_median, y_median,
-                                 avg_speed, histones[histone].get_max_radius()])
+                                 avg_speed, histones[histone].get_max_radius(), histones[histone].get_time_duration()])
     trainable_histones_Y.append(histones[histone].get_manuel_label())
 trainable_histones_X = np.array(trainable_histones_X)
 trainable_histones_Y = np.array(trainable_histones_Y)
@@ -112,16 +117,12 @@ acc_train = np.sum([1 if x == 0 else 0 for x in (y_test - y_predict)]) / float(
 print('Accuracy in training set = ', acc_train)
 
 
-bst.save_model('xgb0003.model')
+bst.save_model('xgb0001.model')
 """
 
+
 """
-bst = 1
-
-
 histones = DataLoad.file_distrib(paths=params['data'], cutoff=5, chunk=False)[0]
-
-
 
 print(f'Channel processing...')
 ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=params['nChannel'])
@@ -146,11 +147,11 @@ for histone in key_list:
     avg_speed = np.mean(speed)
 
     x_test.append([x_std, y_std, x_mean, y_mean, x_median, y_median,
-                                 avg_speed, histones[histone].get_max_radius()])
+                                 avg_speed, histones[histone].get_max_radius(), histones[histone].get_time_duration()])
 trainable_histones_X = np.array(x_test)
 
 bst = xgb.Booster({'nthread': 4})
-bst.load_model('xgb0003.model')  # load data
+bst.load_model('xgb0001.model')  # load data
 
 pred_result = bst.predict(xgb.DMatrix(x_test))
 y_predict_proba = np.array([np.max(x) for x in pred_result])

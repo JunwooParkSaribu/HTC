@@ -48,17 +48,17 @@ reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv',
 #MakeImage.comparison_from_reports(reports, img_save_path='./scratch/image')
 #MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model1.csv', option=0, img_save_path='./result/image')#
 
-params = ReadParam.read('.')
-histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'])  # 16GB RAM
-ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt', '228')
+#params = ReadParam.read('.')
+#histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'])  # 16GB RAM
+#ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt', '228')
 
-#histones = DataSimulation.make_simulation_data(9000)
+#histones = DataSimulation.make_simulation_data(30)
 #DataSave.save_simulated_data(histones, './data/SimulationData/27000_resimulated_data.trxyt')
 #histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
 #ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=3)
 #histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=2, correction=True)
 #zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
-#MakeImage.make_image(histones, zoomed_imgs, scaled_size, amp=2, img_save_path='./scratch')
+#MakeImage.make_image(histones, zoomed_imgs, scaled_size, amp=2, img_save_path='./data/SimulationData/images')
 
 
 

@@ -45,12 +45,12 @@ reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv',
 
 
 #DataAnalysis.confusion_matrix(reports)
-MakeImage.comparison_from_reports(reports, img_save_path='./scratch/image')
+#MakeImage.comparison_from_reports(reports, img_save_path='./scratch/image')
 #MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model1.csv', option=0, img_save_path='./result/image')#
 
 params = ReadParam.read('.')
-#histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'])  # 16GB RAM
-#ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cel9_no_ir.rpt_tracked.trxyt', '1820')
+histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'])  # 16GB RAM
+ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt', '228')
 
 #histones = DataSimulation.make_simulation_data(9000)
 #DataSave.save_simulated_data(histones, './data/SimulationData/27000_resimulated_data.trxyt')

@@ -24,7 +24,7 @@ def preprocessing(histones, img_scale=None, amp=2, interpolation=True, correctio
         x_shift = central_point[0] - int(histone_trajectory[0][0] * (10 ** amp))
         y_shift = central_point[1] - int(histone_trajectory[0][1] * (10 ** amp))
         for index, trajectory in enumerate(histone_trajectory):
-            if index < len(histones_channel):
+            if index == 0:
                 trajec_channel = histones_channel[index]
             else:
                 trajec_channel = histones_channel[index - 1]
@@ -313,6 +313,7 @@ def make_gif(full_histones, filename, id, immobile_cutoff=3,
              hybrid_cutoff=8, nChannel=3, img_scale=5, amp=2):
     try:
         histones = {}
+
         if type(full_histones) is list:
             for h in full_histones:
                 histones |= h
@@ -324,6 +325,7 @@ def make_gif(full_histones, filename, id, immobile_cutoff=3,
         gif = []
         key = f'{filename}@{id}'
         make_channel(histones, immobile_cutoff=immobile_cutoff, hybrid_cutoff=hybrid_cutoff, nChannel=nChannel)
+        histones_velocity = TrajectoryPhy.velocity(histones)
         if img_scale is None:
             img_size = 5 * (10 ** amp)
         else:
@@ -331,6 +333,7 @@ def make_gif(full_histones, filename, id, immobile_cutoff=3,
         central_point = [int(img_size / 2), int(img_size / 2)]
         histones_channel = histones[key].get_channel()
         channel = histones[key].get_channel_size()
+        histone_velocity = histones_velocity[key]
         current_xval = central_point[0]
         current_yval = central_point[1]
         if not channel:
@@ -340,31 +343,32 @@ def make_gif(full_histones, filename, id, immobile_cutoff=3,
         histone_trajectory = histones[key].get_trajectory()
         x_shift = central_point[0] - int(histone_trajectory[0][0] * (10 ** amp))
         y_shift = central_point[1] - int(histone_trajectory[0][1] * (10 ** amp))
-
         for index, trajectory in enumerate(histone_trajectory):
-            if index < len(histones_channel):
+            if index == 0:
                 trajec_channel = histones_channel[index]
             else:
                 trajec_channel = histones_channel[index - 1]
+            print(histone_velocity)
+            print(histones_channel)
+            print(trajec_channel)
+            velocity = histone_velocity[index - 1] if index > 0 else 0
 
             x_val = x_shift + int(trajectory[0] * (10 ** amp))
             y_val = y_shift + int(trajectory[1] * (10 ** amp))
 
             interpolate_pos = interpolate([current_xval, current_yval], [x_val, y_val])
+            print('@',len(interpolate_pos))
             current_xval = x_val
             current_yval = y_val
-
             for mod, inter_pos in enumerate(interpolate_pos):
-                if trajec_channel == 0:
-                    if mod % 2 == 0:
-                        gif.append(img.copy())
-                elif trajec_channel == 1:
-                    if mod % 3 == 0:
-                        gif.append(img.copy())
+                frame = int(velocity)/2
+                print(velocity)
+                print(trajec_channel)
+                if frame == 0:
+                    gif.append(img.copy())
                 else:
-                    if mod % 5 == 0:
+                    if mod % (int(velocity)/2) == 0:
                         gif.append(img.copy())
-
                 # Forcing the scailing to reduce the memory
                 if inter_pos[0] < 0:
                     inter_pos[0] = 0

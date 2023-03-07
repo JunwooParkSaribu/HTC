@@ -7,8 +7,10 @@ def save_report(full_data, path='', all=False, eval=False):
     if type(full_data) is list:
         for chunked_data in full_data:
             histones |= chunked_data
-    else:
+    elif type(full_data) is dict:
         histones = full_data
+    else:
+        raise Exception
 
     # Accuracy only for evaluation
     if eval == True:

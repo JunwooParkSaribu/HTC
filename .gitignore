@@ -1,0 +1,12 @@
+# Mac system files
+**/.DS_Store
+
+# byte codes
+__pycache__/
+*.py[cod]
+
+# jupyter checkpoints
+.ipynb_checkpoints/
+
+.idea/
+

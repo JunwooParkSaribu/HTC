@@ -41,10 +41,10 @@ plt.show()
 
 
 reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv',
-           './result/pred_wholecells_by_cutoff/pred_all.csv']
+           './result/pred_wholecells_by_cutoff/cutoff5_model8.csv']
 
 
-#DataAnalysis.confusion_matrix(reports)
+DataAnalysis.confusion_matrix(reports)
 #MakeImage.comparison_from_reports(reports, img_save_path='./scratch/image')
 #MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model1.csv', option=0, img_save_path='./result/image')#
 

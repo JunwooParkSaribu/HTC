@@ -26,30 +26,30 @@ if __name__ == '__main__':
     print(f'Channel processing...')
     ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=params['nChannel'])
 
-    with ConvModel.tf.device('/GPU:0'):
-        print(f'Generator building...')
-        gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8)
-        print(f'Number of training items:{sum(gen.get_size())}, processed shape:{gen.get_scaled_size()}\n'
-              f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
-        train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,
+
+    print(f'Generator building...')
+    gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8)
+    print(f'Number of training items:{sum(gen.get_size())}, processed shape:{gen.get_scaled_size()}\n'
+          f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
+    train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,
                                                             output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
                                                             output_shapes=((gen.get_scaled_size()[0],
                                                                             gen.get_scaled_size()[1],
                                                                             params['nChannel']), ())
                                                             ).batch(32)
-        test_ds = ConvModel.tf.data.Dataset.from_generator(gen.test_generator,
+    test_ds = ConvModel.tf.data.Dataset.from_generator(gen.test_generator,
                                                            output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
                                                            output_shapes=((gen.get_scaled_size()[0],
                                                                            gen.get_scaled_size()[1],
                                                                            params['nChannel']), ())
                                                            ).batch(32)
-        print(f'Training the data...')
-        training_model = ConvModel.HTC()
-        training_model.compile()
-        train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,
+    print(f'Training the data...')
+    training_model = ConvModel.HTC()
+    training_model.compile()
+    train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,
                                                          callback=Callback.EarlyStoppingAtMinLoss(patience=15),
                                                          trace='training_test_loss')
-        training_model.save(model_path)
+    training_model.save(model_path)
 
     # loss history figure save
     plt.figure()

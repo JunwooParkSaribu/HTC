@@ -16,11 +16,31 @@ class HTC(keras.Model):
         self.test_loss = tf.keras.metrics.Mean(name='test_loss')
         self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
-        self.conv1 = Conv2D(filters=32, kernel_size=(2, 2))
-        self.pool1 = MaxPool2D(pool_size=(2, 2))
+        self.conv1 = Conv2D(filters=32, kernel_size=(8, 8))
+        self.pool1 = MaxPool2D(pool_size=(5, 5))
         self.batch1 = BatchNormalization()
         self.relu_activ1 = ReLU()
 
+        self.conv2 = Conv2D(filters=64, kernel_size=(5, 5))
+        self.pool2 = MaxPool2D(pool_size=(3, 3))
+        self.batch2 = BatchNormalization()
+        self.relu_activ2 = ReLU()
+
+        self.conv3 = Conv2D(filters=128, kernel_size=(2, 2))
+        self.pool3 = MaxPool2D(pool_size=(2, 2))
+        self.batch3 = BatchNormalization()
+        self.relu_activ3 = ReLU()
+
+        self.conv4 = Conv2D(filters=256, kernel_size=(2, 2))
+        self.pool4 = MaxPool2D(pool_size=(2, 2))
+        self.batch4 = BatchNormalization()
+        self.relu_activ4 = ReLU()
+
+        self.conv5 = Conv2D(filters=512, kernel_size=(2, 2))
+        self.pool5 = MaxPool2D(pool_size=(2, 2))
+        self.batch5 = BatchNormalization()
+        self.relu_activ5 = ReLU()
+        self.dropout1 = Dropout(0.2)
 
         self.flatten = Flatten()
         self.d_fin = Dense(3, activation='softmax')
@@ -34,13 +54,31 @@ class HTC(keras.Model):
         x = self.batch1(x)
         x = self.relu_activ1(x)
 
+        x = self.conv2(x)
+        x = self.pool2(x)
+        x = self.batch2(x)
+        x = self.relu_activ2(x)
 
+        x = self.conv3(x)
+        x = self.pool3(x)
+        x = self.batch3(x)
+        x = self.relu_activ3(x)
+
+        x = self.conv4(x)
+        x = self.pool4(x)
+        x = self.batch4(x)
+        x = self.relu_activ4(x)
+
+        x = self.conv5(x)
+        x = self.pool5(x)
+        x = self.batch5(x)
+        x = self.relu_activ5(x)
+        x = self.dropout1(x)
 
         x = self.flatten(x)
         x = self.d_fin(x)
         x = self.batch_fin(x)
         x = self.soft_activ(x)
-
 
         return x
 

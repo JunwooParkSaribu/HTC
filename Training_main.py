@@ -43,10 +43,10 @@ if __name__ == '__main__':
                                                                            params['nChannel']), ())
                                                            ).batch(32)
     print(f'Training the data...')
-    with ConvModel.tf.device('/device:GPU:0'):
-        training_model = ConvModel.HTC()
-        #training_model.compile()
-        train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,
+
+    training_model = ConvModel.HTC()
+    #training_model.compile()
+    train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,
                                                              callback=Callback.EarlyStoppingAtMinLoss(patience=15),
                                                              trace='training_test_loss')
     training_model.save(model_path)

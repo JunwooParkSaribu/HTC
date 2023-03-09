@@ -3,7 +3,7 @@ import numpy as np
 
 
 class DataGenerator:
-    def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, split_size=100, shuffle=True):
+    def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, split_size=10, shuffle=True):
         self.histones = histones
         self.train_keys = []
         self.test_keys = []

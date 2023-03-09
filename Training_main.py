@@ -17,7 +17,7 @@ if __name__ == '__main__':
         try:
             ConvModel.tf.config.set_logical_device_configuration(
                 gpus[0],
-                [ConvModel.tf.config.LogicalDeviceConfiguration(memory_limit=1024)])
+                [ConvModel.tf.config.LogicalDeviceConfiguration(memory_limit=10240)])
             logical_gpus = ConvModel.tf.config.list_logical_devices('GPU')
             print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
         except RuntimeError as e:

@@ -15,9 +15,9 @@ report_path = 'result/eval_10500samples_training.trxyt.csv'
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        config_path = sys.argv[1]
+        cur_path = sys.argv[1]
     else:
-        config_path = '.'
+        cur_path = '.'
 
     gpus = ConvModel.tf.config.list_physical_devices('GPU')
     if gpus:
@@ -32,14 +32,14 @@ if __name__ == '__main__':
             print(e)
 
     epochs = 200
-    params = ReadParam.read(config_path)
+    params = ReadParam.read(cur_path)
     print(f'\nLoading the data...')
     #histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], chunk=False)[0]
     #Labeling.make_label(histones, radius=0.4, density=0.6)
     #Labeling.label_from_report(histones, report_path)
     #histones = DataSimulation.make_simulation_data(number=9000)
     #DataSave.save_simulated_data(histones, './data/SimulationData/27000_simulated_data.trxyt')
-    histones = DataLoad.file_distrib(paths=['./data/SimulationData/27000_simulated_data.trxyt'], cutoff=2,
+    histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/27000_simulated_data.trxyt'], cutoff=2,
                                      chunk=False)[0]
     histones = TrajectoryPhy.trjaectory_rotation(histones, 8)
 

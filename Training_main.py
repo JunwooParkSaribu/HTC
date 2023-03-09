@@ -13,15 +13,13 @@ report_path = 'result/eval_10500samples_training.trxyt.csv'
 if __name__ == '__main__':
     gpus = ConvModel.tf.config.list_physical_devices('GPU')
     if gpus:
-        # Restrict TensorFlow to only allocate 1GB of memory on the first GPU
+        # Restrict TensorFlow to only use the first GPU
         try:
-            ConvModel.tf.config.set_logical_device_configuration(
-                gpus[0],
-                [ConvModel.tf.config.LogicalDeviceConfiguration(memory_limit=10240)])
+            ConvModel.tf.config.set_visible_devices(gpus[0], 'GPU')
             logical_gpus = ConvModel.tf.config.list_logical_devices('GPU')
-            print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+            print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPU")
         except RuntimeError as e:
-            # Virtual devices must be set before GPUs have been initialized
+            # Visible devices must be set before GPUs have been initialized
             print(e)
 
 

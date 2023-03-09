@@ -15,8 +15,8 @@ if __name__ == '__main__':
     if gpus:
         try:
             # Currently, memory growth needs to be the same across GPUs
-            for gpu in gpus:
-                ConvModel.tf.config.experimental.set_memory_growth(gpu, True)
+            #for gpu in gpus:
+                #ConvModel.tf.config.experimental.set_memory_growth(gpu, True)
             logical_gpus = ConvModel.tf.config.list_logical_devices('GPU')
             print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
         except RuntimeError as e:

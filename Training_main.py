@@ -24,7 +24,7 @@ if __name__ == '__main__':
     histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
 
     print(f'Channel processing...')
-    ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=params['nChannel'])
+    ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=params['nChannel'])
 
     print(f'Generator building...')
     gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8)

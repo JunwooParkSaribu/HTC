@@ -2,7 +2,7 @@ import numpy as np
 from histone.H2B import H2B
 
 
-def make_immobile(histones, nb=5, radius=0.4, max_distance=0.085, cond=(5, 150)):
+def make_immobile(histones, nb=5, radius=0.4, max_distance=0.085, cond=(10, 150)):
     for i in range(nb):
         h2b = H2B()
         n_trajectory = int(np.random.uniform(cond[0], cond[1]))
@@ -74,8 +74,8 @@ def make_mobile(histones, nb=5, max_distance=0.45, cond=(3, 15)):
 def make_hybrid(histones, nb=5, radius=0.4, max_dist_immobile=0.085, max_dist_mobile=0.45, type=0):
     for i in range(nb):
         h2b = H2B()
-        ball_trajectory = int(np.random.uniform(30, 150))
-        intermediate_trajectory = int(np.random.randint(1, 5))
+        ball_trajectory = int(np.random.uniform(20, 150))
+        intermediate_trajectory = int(np.random.randint(3, 7))
         total_trajectory = ball_trajectory + intermediate_trajectory
         trajectory = [[10, 10]]
         prev_xy = trajectory[0]
@@ -142,9 +142,8 @@ def make_hybrid(histones, nb=5, radius=0.4, max_dist_immobile=0.085, max_dist_mo
                     x = np.random.uniform(prev_xy[0] - max_dist_mobile, prev_xy[0] + max_dist_mobile)
                     y = np.random.uniform(prev_xy[1] - max_dist_mobile, prev_xy[1] + max_dist_mobile)
                     flag = 1
-                    for traj in trajectory:
-                        if np.sqrt((traj[0] - x) ** 2 + (traj[1] - y) ** 2) < radius:
-                            flag = 0
+                    if np.sqrt((trajectory[-1][0] - x) ** 2 + (trajectory[-1][1] - y) ** 2) < radius:
+                        flag = 0
                     if flag == 1:
                         xy = np.array([x, y])
                         trajectory.append(xy)
@@ -197,20 +196,20 @@ def make_simulation_data(number=4200):
     histones = {}
 
     # make immobile H2Bs
-    make_immobile(histones, nb=int(number/6), radius=0.02, max_distance=0.085)
-    make_immobile(histones, nb=int(number/6), radius=0.05, max_distance=0.085)
-    make_immobile(histones, nb=int(number/6), radius=0.1, max_distance=0.085)
-    make_immobile(histones, nb=int(number/6), radius=0.2, max_distance=0.085)
-    make_immobile(histones, nb=int(number/6), radius=0.3, max_distance=0.085)
-    make_immobile(histones, nb=int(number/6), radius=0.4, max_distance=0.085)
+    make_immobile(histones, nb=int(number/6), radius=0.02, max_distance=0.12)
+    make_immobile(histones, nb=int(number/6), radius=0.05, max_distance=0.12)
+    make_immobile(histones, nb=int(number/6), radius=0.1, max_distance=0.12)
+    make_immobile(histones, nb=int(number/6), radius=0.2, max_distance=0.12)
+    make_immobile(histones, nb=int(number/6), radius=0.3, max_distance=0.12)
+    make_immobile(histones, nb=int(number/6), radius=0.4, max_distance=0.12)
     print("Immobile generated")
 
     # make hybrid H2Bs
-    make_hybrid(histones, nb=int(number/3), radius=0.2, max_dist_immobile=0.085,
+    make_hybrid(histones, nb=int(number/3), radius=0.2, max_dist_immobile=0.12,
                 max_dist_mobile=0.45, type=0)
-    make_hybrid(histones, nb=int(number/3), radius=0.2, max_dist_immobile=0.085,
+    make_hybrid(histones, nb=int(number/3), radius=0.2, max_dist_immobile=0.12,
                 max_dist_mobile=0.45, type=1)
-    make_hybrid(histones, nb=int(number/3), radius=0.2, max_dist_immobile=0.085,
+    make_hybrid(histones, nb=int(number/3), radius=0.2, max_dist_immobile=0.12,
                 max_dist_mobile=0.45, type=2)
     print("Hybrid generated")
 

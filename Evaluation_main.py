@@ -43,7 +43,7 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
         Labeling.make_label(histones, radius=0.4, density=0.6)
         #Labeling.label_from_report(histones, './result/old_eval_all_35300h2b.csv')
 
-        ImagePreprocessor.make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=nChannel)
+        ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=nChannel)
         histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=amp)
         zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
         histone_key_list = list(zoomed_imgs.keys())

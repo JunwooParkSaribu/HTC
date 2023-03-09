@@ -47,13 +47,13 @@ if __name__ == '__main__':
                                                         output_shapes=((gen.get_scaled_size()[0],
                                                                         gen.get_scaled_size()[1],
                                                                         params['nChannel']), ())
-                                                        ).batch(64)
+                                                        ).batch(32)
     test_ds = ConvModel.tf.data.Dataset.from_generator(gen.test_generator,
                                                        output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
                                                        output_shapes=((gen.get_scaled_size()[0],
                                                                        gen.get_scaled_size()[1],
                                                                        params['nChannel']), ())
-                                                       ).batch(64)
+                                                       ).batch(32)
     print(f'Training the data...')
     training_model = ConvModel.HTC()
     #training_model.compile()

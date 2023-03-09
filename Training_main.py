@@ -11,9 +11,17 @@ report_path = 'result/eval_10500samples_training.trxyt.csv'
 
 
 if __name__ == '__main__':
-    gpu_options = ConvModel.tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
-
-    sess = ConvModel.tf.Session(config=ConvModel.tf.ConfigProto(gpu_options=gpu_options))
+    gpus = ConvModel.tf.config.list_physical_devices('GPU')
+    if gpus:
+        try:
+            # Currently, memory growth needs to be the same across GPUs
+            for gpu in gpus:
+                ConvModel.tf.config.experimental.set_memory_growth(gpu, True)
+            logical_gpus = ConvModel.tf.config.list_logical_devices('GPU')
+            print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+        except RuntimeError as e:
+            # Memory growth must be set before GPUs have been initialized
+            print(e)
 
 
     epochs = 200

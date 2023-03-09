@@ -23,7 +23,6 @@ if __name__ == '__main__':
             # Memory growth must be set before GPUs have been initialized
             print(e)
 
-
     epochs = 200
     params = ReadParam.read('.')
     print(f'\nLoading the data...')

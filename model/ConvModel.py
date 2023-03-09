@@ -48,7 +48,7 @@ class HTC(keras.Model):
         self.soft_activ = Activation("softmax")
 
     def call(self, x):
-        x = tf.transpose(x, [0, 3, 1, 2])
+
         x = self.conv1(x)
         x = self.pool1(x)
         x = self.batch1(x)
@@ -73,14 +73,14 @@ class HTC(keras.Model):
         x = self.pool5(x)
         x = self.batch5(x)
         x = self.relu_activ5(x)
-        x = self.dropout1(x)
+
 
         x = self.flatten(x)
         x = self.d_fin(x)
         x = self.batch_fin(x)
         x = self.soft_activ(x)
 
-        x = tf.transpose(x, [0, 2, 3, 1])
+
         return x
 
     @tf.function

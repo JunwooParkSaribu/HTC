@@ -1,4 +1,5 @@
 import os
+import sys
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Suppress TensorFlow logging (1)
 from imageProcessor import ImagePreprocessor, ImgGenerator
 from fileIO import DataLoad, ReadParam
@@ -13,6 +14,11 @@ report_path = 'result/eval_10500samples_training.trxyt.csv'
 
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        config_path = sys.argv[1]
+    else:
+        config_path = '.'
+
     gpus = ConvModel.tf.config.list_physical_devices('GPU')
     if gpus:
         try:
@@ -26,7 +32,7 @@ if __name__ == '__main__':
             print(e)
 
     epochs = 200
-    params = ReadParam.read('.')
+    params = ReadParam.read(config_path)
     print(f'\nLoading the data...')
     #histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], chunk=False)[0]
     #Labeling.make_label(histones, radius=0.4, density=0.6)

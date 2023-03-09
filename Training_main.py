@@ -15,8 +15,8 @@ if __name__ == '__main__':
     if gpus:
         try:
             # Currently, memory growth needs to be the same across GPUs
-            #for gpu in gpus:
-                #ConvModel.tf.config.experimental.set_memory_growth(gpu, True)
+            for gpu in gpus:
+                ConvModel.tf.config.experimental.set_memory_growth(gpu, True)
             logical_gpus = ConvModel.tf.config.list_logical_devices('GPU')
             print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
         except RuntimeError as e:
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=params['nChannel'])
 
     print(f'Generator building...')
-    gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8, split_size=50)
+    gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8, split_size=32)
     print(f'Number of training items:{sum(gen.get_size())}, processed shape:{gen.get_scaled_size()}\n'
           f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
     train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,

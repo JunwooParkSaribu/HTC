@@ -348,22 +348,16 @@ def make_gif(full_histones, filename, id, immobile_cutoff=3,
                 trajec_channel = histones_channel[index]
             else:
                 trajec_channel = histones_channel[index - 1]
-            print(histone_velocity)
-            print(histones_channel)
-            print(trajec_channel)
             velocity = histone_velocity[index - 1] if index > 0 else 0
 
             x_val = x_shift + int(trajectory[0] * (10 ** amp))
             y_val = y_shift + int(trajectory[1] * (10 ** amp))
 
             interpolate_pos = interpolate([current_xval, current_yval], [x_val, y_val])
-            print('@',len(interpolate_pos))
             current_xval = x_val
             current_yval = y_val
             for mod, inter_pos in enumerate(interpolate_pos):
                 frame = int(velocity)/2
-                print(velocity)
-                print(trajec_channel)
                 if frame == 0:
                     gif.append(img.copy())
                 else:

@@ -1,3 +1,5 @@
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Suppress TensorFlow logging (1)
 from imageProcessor import ImagePreprocessor, ImgGenerator
 from fileIO import DataLoad, ReadParam
 from model import ConvModel, Callback

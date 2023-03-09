@@ -1,10 +1,16 @@
 import numpy as np
 
 
-def trjaectory_rotation(histones: dict, nb: int) -> dict:
+def trjaectory_rotation(histones: dict|list, nb: int) -> dict:
     if 360 % nb != 0:
         print('360%nb should be 0')
         raise Exception
+
+    if type(histones) == list:
+        h = {}
+        for histone_chunk in histones:
+            h |= histone_chunk
+        histones = h
 
     thetas = [theta * (int(360 / nb)) for theta in range(nb)]
     rotation = lambda theta: np.array([

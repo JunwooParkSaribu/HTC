@@ -6,6 +6,7 @@ from label import Labeling
 from imageProcessor import ImagePreprocessor, ImgGenerator
 from keras.models import load_model
 from tensorflow import device
+from physics import TrajectoryPhy
 
 
 def predict(gen, scaled_size, nChannel, progress_i, progress_total):
@@ -65,7 +66,10 @@ if __name__ == '__main__':
     params = ReadParam.read(config_path)
 
     print(f'Loading the data...')
-    full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
+    #full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
+    full_data = DataLoad.file_distrib(paths=['./data/SimulationData/27000_simulated_data.trxyt'], cutoff=2)
+    full_data = TrajectoryPhy.trjaectory_rotation(full_data, 8)
+
     HTC_model = load_model(params['model_dir'])
     HTC_model.summary()
 

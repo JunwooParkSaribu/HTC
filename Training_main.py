@@ -26,7 +26,7 @@ if __name__ == '__main__':
     #DataSave.save_simulated_data(histones, './data/SimulationData/27000_simulated_data.trxyt')
     histones = DataLoad.file_distrib(paths=['./data/SimulationData/30_simulated_data.trxyt'], cutoff=2,
                                      chunk=False)[0]
-    histones = TrajectoryPhy.trjaectory_rotation(histones, 10)
+    histones = TrajectoryPhy.trjaectory_rotation(histones, 100)
 
     print(f'Channel processing...')
     ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=params['nChannel'])
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     #training_model.compile()
     train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,
                                                              callback=Callback.EarlyStoppingAtMinLoss(patience=15),
-                                                             trace='training_test_loss')
+                                                             trace='test_loss')
     training_model.save(model_path)
 
     # loss history figure save

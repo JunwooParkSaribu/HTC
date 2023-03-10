@@ -7,7 +7,7 @@ from imageProcessor import ImagePreprocessor, ImgGenerator
 from fileIO import DataLoad, ReadParam
 from model import ConvModel, Callback
 import matplotlib.pyplot as plt
-from physics import TrajectoryPhy
+from physics import TrajectoryPhy, DataSimulation
 
 
 data_path = './data/TrainingSample'
@@ -39,11 +39,11 @@ if __name__ == '__main__':
     #histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], chunk=False)[0]
     #Labeling.make_label(histones, radius=0.4, density=0.6)
     #Labeling.label_from_report(histones, report_path)
-    #histones = DataSimulation.make_simulation_data(number=9000)
+    histones = DataSimulation.make_simulation_data(number=6)
     #DataSave.save_simulated_data(histones, './data/SimulationData/27000_simulated_data.trxyt')
-    histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/3000_simulated_data.trxyt'], cutoff=2,
-                                     chunk=False)[0]
-    histones = TrajectoryPhy.trjaectory_rotation(histones, 8)
+    #histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/3000_simulated_data.trxyt'], cutoff=2,
+    #                                 chunk=False)[0]
+    #histones = TrajectoryPhy.trjaectory_rotation(histones, 8)
 
     print(f'Channel processing...')
     ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=params['nChannel'])
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     training_model = ConvModel.HTC()
     #training_model.compile()
     train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,
-                                                     callback=Callback.EarlyStoppingAtMinLoss(patience=15),
+                                                     callback=Callback.EarlyStoppingAtMinLoss(patience=2),
                                                      trace='test_loss')
 
     modelname = ReadParam.write_model_info(model_path, train_history, test_history, len(histones),
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     # automated git push
     try:
         repo = git.Repo(os.getcwd())
-        repo.index.add([f'{model_path}/{modelname}'])
+        repo.index.add(['.'])
         repo.index.commit(f'auto - {modelname} uploaded')
         origin = repo.remote(name='origin')
         existing_branch = repo.heads['main']

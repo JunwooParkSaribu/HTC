@@ -71,22 +71,22 @@ if __name__ == '__main__':
                                                      callback=Callback.EarlyStoppingAtMinLoss(patience=15),
                                                      trace='test_loss')
 
-    modelname = ReadParam.write_model_info(model_path, train_history, test_history, len(histones),
+    model_name = ReadParam.write_model_info(training_model, model_path, train_history, test_history, len(histones),
                                            f'{time.gmtime().tm_mday}/{time.gmtime().tm_mon}/{time.gmtime().tm_year}, '
                                            f'{time.gmtime().tm_hour + 1}:{time.gmtime().tm_min}')
-    training_model.save(f'{model_path}/{modelname}')
+    print(f'{model_name} saved...')
 
     # loss history figure save
     plt.figure()
     plt.plot(range(0, len(train_history)), train_history, label='Train loss')
     plt.plot(range(0, len(test_history)), test_history, label='Validation loss')
     plt.legend()
-    plt.savefig(f'{model_path}/{modelname}/loss_history.png')
+    plt.savefig(f'{model_path}/{model_name}/loss_history.png')
 
     # automated git push
     try:
         repo = git.Repo(os.getcwd())
-        repo.git.add(f'{model_path}/{modelname}')
+        repo.git.add(f'{model_path}/{model_name}')
         repo.index.commit(f'auto - uploaded')
         origin = repo.remote(name='origin')
         existing_branch = repo.heads['main']

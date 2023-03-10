@@ -33,7 +33,7 @@ def read(file):
     return params
 
 
-def write_model_info(path: str, train_history: list, test_history: list, nb_histones: int, date: str) -> str:
+def write_model_info(training_model, path: str, train_history: list, test_history: list, nb_histones: int, date: str) -> str:
     new_model_num = 0
     try:
         if os.path.isdir(path):
@@ -43,7 +43,7 @@ def write_model_info(path: str, train_history: list, test_history: list, nb_hist
                     model_num = int(content.split('_')[0].split('model')[-1])
                     new_model_num = max(new_model_num, model_num)
             modelname = f'model{new_model_num + 1}'
-        os.mkdir(f'{path}/{modelname}')
+        training_model.save(f'{path}/{modelname}')
     except:
         print('model directory creation err')
         raise Exception

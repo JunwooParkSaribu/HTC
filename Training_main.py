@@ -43,7 +43,7 @@ if __name__ == '__main__':
     #DataSave.save_simulated_data(histones, './data/SimulationData/27000_simulated_data.trxyt')
     histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/3000_simulated_data.trxyt'], cutoff=2,
                                      chunk=False)[0]
-    histones = TrajectoryPhy.trjaectory_rotation(histones, 8)
+    histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
 
     print(f'Channel processing...')
     ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=params['nChannel'])

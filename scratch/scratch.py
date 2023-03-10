@@ -46,7 +46,7 @@ reports = ['../result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
            ]
 
 
-DataAnalysis.confusion_matrix(reports)
+#DataAnalysis.confusion_matrix(reports)
 #MakeImage.comparison_from_reports(reports, img_save_path='./result/image')
 #MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model1.csv', option=0, img_save_path='./result/image')#
 

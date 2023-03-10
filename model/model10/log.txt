@@ -1,0 +1,11 @@
+10/3/2023, 14:43, number of trained h2bs:18
+train history, test history
+tf.Tensor(1.2744321, shape=(), dtype=float32)	tf.Tensor(1.0912675, shape=(), dtype=float32)
+tf.Tensor(0.56711125, shape=(), dtype=float32)	tf.Tensor(1.0886488, shape=(), dtype=float32)
+tf.Tensor(0.4094557, shape=(), dtype=float32)	tf.Tensor(1.087068, shape=(), dtype=float32)
+tf.Tensor(0.2216257, shape=(), dtype=float32)	tf.Tensor(1.0861231, shape=(), dtype=float32)
+tf.Tensor(0.2282654, shape=(), dtype=float32)	tf.Tensor(1.0849727, shape=(), dtype=float32)
+tf.Tensor(0.22184427, shape=(), dtype=float32)	tf.Tensor(1.0843078, shape=(), dtype=float32)
+tf.Tensor(0.22275417, shape=(), dtype=float32)	tf.Tensor(1.084225, shape=(), dtype=float32)
+tf.Tensor(0.21855026, shape=(), dtype=float32)	tf.Tensor(1.0845419, shape=(), dtype=float32)
+tf.Tensor(0.22658044, shape=(), dtype=float32)	tf.Tensor(1.0851719, shape=(), dtype=float32)

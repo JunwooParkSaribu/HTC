@@ -85,10 +85,12 @@ if __name__ == '__main__':
 
     # automated git push
     try:
-        repo = git.Repo('.')
+        repo = git.Repo(os.getcwd())
         repo.index.add([f'{model_path}/{modelname}'])
         repo.index.commit(f'auto - {modelname} uploaded')
         origin = repo.remote(name='origin')
+        existing_branch = repo.heads['main']
+        existing_branch.checkout()
         origin.push()
     except Exception as e:
         print('Git upload failed')

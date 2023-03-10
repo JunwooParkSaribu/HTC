@@ -40,9 +40,9 @@ def write_model_info(path: str, train_history: list, test_history: list, nb_hist
             contents = os.listdir(path)
             for content in contents:
                 if 'model' in content:
-                    model_num = content.split('model')[-1]
+                    model_num = int(content.split('_')[0].split('model')[-1])
                     new_model_num = max(new_model_num, model_num)
-            modelname = f'model{new_model_num}'
+            modelname = f'model{new_model_num + 1}'
         os.mkdir(f'{path}/{modelname}')
     except:
         print('model directory creation err')

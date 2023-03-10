@@ -12,7 +12,7 @@ def make_image(histones, zoomed_imgs, scaled_size, amp, img_save_path='.'):
                                    histone_first_pos=histone_first_pos, amp=amp, path=img_save_path)
 
 
-def recursive_filesearch(path, filename, h2b_ids, cls, img_save_path, lbs: list | None, img_option=0):
+def recursive_filesearch(path, filename, params, h2b_ids, cls, img_save_path, lbs: list | None, img_option=0):
     f_dirs = os.listdir(path)
     files = []
     dirs = []
@@ -23,7 +23,6 @@ def recursive_filesearch(path, filename, h2b_ids, cls, img_save_path, lbs: list 
             files.append(f)
 
     if filename in files:
-        params = ReadParam.read(path)
         histones = DataLoad.read_file(f'{path}/{filename}', cutoff=0)
         temp = {}
         for hist in histones:
@@ -45,7 +44,7 @@ def recursive_filesearch(path, filename, h2b_ids, cls, img_save_path, lbs: list 
 
     if len(dirs) > 0:
         for dir in dirs:
-            px = recursive_filesearch(f'{path}/{dir}', filename, h2b_ids, cls, img_save_path, lbs, img_option)
+            px = recursive_filesearch(f'{path}/{dir}', filename, params, h2b_ids, cls, img_save_path, lbs, img_option)
             if px == 0:
                 return 0
     return 1
@@ -53,6 +52,7 @@ def recursive_filesearch(path, filename, h2b_ids, cls, img_save_path, lbs: list 
 
 def comparison_from_reports(reports: list, data_path='.', img_save_path='.') -> None:
     data_list = [DataLoad.read_report(rp)[1] for rp in reports]
+    params = ReadParam.read(data_path)
 
     print("Reading the reports...")
     img_list = {}
@@ -79,12 +79,13 @@ def comparison_from_reports(reports: list, data_path='.', img_save_path='.') -> 
             # add conditions of classes (cls)
             cls_sum = sum([int(x) for x in cls])
             if cls_sum % len(cls) != 0:
-                recursive_filesearch(data_path, filename, [h2b_id], cls, img_save_path, lbs=None)
+                recursive_filesearch(data_path, filename, params, [h2b_id], cls, img_save_path, lbs=None)
 
 
 def make_image_from_single_report(report: str, option=1, data_path='.', img_save_path='.',
                                   filename=None, h2b_id=None) -> None:
     header, data = DataLoad.read_report(report)
+    params = ReadParam.read(data_path)
     img_list = {}
 
     match option:
@@ -126,4 +127,4 @@ def make_image_from_single_report(report: str, option=1, data_path='.', img_save
         else:
             h2b_ids, cls = img_list[filename]
             lbs = []
-        recursive_filesearch(data_path, filename, h2b_ids, cls, img_save_path, lbs, img_option=option)
+        recursive_filesearch(data_path, filename, params, h2b_ids, cls, img_save_path, lbs, img_option=option)

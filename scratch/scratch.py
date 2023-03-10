@@ -40,9 +40,9 @@ plt.show()
 """
 
 
-reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
-           './result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv',
-           './result/pred_wholecells_by_cutoff/cutoff5_model10.csv'
+reports = ['../result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
+           '../result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv',
+           '../result/pred_wholecells_by_cutoff/cutoff5_model10.csv'
            ]
 
 

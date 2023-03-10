@@ -16,6 +16,7 @@ report_path = './result/eval_10500samples_training.trxyt.csv'
 
 
 if __name__ == '__main__':
+    """
     if len(sys.argv) > 1:
         cur_path = sys.argv[1]
     else:
@@ -82,12 +83,12 @@ if __name__ == '__main__':
     plt.plot(range(0, len(test_history)), test_history, label='Validation loss')
     plt.legend()
     plt.savefig(f'{model_path}/{modelname}/loss_history.png')
-
+    """
     # automated git push
     try:
         repo = git.Repo(os.getcwd())
-        repo.index.add(['.'])
-        repo.index.commit(f'auto - {modelname} uploaded')
+        repo.git.add(A=True)
+        repo.index.commit(f'auto - uploaded')
         origin = repo.remote(name='origin')
         existing_branch = repo.heads['main']
         existing_branch.checkout()

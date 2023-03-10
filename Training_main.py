@@ -1,5 +1,7 @@
 import os
 import sys
+import time
+import git
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Suppress TensorFlow logging (1)
 from imageProcessor import ImagePreprocessor, ImgGenerator
 from fileIO import DataLoad, ReadParam
@@ -8,9 +10,9 @@ import matplotlib.pyplot as plt
 from physics import TrajectoryPhy
 
 
-data_path = 'data/TrainingSample'
-model_path = 'model/model9'
-report_path = 'result/eval_10500samples_training.trxyt.csv'
+data_path = './data/TrainingSample'
+model_path = './model'
+report_path = './result/eval_10500samples_training.trxyt.csv'
 
 
 if __name__ == '__main__':
@@ -68,11 +70,26 @@ if __name__ == '__main__':
     train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,
                                                      callback=Callback.EarlyStoppingAtMinLoss(patience=15),
                                                      trace='test_loss')
-    training_model.save(model_path)
+
+    modelname = ReadParam.write_model_info(model_path, train_history, test_history, len(histones),
+                                           f'{time.gmtime().tm_mday}/{time.gmtime().tm_mon}/{time.gmtime().tm_year}, '
+                                           f'{time.gmtime().tm_hour}:{time.gmtime().tm_min}')
+    training_model.save(f'{model_path}/{modelname}')
 
     # loss history figure save
     plt.figure()
     plt.plot(range(0, len(train_history)), train_history, label='Train loss')
     plt.plot(range(0, len(test_history)), test_history, label='Validation loss')
     plt.legend()
-    plt.savefig('./img/loss_history.png')
+    plt.savefig(f'{model_path}/{modelname}/loss_history.png')
+
+    # automated git push
+    try:
+        repo = git.Repo('.')
+        repo.index.add([f'{model_path}/{modelname}'])
+        repo.index.commit(f'auto - {modelname} uploaded')
+        origin = repo.remote(name='origin')
+        origin.push()
+    except Exception as e:
+        print('Git upload failed')
+        print(e)

@@ -73,6 +73,8 @@ class HTC(keras.Model):
         x = self.pool5(x)
         x = self.batch5(x)
         x = self.relu_activ5(x)
+
+        # prevent dropout err NHWC to NCHW
         x = tf.transpose(x, [0, 3, 1, 2])
         x = self.dropout1(x)
         x = tf.transpose(x, [0, 2, 3, 1])

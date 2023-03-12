@@ -72,8 +72,8 @@ if __name__ == '__main__':
                                                      trace='test_loss')
 
     model_name = ReadParam.write_model_info(training_model, model_path, train_history, test_history, len(histones),
-                                           f'{time.gmtime().tm_mday}/{time.gmtime().tm_mon}/{time.gmtime().tm_year}, '
-                                           f'{time.gmtime().tm_hour + 1}:{time.gmtime().tm_min}')
+                                            f'{time.gmtime().tm_mday}/{time.gmtime().tm_mon}/{time.gmtime().tm_year}, '
+                                            f'{time.gmtime().tm_hour + 1}:{time.gmtime().tm_min}')
     print(f'{model_name} saved...')
 
     # loss history figure save

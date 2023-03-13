@@ -93,9 +93,7 @@ class HTC(keras.Model):
 
         else:
             x = self.pretrained_model(x)
-            x = tf.transpose(x, [0, 3, 1, 2])
             x = self.dropout1(x)
-            x = tf.transpose(x, [0, 2, 3, 1])
             x = self.d_fin(x)
 
         return x

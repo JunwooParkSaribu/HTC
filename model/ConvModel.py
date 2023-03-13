@@ -50,6 +50,12 @@ class HTC(keras.Model):
             self.soft_activ = Activation("softmax")
 
         else:
+            self.loss_object = tf.keras.losses.SparseCategoricalCrossentropy()
+            self.optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
+            self.train_loss = tf.keras.metrics.Mean(name='train_loss')
+            self.train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy')
+            self.test_loss = tf.keras.metrics.Mean(name='test_loss')
+            self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
             self.pretrained_model = pretrained_model
             self.dropout1 = Dropout(rate=0.2),
             self.d_fin = Dense(3, kernel_regularizer=tf.keras.regularizers.l2(0.0001))

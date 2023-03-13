@@ -310,7 +310,7 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
 
 
 def make_gif(full_histones, filename, id, immobile_cutoff=3,
-             hybrid_cutoff=8, nChannel=3, img_scale=5, amp=2):
+             hybrid_cutoff=8, nChannel=3, img_scale=5, amp=2, correction=False):
     try:
         histones = {}
 
@@ -377,6 +377,8 @@ def make_gif(full_histones, filename, id, immobile_cutoff=3,
                     img[img_size - inter_pos[1]][inter_pos[0]] = 1
                 else:
                     img[img_size - inter_pos[1]][inter_pos[0]][trajec_channel] = 1
+                    if correction:
+                        img[inter_pos[1]][inter_pos[0]][0] = 1
 
         ps = ''
         label = histones[key].get_manuel_label()

@@ -41,7 +41,7 @@ if __name__ == '__main__':
     #Labeling.label_from_report(histones, report_path)
     #histones = DataSimulation.make_simulation_data(number=6)
     #DataSave.save_simulated_data(histones, './data/SimulationData/27000_simulated_data.trxyt')
-    histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/3000_simulated_data_5classes.trxyt'], cutoff=2,
+    histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/6000_simulated_data.trxyt'], cutoff=2,
                                      chunk=False)[0]
     histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
 
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     training_model = ConvModel.HTC()
     #training_model.compile()
     train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,
-                                                     callback=Callback.EarlyStoppingAtMinLoss(patience=15),
+                                                     callback=Callback.EarlyStoppingAtMinLoss(patience=5),
                                                      trace='test_loss')
 
     model_name = ReadParam.write_model_info(training_model, model_path, train_history, test_history, len(histones),

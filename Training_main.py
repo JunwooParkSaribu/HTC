@@ -67,7 +67,7 @@ if __name__ == '__main__':
                                                        ).batch(32)
     print(f'Training the data...')
     #training_model = ConvModel.HTC()
-    training_model = load_model(params['model_dir'], compile=False)
+    training_model = ConvModel.HTC(load_model(params['model_dir'], compile=False))
 
     training_model.compile()
     training_model.summary()

@@ -7,7 +7,7 @@ print("TensorFlow version:", tf.__version__)
 
 
 class HTC(keras.Model):
-    def __init__(self):
+    def __init__(self, pretrained_model=None):
         super(HTC, self).__init__()
         self.loss_object = tf.keras.losses.SparseCategoricalCrossentropy()
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
@@ -46,6 +46,9 @@ class HTC(keras.Model):
         self.d_fin = Dense(3, activation='softmax')
         self.batch_fin = BatchNormalization()
         self.soft_activ = Activation("softmax")
+
+        if pretrained_model is not None:
+            self.set_weights(pretrained_model.weights)
 
     def call(self, x):
 

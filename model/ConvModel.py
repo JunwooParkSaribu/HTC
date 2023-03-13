@@ -47,8 +47,7 @@ class HTC(keras.Model):
         self.batch_fin = BatchNormalization()
         self.soft_activ = Activation("softmax")
 
-        if pretrained_model is not None:
-            self.set_weights(pretrained_model.weights)
+        self.pretrained_model = pretrained_model
 
     def call(self, x):
 
@@ -117,6 +116,10 @@ class HTC(keras.Model):
 
         train_loss_results = []
         test_loss_results = []
+
+        if self.pretrained_model is not None:
+            self.set_weights(self.pretrained_model.weights)
+
         for epoch in range(epochs):
             # Reset the metrics at the start of the next epoch
             self.train_loss.reset_states()

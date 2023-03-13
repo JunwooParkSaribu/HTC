@@ -18,8 +18,7 @@ def predict(gen, scaled_size, nChannel, progress_i, progress_total):
         if batch == -1:
             break
         test_X = np.array(batch).reshape((len(batch), scaled_size[0], scaled_size[1], nChannel))
-        with device('/cpu:0'):
-            result = HTC_model.predict(test_X, verbose=0)
+        result = HTC_model.predict(test_X, verbose=0)
         y_predict.extend([np.argmax(x) for x in result])
         y_predict_proba.extend([np.max(x) for x in result])
         progress_i += 1
@@ -68,7 +67,8 @@ if __name__ == '__main__':
 
     # Main pipe start.
     print(f'Predicting all data...')
-    main_pipe(full_data, params['amp'], params['nChannel'], params['batch_size'])
+    with device('/cpu:0'):
+        main_pipe(full_data, params['amp'], params['nChannel'], params['batch_size'])
     print(f'Making reports... ', end=' ')
     DataSave.save_report(full_data, path=params['save_dir'], all=params['all'])
     print(f'Done.')

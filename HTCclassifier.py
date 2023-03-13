@@ -64,7 +64,8 @@ if __name__ == '__main__':
         full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])  # 16GB RAM
         print(f'Done.\nIf number of trajectories is bigger than {params["group_size"]}, '
               f'data will be separated into groups to reduce the memory usage.')
-        HTC_model = load_model(params['model_dir'])
+        HTC_model = load_model(params['model_dir'], compile=False)
+        HTC_model.compile()
 
         # Main pipe start.
         print(f'Predicting all data...')

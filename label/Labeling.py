@@ -40,6 +40,7 @@ def label_from_report(histones, report):
         selected_keys = np.random.choice(len(keys[i]), min_nb_class, replace=False)
         temp = np.array(keys[i])[selected_keys]
         temps.append(temp)
+        print(f'{i}:{len(temp)}', end=' ')
     temps = np.array(temps).reshape(-1)
 
     new_histones = {}

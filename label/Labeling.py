@@ -49,5 +49,5 @@ def label_from_report(histones, report):
     new_histones = {}
     for temp in temps:
         new_histones[temp] = histones[temp]
-    DataSimulation.make_immobile(new_histones, nb=min_nb_class, radius=0.1, max_distance=0.12)  # combination of simulated immobiles
+    DataSimulation.make_immobile(new_histones, nb=min_nb_class, radius=0.15, max_distance=0.12)  # combination of simulated immobiles
     return new_histones

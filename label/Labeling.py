@@ -42,5 +42,9 @@ def label_from_report(histones, report):
         print(len(selected_keys))
         temp = np.array(keys[i])[selected_keys]
         temps.append(temp)
-    temps = np.array(temps)
-    print(temps.shape)
+    temps = np.array(temps).reshape(-1)
+
+    new_histones = {}
+    for temp in temps:
+        new_histones[temp] = histones[temp]
+    return new_histones

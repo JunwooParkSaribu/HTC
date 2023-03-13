@@ -99,7 +99,6 @@ class HTC(keras.Model):
 
         else:
             x = self.pretrained_model(x)
-            x = self.dropout1(x)
             x = self.d_fin(x)
 
         return x

@@ -9,45 +9,47 @@ print("TensorFlow version:", tf.__version__)
 class HTC(keras.Model):
     def __init__(self, pretrained_model=None):
         super(HTC, self).__init__()
-        self.loss_object = tf.keras.losses.SparseCategoricalCrossentropy()
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
-        self.train_loss = tf.keras.metrics.Mean(name='train_loss')
-        self.train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy')
-        self.test_loss = tf.keras.metrics.Mean(name='test_loss')
-        self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
+        if pretrained_model is None:
+            self.loss_object = tf.keras.losses.SparseCategoricalCrossentropy()
+            self.optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
+            self.train_loss = tf.keras.metrics.Mean(name='train_loss')
+            self.train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy')
+            self.test_loss = tf.keras.metrics.Mean(name='test_loss')
+            self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
-        self.conv1 = Conv2D(filters=32, kernel_size=(8, 8))
-        self.pool1 = MaxPool2D(pool_size=(5, 5))
-        self.batch1 = BatchNormalization()
-        self.relu_activ1 = ReLU()
+            self.conv1 = Conv2D(filters=32, kernel_size=(8, 8))
+            self.pool1 = MaxPool2D(pool_size=(5, 5))
+            self.batch1 = BatchNormalization()
+            self.relu_activ1 = ReLU()
 
-        self.conv2 = Conv2D(filters=64, kernel_size=(5, 5))
-        self.pool2 = MaxPool2D(pool_size=(3, 3))
-        self.batch2 = BatchNormalization()
-        self.relu_activ2 = ReLU()
+            self.conv2 = Conv2D(filters=64, kernel_size=(5, 5))
+            self.pool2 = MaxPool2D(pool_size=(3, 3))
+            self.batch2 = BatchNormalization()
+            self.relu_activ2 = ReLU()
 
-        self.conv3 = Conv2D(filters=128, kernel_size=(2, 2))
-        self.pool3 = MaxPool2D(pool_size=(2, 2))
-        self.batch3 = BatchNormalization()
-        self.relu_activ3 = ReLU()
+            self.conv3 = Conv2D(filters=128, kernel_size=(2, 2))
+            self.pool3 = MaxPool2D(pool_size=(2, 2))
+            self.batch3 = BatchNormalization()
+            self.relu_activ3 = ReLU()
 
-        self.conv4 = Conv2D(filters=256, kernel_size=(2, 2))
-        self.pool4 = MaxPool2D(pool_size=(2, 2))
-        self.batch4 = BatchNormalization()
-        self.relu_activ4 = ReLU()
+            self.conv4 = Conv2D(filters=256, kernel_size=(2, 2))
+            self.pool4 = MaxPool2D(pool_size=(2, 2))
+            self.batch4 = BatchNormalization()
+            self.relu_activ4 = ReLU()
 
-        self.conv5 = Conv2D(filters=512, kernel_size=(2, 2))
-        self.pool5 = MaxPool2D(pool_size=(2, 2))
-        self.batch5 = BatchNormalization()
-        self.relu_activ5 = ReLU()
-        self.dropout1 = Dropout(0.2)
+            self.conv5 = Conv2D(filters=512, kernel_size=(2, 2))
+            self.pool5 = MaxPool2D(pool_size=(2, 2))
+            self.batch5 = BatchNormalization()
+            self.relu_activ5 = ReLU()
+            self.dropout1 = Dropout(0.2)
 
-        self.flatten = Flatten()
-        self.d_fin = Dense(3, activation='softmax')
-        self.batch_fin = BatchNormalization()
-        self.soft_activ = Activation("softmax")
+            self.flatten = Flatten()
+            self.d_fin = Dense(3, activation='softmax')
+            self.batch_fin = BatchNormalization()
+            self.soft_activ = Activation("softmax")
 
-        self.pretrained_model = pretrained_model
+        else:
+            self.pretrained_model = pretrained_model
 
     def call(self, x):
 

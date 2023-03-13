@@ -69,7 +69,7 @@ if __name__ == '__main__':
     #training_model = ConvModel.HTC()
     training_model = ConvModel.HTC(load_model(params['model_dir'], compile=False))
 
-    training_model.build((None,)+(500, 500)+(3,))
+    training_model.build((None,) + (500, 500) + (3,))
     training_model.compile()
     training_model.summary()
     train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,

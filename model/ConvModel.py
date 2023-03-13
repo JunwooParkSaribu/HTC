@@ -43,7 +43,7 @@ class HTC(keras.Model):
         self.dropout1 = Dropout(0.2)
 
         self.flatten = Flatten()
-        self.d_fin = Dense(5, activation='softmax')
+        self.d_fin = Dense(3, activation='softmax')
         self.batch_fin = BatchNormalization()
         self.soft_activ = Activation("softmax")
 

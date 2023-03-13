@@ -43,18 +43,17 @@ os.chdir('../')
 params = ReadParam.read('.')
 reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
            './result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv',
-           './result/pred_wholecells_by_cutoff/cutoff5_model10.csv',
-           './result/pred_wholecells_by_cutoff/cutoff5_model11.csv'
+           './result/pred_wholecells_by_cutoff/cutoff5_model12.csv',
+           './result/pred_wholecells_by_cutoff/cutoff5_model13.csv'
            ]
 
 
-DataAnalysis.confusion_matrix(reports)
+#DataAnalysis.confusion_matrix(reports)
 #MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='./result/image')
 #MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model1.csv', option=0, img_save_path='./result/image')#
 
-
 #histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM
-#ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt', '3372', correction=True)
+#ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cell10_no_ir.rpt_tracked.trxyt', '660', correction=True)
 
 #histones = DataSimulation.make_simulation_data(6000)
 #DataSave.save_simulated_data(histones, './data/SimulationData/6000_simulated_data.trxyt')

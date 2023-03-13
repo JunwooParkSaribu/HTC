@@ -9,6 +9,7 @@ from model import ConvModel, Callback
 import matplotlib.pyplot as plt
 from physics import TrajectoryPhy
 from label import Labeling
+from keras.models import load_model
 
 
 data_path = './data/TrainingSample'
@@ -65,8 +66,11 @@ if __name__ == '__main__':
                                                                        params['nChannel']), ())
                                                        ).batch(32)
     print(f'Training the data...')
-    training_model = ConvModel.HTC()
+    #training_model = ConvModel.HTC()
+    training_model = load_model(params['model_dir'], compile=False)
+
     training_model.compile()
+    training_model.summary()
     train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,
                                                      callback=Callback.EarlyStoppingAtMinLoss(patience=10),
                                                      trace='test_loss')

@@ -36,10 +36,8 @@ def label_from_report(histones, report):
     min_nb_class = np.min(nb_class)
 
     temps = []
-    print(min_nb_class)
     for i in range(len(keys)):
         selected_keys = np.random.choice(len(keys[i]), min_nb_class, replace=False)
-        print(len(selected_keys))
         temp = np.array(keys[i])[selected_keys]
         temps.append(temp)
     temps = np.array(temps).reshape(-1)

@@ -8,11 +8,12 @@ from fileIO import DataLoad, ReadParam
 from model import ConvModel, Callback
 import matplotlib.pyplot as plt
 from physics import TrajectoryPhy
+from label import Labeling
 
 
 data_path = './data/TrainingSample'
 model_path = './model'
-report_path = './result/eval_10500samples_training.trxyt.csv'
+report_path = './result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv'
 
 
 if __name__ == '__main__':
@@ -36,13 +37,12 @@ if __name__ == '__main__':
     epochs = 200
     params = ReadParam.read(cur_path)
     print(f'\nLoading the data...')
-    #histones = DataLoad.file_distrib(paths=[data_path], cutoff=params['cut_off'], chunk=False)[0]
+    histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
     #Labeling.make_label(histones, radius=0.4, density=0.6)
-    #Labeling.label_from_report(histones, report_path)
+    Labeling.label_from_report(histones, report_path)
     #histones = DataSimulation.make_simulation_data(number=6)
     #DataSave.save_simulated_data(histones, './data/SimulationData/27000_simulated_data.trxyt')
-    histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/6000_simulated_data.trxyt'], cutoff=2,
-                                     chunk=False)[0]
+    #histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/6000_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
     histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
 
     print(f'Channel processing...')

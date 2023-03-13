@@ -34,7 +34,6 @@ def label_from_report(histones, report):
     for label in labels:
         nb_class[label] += 1
     min_nb_class = np.min(nb_class)
-    keys = np.array(keys)
 
     temps = []
     print(min_nb_class)

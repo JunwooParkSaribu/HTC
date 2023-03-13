@@ -10,6 +10,7 @@ class HTC(keras.Model):
     def __init__(self, pretrained_model=None):
         super(HTC, self).__init__()
         if pretrained_model is None:
+            self.pretrained_model = None
             self.loss_object = tf.keras.losses.SparseCategoricalCrossentropy()
             self.optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
             self.train_loss = tf.keras.metrics.Mean(name='train_loss')
@@ -50,43 +51,52 @@ class HTC(keras.Model):
 
         else:
             self.pretrained_model = pretrained_model
+            self.dropout1 = Dropout(rate=0.2),
+            self.d_fin = Dense(3, kernel_regularizer=tf.keras.regularizers.l2(0.0001))
 
     def call(self, x):
+        if self.pretrained_model is None:
+            x = self.conv1(x)
+            x = self.pool1(x)
+            x = self.batch1(x)
+            x = self.relu_activ1(x)
 
-        x = self.conv1(x)
-        x = self.pool1(x)
-        x = self.batch1(x)
-        x = self.relu_activ1(x)
+            x = self.conv2(x)
+            x = self.pool2(x)
+            x = self.batch2(x)
+            x = self.relu_activ2(x)
 
-        x = self.conv2(x)
-        x = self.pool2(x)
-        x = self.batch2(x)
-        x = self.relu_activ2(x)
+            x = self.conv3(x)
+            x = self.pool3(x)
+            x = self.batch3(x)
+            x = self.relu_activ3(x)
 
-        x = self.conv3(x)
-        x = self.pool3(x)
-        x = self.batch3(x)
-        x = self.relu_activ3(x)
+            x = self.conv4(x)
+            x = self.pool4(x)
+            x = self.batch4(x)
+            x = self.relu_activ4(x)
 
-        x = self.conv4(x)
-        x = self.pool4(x)
-        x = self.batch4(x)
-        x = self.relu_activ4(x)
+            x = self.conv5(x)
+            x = self.pool5(x)
+            x = self.batch5(x)
+            x = self.relu_activ5(x)
 
-        x = self.conv5(x)
-        x = self.pool5(x)
-        x = self.batch5(x)
-        x = self.relu_activ5(x)
+            # prevent dropout err NHWC to NCHW
+            x = tf.transpose(x, [0, 3, 1, 2])
+            x = self.dropout1(x)
+            x = tf.transpose(x, [0, 2, 3, 1])
 
-        # prevent dropout err NHWC to NCHW
-        x = tf.transpose(x, [0, 3, 1, 2])
-        x = self.dropout1(x)
-        x = tf.transpose(x, [0, 2, 3, 1])
+            x = self.flatten(x)
+            x = self.d_fin(x)
+            x = self.batch_fin(x)
+            x = self.soft_activ(x)
 
-        x = self.flatten(x)
-        x = self.d_fin(x)
-        x = self.batch_fin(x)
-        x = self.soft_activ(x)
+        else:
+            x = self.pretrained_model(x)
+            x = tf.transpose(x, [0, 3, 1, 2])
+            x = self.dropout1(x)
+            x = tf.transpose(x, [0, 2, 3, 1])
+            x = self.d_fin(x)
 
         return x
 

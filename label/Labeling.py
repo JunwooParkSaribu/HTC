@@ -1,4 +1,4 @@
-from physics import TrajectoryPhy
+from physics import TrajectoryPhy, DataSimulation
 from fileIO import DataLoad
 import numpy as np
 
@@ -30,7 +30,9 @@ def label_from_report(histones, report):
     for key in histones:
         for label in set(labels):
             if histones[key].get_manuel_label() == label:
-                keys[label].append(key)
+                #keys[label].append(key)
+                if label != 0:  # combination of simulated immobiles
+                    keys[label].append(key)
     for label in labels:
         nb_class[label] += 1
     min_nb_class = np.min(nb_class)
@@ -46,4 +48,5 @@ def label_from_report(histones, report):
     new_histones = {}
     for temp in temps:
         new_histones[temp] = histones[temp]
+    DataSimulation.make_immobile(new_histones, nb=min_nb_class, radius=0.1, max_distance=0.12)  # combination of simulated immobiles
     return new_histones

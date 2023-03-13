@@ -39,10 +39,11 @@ def label_from_report(histones, report):
 
     temps = []
     for i in range(len(keys)):
-        selected_keys = np.random.choice(len(keys[i]), min_nb_class, replace=False)
-        temp = np.array(keys[i])[selected_keys]
-        temps.append(temp)
-        print(f'{i}:{len(temp)}', end=' ')
+        if i != 0:  # combination of simulated immobiles
+            selected_keys = np.random.choice(len(keys[i]), min_nb_class, replace=False)
+            temp = np.array(keys[i])[selected_keys]
+            temps.append(temp)
+            print(f'{i}:{len(temp)}', end=' ')
     temps = np.array(temps).reshape(-1)
 
     new_histones = {}

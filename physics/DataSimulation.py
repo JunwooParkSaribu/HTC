@@ -32,6 +32,10 @@ def make_immobile(histones, nb=5, radius=0.4, max_distance=0.085, cond=(10, 150)
         h2b.set_file_name('simulated_data')
         h2b.set_manuel_label(0)
 
+        h2b.set_id(f'immobile_sd@{i}')
+        histones[f'immobile_sd@{i}'] = h2b
+
+        """        
         if len(histones) != 0:
             id = str(np.sort(np.array(list(histones.keys())).astype(int))[-1] + 1)
             h2b.set_id(id)
@@ -39,6 +43,8 @@ def make_immobile(histones, nb=5, radius=0.4, max_distance=0.085, cond=(10, 150)
         else:
             h2b.set_id(str(0))
             histones[str(0)] = h2b
+        """
+
 
 
 def make_mobile(histones, nb=5, max_distance=0.45, cond=(10, 15)):

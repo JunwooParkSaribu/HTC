@@ -14,7 +14,7 @@ from keras.models import load_model
 
 data_path = './data/TrainingSample'
 model_path = './model'
-report_path = './result/pred_wholecells_by_cutoff/cutoff5_model13.csv'
+report_path = './result/pred_wholecells_by_cutoff/cutoff5_model14.csv'
 
 
 if __name__ == '__main__':

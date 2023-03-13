@@ -66,14 +66,14 @@ if __name__ == '__main__':
                                                                        params['nChannel']), ())
                                                        ).batch(32)
     print(f'Training the data...')
-    #training_model = ConvModel.HTC()
-    training_model = ConvModel.HTC(load_model(params['model_dir'], compile=False))
+    training_model = ConvModel.HTC()
+    #training_model = ConvModel.HTC(load_model(params['model_dir'], compile=False))
 
     #training_model.build((None,) + (500, 500) + (3,))
-    training_model.compile()
     #training_model.summary()
+    training_model.compile()
     train_history, test_history = training_model.fit(train_ds, test_ds, epochs=epochs,
-                                                     callback=Callback.EarlyStoppingAtMinLoss(patience=10),
+                                                     callback=Callback.EarlyStoppingAtMinLoss(patience=15),
                                                      trace='test_loss')
 
     model_name = ReadParam.write_model_info(training_model, model_path, train_history, test_history, len(histones),

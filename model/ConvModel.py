@@ -56,8 +56,7 @@ class HTC(keras.Model):
             self.train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy')
             self.test_loss = tf.keras.metrics.Mean(name='test_loss')
             self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
-            self.pretrained_model = pretrained_model
-            self.dropout1 = Dropout(rate=0.2),
+            self.pretrained_model = pretrained_model  ## isn't trainable for now
             self.d_fin = Dense(3, kernel_regularizer=tf.keras.regularizers.l2(0.0001))
 
     def call(self, x):

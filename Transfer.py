@@ -40,7 +40,7 @@ if gpus:
         # Memory growth must be set before GPUs have been initialized
         print(e)
 
-epochs = 200
+epochs = 2
 params = ReadParam.read(cur_path)
 print(f'\nLoading the data...')
 #histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
@@ -69,30 +69,12 @@ test_ds = ConvModel.tf.data.Dataset.from_generator(gen.test_generator,
                                                    ).batch(9)
 print(f'Training the data...')
 training_model = load_model(model_dir, compile=False)
-#training_model = ConvModel.HTC()
-#training_model.trainable=False
-for layer in training_model.layers:
-    print(layer.trainable)
-training_model.compile(
-    optimizer=tf.keras.optimizers.SGD(learning_rate=0.1, momentum=0.9),
-    loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-    metrics=['accuracy'
-    ])
-hist = training_model.fit(
-    train_ds,
-    epochs=epochs,
-    #steps_per_epoch=steps_per_epoch,
-    validation_data=test_ds,
-    #validation_steps=validation_steps,
-    callbacks=[EarlyStopping(restore_best_weights=True, patience=20, verbose=1)],
-    verbose=0
-).history
 
 model = tf.keras.Sequential([
     # Explicitly define the input shape so the model can be properly
     # loaded by the TFLiteConverter
     tf.keras.layers.InputLayer(input_shape=(500, 500) + (3,)),
-    hub.KerasLayer(training_model, trainable=do_fine_tuning),
+    hub.KerasLayer(training_model, trainable=False),
     tf.keras.layers.Dropout(rate=0.2),
     tf.keras.layers.Dense(3,
                           kernel_regularizer=tf.keras.regularizers.l2(0.0001))
@@ -100,17 +82,18 @@ model = tf.keras.Sequential([
 
 model.build((500, 500)+(3,))
 model.summary()
+training_model.summary()
 
 
-training_model.trainable = False
+#training_model.trainable = False
 
 model.compile(
     optimizer=tf.keras.optimizers.SGD(learning_rate=0.1, momentum=0.9),
     loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-    metrics=['accuracy'
-    ])
-print(model.trainable)
+    metrics=['accuracy']
+)
 
+print(model.layers[0].trainable)
 #steps_per_epoch = gen.get_size()[0] // BATCH_SIZE
 #validation_steps = gen.get_size()[1] // BATCH_SIZE
 
@@ -121,16 +104,18 @@ hist = model.fit(
     validation_data=test_ds,
     #validation_steps=validation_steps,
     callbacks=[EarlyStopping(restore_best_weights=True, patience=20, verbose=1)],
-    verbose=0
+    verbose=1
 ).history
 
 
-training_model.trainable = True
+model.layers[0].trainable = True
 model.compile(
     optimizer=tf.keras.optimizers.SGD(learning_rate=1e-5, momentum=0.9),
     loss=tf.keras.losses.SparseCategoricalCrossentropy(),
     metrics=['accuracy'
     ])
+training_model.summary()
+model.summary()
 hist_2 = model.fit(
     train_ds,
     epochs=epochs,
@@ -138,7 +123,7 @@ hist_2 = model.fit(
     validation_data=test_ds,
     #validation_steps=validation_steps,
     callbacks=[EarlyStopping(restore_best_weights=True, patience=20, verbose=1)],
-    verbose=0
+    verbose=1
 ).history
 
 

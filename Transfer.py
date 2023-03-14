@@ -20,7 +20,7 @@ print("Hub version:", hub.__version__)
 do_fine_tuning = True
 report_path = './result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv'
 model_dir = './model/model7_lab'
-BATCH_SIZE = 32
+BATCH_SIZE = 30
 
 
 if len(sys.argv) > 1:
@@ -43,16 +43,16 @@ if gpus:
 epochs = 200
 params = ReadParam.read(cur_path)
 print(f'\nLoading the data...')
-histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
-histones = Labeling.label_from_report(histones, report_path)
-#histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/old/30_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
-histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
+#histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
+#histones = Labeling.label_from_report(histones, report_path)
+histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/old/30_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
+#histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
 
 print(f'Channel processing...')
 ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=params['nChannel'])
 
 print(f'Generator building...')
-gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8, split_size=32)
+gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8, split_size=30)
 print(f'Number of training items:{sum(gen.get_size())}, processed shape:{gen.get_scaled_size()}\n'
       f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
 train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,
@@ -60,15 +60,33 @@ train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,
                                                     output_shapes=((gen.get_scaled_size()[0],
                                                                     gen.get_scaled_size()[1],
                                                                     params['nChannel']), ())
-                                                    ).batch(32)
+                                                    ).batch(36)
 test_ds = ConvModel.tf.data.Dataset.from_generator(gen.test_generator,
                                                    output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
                                                    output_shapes=((gen.get_scaled_size()[0],
                                                                    gen.get_scaled_size()[1],
                                                                    params['nChannel']), ())
-                                                   ).batch(32)
+                                                   ).batch(9)
 print(f'Training the data...')
 training_model = load_model(model_dir, compile=False)
+#training_model = ConvModel.HTC()
+#training_model.trainable=False
+for layer in training_model.layers:
+    print(layer.trainable)
+training_model.compile(
+    optimizer=tf.keras.optimizers.SGD(learning_rate=0.1, momentum=0.9),
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+    metrics=['accuracy'
+    ])
+hist = training_model.fit(
+    train_ds,
+    epochs=epochs,
+    #steps_per_epoch=steps_per_epoch,
+    validation_data=test_ds,
+    #validation_steps=validation_steps,
+    callbacks=[EarlyStopping(restore_best_weights=True, patience=20, verbose=1)],
+    verbose=0
+).history
 
 model = tf.keras.Sequential([
     # Explicitly define the input shape so the model can be properly
@@ -83,24 +101,46 @@ model = tf.keras.Sequential([
 model.build((500, 500)+(3,))
 model.summary()
 
+
+training_model.trainable = False
+
 model.compile(
-    optimizer=tf.keras.optimizers.SGD(learning_rate=0.005, momentum=0.9),
+    optimizer=tf.keras.optimizers.SGD(learning_rate=0.1, momentum=0.9),
     loss=tf.keras.losses.SparseCategoricalCrossentropy(),
     metrics=['accuracy'
     ])
+print(model.trainable)
 
-steps_per_epoch = gen.get_size()[0] // BATCH_SIZE
-validation_steps = gen.get_size()[1] // BATCH_SIZE
-print(steps_per_epoch)
-print(validation_steps)
+#steps_per_epoch = gen.get_size()[0] // BATCH_SIZE
+#validation_steps = gen.get_size()[1] // BATCH_SIZE
+
 hist = model.fit(
     train_ds,
     epochs=epochs,
     #steps_per_epoch=steps_per_epoch,
     validation_data=test_ds,
     #validation_steps=validation_steps,
-    callbacks=[EarlyStopping(restore_best_weights=True, patience=20, verbose=1)]
+    callbacks=[EarlyStopping(restore_best_weights=True, patience=20, verbose=1)],
+    verbose=0
 ).history
+
+
+training_model.trainable = True
+model.compile(
+    optimizer=tf.keras.optimizers.SGD(learning_rate=1e-5, momentum=0.9),
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+    metrics=['accuracy'
+    ])
+hist_2 = model.fit(
+    train_ds,
+    epochs=epochs,
+    #steps_per_epoch=steps_per_epoch,
+    validation_data=test_ds,
+    #validation_steps=validation_steps,
+    callbacks=[EarlyStopping(restore_best_weights=True, patience=20, verbose=1)],
+    verbose=0
+).history
+
 
 saved_model_path = f"./model/transfer_model_{0}"
 tf.saved_model.save(model, saved_model_path)

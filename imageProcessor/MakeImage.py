@@ -77,9 +77,9 @@ def comparison_from_reports(reports: list, data_path='.', img_save_path='.') -> 
             h2b_id, cls = dt[0], dt[1]
 
             # add conditions of classes (cls)
-            cls_sum = sum([int(x) for x in cls])
-            if cls_sum % len(cls) != 0:
-                recursive_filesearch(data_path, filename, params, [h2b_id], cls, img_save_path, lbs=None)
+            #cls_sum = sum([int(x) for x in cls])
+            #if cls_sum % len(cls) != 0:
+            recursive_filesearch(data_path, filename, params, [h2b_id], cls, img_save_path, lbs=None)
 
 
 def make_image_from_single_report(report: str, option=1, data_path='.', img_save_path='.',

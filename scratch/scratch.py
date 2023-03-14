@@ -41,12 +41,10 @@ plt.show()
 """
 os.chdir('../')
 params = ReadParam.read('.')
-reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
-           #'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv',
-           #'./result/pred_wholecells_by_cutoff/cutoff5_model12.csv',
-           #'./result/pred_wholecells_by_cutoff/cutoff5_model13.csv', ## retrained over model7_lab
+reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
+           './result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## model 13 is retrained over model7_lab
            './result/pred_wholecells_by_cutoff/cutoff5_model14.csv',  ## retrained over model13
-           './result/pred_wholecells_by_cutoff/cutoff5_model15.csv'  ## retrained over model14 + 5138 simulated immobiles
+           './result/pred_wholecells_by_cutoff/cutoff5_model16.csv'  ## retrained over model14
            ]
 
 

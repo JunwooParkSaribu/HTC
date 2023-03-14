@@ -30,7 +30,7 @@ def label_from_report(histones, report):
     for key in histones:
         for label in set(labels):
             if histones[key].get_manuel_label() == label:
-                if label != 0:  # combination of simulated immobiles
+                #if label != 0:  # combination of simulated immobiles
                     keys[label].append(key)
     for label in labels:
         nb_class[label] += 1
@@ -38,7 +38,7 @@ def label_from_report(histones, report):
 
     temps = []
     for i in range(len(keys)):
-        if i != 0:  # combination of simulated immobiles
+        #if i != 0:  # combination of simulated immobiles
             selected_keys = np.random.choice(len(keys[i]), min_nb_class, replace=False)
             temp = np.array(keys[i])[selected_keys]
             temps.append(temp)
@@ -48,5 +48,5 @@ def label_from_report(histones, report):
     new_histones = {}
     for temp in temps:
         new_histones[temp] = histones[temp]
-    DataSimulation.make_immobile(new_histones, nb=min_nb_class, radius=0.35, max_distance=0.15, cond=(5, 100))  # combination of simulated immobiles
+    #DataSimulation.make_immobile(new_histones, nb=min_nb_class, radius=0.35, max_distance=0.15, cond=(5, 100))  # combination of simulated immobiles
     return new_histones

@@ -1,4 +1,6 @@
 import os
+print(os.getcwd())
+os.chdir('../')
 from analysis import DataAnalysis
 from physics import DataSimulation, TrajectoryPhy
 from imageProcessor import ImagePreprocessor, MakeImage
@@ -40,8 +42,7 @@ plt.legend()
 plt.show()
 """
 
-print(os.getcwd())
-os.chdir('../')
+
 params = ReadParam.read('.')
 reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model1.csv',
            './result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## model 13 is retrained over model7_lab

@@ -12,10 +12,10 @@ from label import Labeling
 from keras.models import load_model
 import tensorflow as tf
 import tensorflow_hub as hub
+from keras.callbacks import EarlyStopping
 
-print("TF version:", tf.__version__)
+
 print("Hub version:", hub.__version__)
-print("GPU is", "available" if tf.config.list_physical_devices('GPU') else "NOT AVAILABLE")
 
 do_fine_tuning = True
 report_path = './result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv'
@@ -44,11 +44,8 @@ epochs = 200
 params = ReadParam.read(cur_path)
 print(f'\nLoading the data...')
 histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
-# Labeling.make_label(histones, radius=0.4, density=0.6)
 histones = Labeling.label_from_report(histones, report_path)
-# histones = DataSimulation.make_simulation_data(number=6)
-# DataSave.save_simulated_data(histones, './data/SimulationData/27000_simulated_data.trxyt')
-# histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/old/30_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
+#histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/old/30_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
 histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
 
 print(f'Channel processing...')
@@ -88,18 +85,22 @@ model.summary()
 
 model.compile(
     optimizer=tf.keras.optimizers.SGD(learning_rate=0.005, momentum=0.9),
-    loss = tf.keras.losses.SparseCategoricalCrossentropy(),
-    #loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True, label_smoothing=0.1),
-    metrics=['accuracy'],
-    run_eagerly=True)
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+    metrics=['accuracy'
+    ])
 
 steps_per_epoch = gen.get_size()[0] // BATCH_SIZE
 validation_steps = gen.get_size()[1] // BATCH_SIZE
+print(steps_per_epoch)
+print(validation_steps)
 hist = model.fit(
     train_ds,
-    epochs=5, steps_per_epoch=steps_per_epoch,
+    epochs=epochs,
+    #steps_per_epoch=steps_per_epoch,
     validation_data=test_ds,
-    validation_steps=validation_steps).history
+    #validation_steps=validation_steps,
+    callbacks=[EarlyStopping(restore_best_weights=True, patience=20, verbose=1)]
+).history
 
 saved_model_path = f"./model/transfer_model_{0}"
 tf.saved_model.save(model, saved_model_path)

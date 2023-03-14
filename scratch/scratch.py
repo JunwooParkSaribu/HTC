@@ -39,6 +39,8 @@ plt.legend()
 
 plt.show()
 """
+
+print(os.getcwd())
 os.chdir('../')
 params = ReadParam.read('.')
 reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model1.csv',

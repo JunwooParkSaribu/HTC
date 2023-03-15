@@ -46,7 +46,6 @@ def make_immobile(histones, nb=5, radius=0.4, max_distance=0.085, cond=(10, 150)
         """
 
 
-
 def make_mobile(histones, nb=5, max_distance=0.45, cond=(10, 15)):
     for i in range(nb):
         h2b = H2B()

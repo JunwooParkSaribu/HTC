@@ -25,6 +25,21 @@ if __name__ == '__main__':
     print(f'Loading the data...', end=' ')
     histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
     histones = Labeling.label_from_report(histones, report_path, equal=False)
-    print(len(histones))
+
+
+    nb_samples = [[1000], [1000]]
+
+    new_histones = {}
+    for histone in histones:
+        if histones[histone].get_manuel_label() == 0 or histones[histone].get_manuel_label() == 2 and nb_samples[0] > 0:
+            histones[histone].set_manuel_label(0)
+            new_histones[histone] = histones[histone]
+            nb_samples[0] -= 1
+
+        if histones[histone].get_manuel_label() == 1 and nb_samples[1] > 0:
+            new_histones[histone] = histones[histone]
+            nb_samples[1] -= 1
+
+    print(len(new_histones))
 
 

@@ -31,12 +31,14 @@ if __name__ == '__main__':
     for histone in histones:
         if histones[histone].get_manuel_label() == 0 or histones[histone].get_manuel_label() == 2 and nb_samples[0] > 0:
             histones[histone].set_manuel_label(0)
-            new_histones[histone] = histones[histone]
+            new_histones[histone] = histones[histone].copy()
             nb_samples[0] -= 1
 
         if histones[histone].get_manuel_label() == 1 and nb_samples[1] > 0:
-            new_histones[histone] = histones[histone]
+            new_histones[histone] = histones[histone].copy()
             nb_samples[1] -= 1
+        if sum(nb_samples) == 0:
+            break
 
     print(len(new_histones))
 

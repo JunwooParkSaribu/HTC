@@ -32,10 +32,6 @@ def make_immobile(histones, nb=5, radius=0.4, max_distance=0.085, cond=(10, 150)
         h2b.set_file_name('simulated_data')
         h2b.set_manuel_label(0)
 
-        h2b.set_id(f'immobile_sd@{i}')
-        histones[f'immobile_sd@{i}'] = h2b
-
-        """        
         if len(histones) != 0:
             id = str(np.sort(np.array(list(histones.keys())).astype(int))[-1] + 1)
             h2b.set_id(id)
@@ -43,10 +39,10 @@ def make_immobile(histones, nb=5, radius=0.4, max_distance=0.085, cond=(10, 150)
         else:
             h2b.set_id(str(0))
             histones[str(0)] = h2b
-        """
 
 
-def make_mobile(histones, nb=5, max_distance=0.45, cond=(10, 15)):
+def make_mobile(histones, nb=5, max_distance=0.45, cond=(3, 15)):
+    dist_for_immobile = 0.12
     for i in range(nb):
         h2b = H2B()
         n_trajectory = int(np.random.uniform(cond[0], cond[1]))
@@ -57,6 +53,8 @@ def make_mobile(histones, nb=5, max_distance=0.45, cond=(10, 15)):
             x = np.random.uniform(prev_xy[0]-max_distance, prev_xy[0]+max_distance)
             y = np.random.uniform(prev_xy[1]-max_distance, prev_xy[1]+max_distance)
             xy = np.array([x, y])
+            if np.sqrt((xy - prev_xy)[0] ** 2 + (xy - prev_xy)[1]) < dist_for_immobile:
+                continue
             trajectory.append(xy)
             prev_xy = xy
 

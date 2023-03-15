@@ -45,19 +45,20 @@ plt.show()
 
 params = ReadParam.read('.')
 reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## model 13 is retrained over model7_lab
-           './result/pred_wholecells_by_cutoff/cutoff5_model14.csv',  ## retrained over model13
+           './result/pred_wholecells_by_cutoff/cutoff5_model13.csv',
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model14.csv',  ## retrained over model13
            ]
 
 
 #DataAnalysis.confusion_matrix(reports)
-MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='./result/image')
+#MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='./result/image')
 #MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model14.csv', option=0, img_save_path='./result/image')#
 
 #histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM
-#ImagePreprocessor.make_gif(histones, '20220301_H2B Halo_Field11_no_Ir.rpt_tracked.trxyt', '1', correction=True)
+#ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cell10_no_ir.rpt_tracked.trxyt', 2515, correction=True)
 
-#histones = DataSimulation.make_simulation_data(6000)
-#DataSave.save_simulated_data(histones, './data/SimulationData/6000_simulated_data.trxyt')
+#histones = DataSimulation.make_simulation_data(30)
+#DataSave.save_simulated_data(histones, './data/SimulationData/4500_simulated_data.trxyt')
 #histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
 #ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=3)
 #histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=2, correction=True)

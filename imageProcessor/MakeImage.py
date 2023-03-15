@@ -78,7 +78,8 @@ def comparison_from_reports(reports: list, data_path='.', img_save_path='.') -> 
 
             # add conditions of classes (cls)
             cls_sum = sum([int(x) for x in cls])
-            if cls_sum % len(cls) != 0:
+            #if cls_sum % len(cls) != 0:
+            if int(cls[1]) == 1:
                 recursive_filesearch(data_path, filename, params, [h2b_id], cls, img_save_path, lbs=None)
 
 

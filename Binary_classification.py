@@ -38,6 +38,7 @@ if __name__ == '__main__':
             new_histones[histone] = histones[histone].copy()
             nb_samples[1] -= 1
         if sum(nb_samples) == 0:
+            del histones
             break
 
     print(len(new_histones))

@@ -26,9 +26,7 @@ if __name__ == '__main__':
     histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
     histones = Labeling.label_from_report(histones, report_path, equal=False)
 
-
-    nb_samples = [[1000], [1000]]
-
+    nb_samples = [1000, 1000]
     new_histones = {}
     for histone in histones:
         if histones[histone].get_manuel_label() == 0 or histones[histone].get_manuel_label() == 2 and nb_samples[0] > 0:

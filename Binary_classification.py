@@ -26,17 +26,22 @@ if __name__ == '__main__':
     histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
     histones = Labeling.label_from_report(histones, report_path, equal=False)
 
-    nb_samples = [1000, 1000]
+    nb_samples = [500, 1000, 500]
     new_histones = {}
     for histone in histones:
-        if histones[histone].get_manuel_label() == 0 or histones[histone].get_manuel_label() == 2 and nb_samples[0] > 0:
-            histones[histone].set_manuel_label(0)
+        if histones[histone].get_manuel_label() == 0 and nb_samples[0] > 0:
             new_histones[histone] = histones[histone].copy()
             nb_samples[0] -= 1
+
+        if histones[histone].get_manuel_label() == 2 and nb_samples[2] > 0:
+            histones[histone].set_manuel_label(0)
+            new_histones[histone] = histones[histone].copy()
+            nb_samples[2] -= 1
 
         if histones[histone].get_manuel_label() == 1 and nb_samples[1] > 0:
             new_histones[histone] = histones[histone].copy()
             nb_samples[1] -= 1
+
         if sum(nb_samples) == 0:
             del histones
             break

@@ -9,12 +9,12 @@ from model import ConvModel, Callback
 import matplotlib.pyplot as plt
 from physics import TrajectoryPhy
 from label import Labeling
-from keras.models import load_model
 
 
 data_path = './data/TrainingSample'
 model_path = './model'
-report_path = './result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv'
+report_path = ['./result/pred_wholecells_by_cutoff/cutoff5_model13.csv',
+               './result/pred_wholecells_by_cutoff/cutoff5_model17.csv']
 
 
 if __name__ == '__main__':
@@ -38,13 +38,10 @@ if __name__ == '__main__':
     epochs = 200
     params = ReadParam.read(cur_path)
     print(f'\nLoading the data...')
-    #histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
-    #Labeling.make_label(histones, radius=0.4, density=0.6)
-    #histones = Labeling.label_from_report(histones, report_path, equal=True)
-    #histones = DataSimulation.make_simulation_data(number=6)
-    #DataSave.save_simulated_data(histones, './data/SimulationData/27000_simulated_data.trxyt')
-    histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/4500_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
-    histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
+    histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
+    histones = Labeling.label_from_reports(histones, report_path)
+    #histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/4500_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
+    histones = TrajectoryPhy.trjaectory_rotation(histones, 8)
 
     print(f'Channel processing...')
     ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=params['nChannel'])

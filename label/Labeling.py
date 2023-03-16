@@ -55,6 +55,59 @@ def label_from_report(histones, report, equal=False):
         return histones
 
 
+def label_from_reports(histones, reports, nb_labels=3):
+    headers = []
+    datas = []
+
+    for report in reports:
+        header, data = DataLoad.read_report(report)
+        headers.append(report)
+        datas.append(data)
+
+    key_labels = {}
+    for data in datas:
+        for dt_dic in data:
+            key = f"{dt_dic['filename']}@{dt_dic['h2b_id']}"
+            label = int(dt_dic['predicted_class_id'])
+
+            if key not in key_labels:
+                key_labels[key] = [label]
+            else:
+                key_labels[key].append(label)
+
+    check_same_reports = True
+    for key in key_labels:
+        if len(key_labels[key]) != len(reports):
+            check_same_reports = False
+            print('reports are not same')
+            raise Exception
+
+    same_label_histones = [[] for x in range(nb_labels)]
+    for key in key_labels:
+        same = 1
+        first_label = key_labels[key][0]
+        for label in key_labels[key]:
+            if label != first_label:
+                same = 0
+        if same:
+            same_label_histones[first_label].append(key)
+
+    min_nb_label = np.inf
+    for group in same_label_histones:
+        min_nb_label = min(len(group), min_nb_label)
+
+    new_histones = {}
+    for selec in same_label_histones:
+        selected_histones = np.random.choice(selec, min_nb_label, replace=False)
+        for histone in selected_histones:
+            h2b_copy = histones[histone].copy()
+            h2b_copy.set_manuel_label(key_labels[histone][0])
+            new_histones[histone] = h2b_copy
+
+    return new_histones
+
+
+
 def binary_labeling(histones):  # binary labeling between immobile,mobile / hybrid
     crit = {'immobile_max_dist': 0.1697, 'immobile_max_radius': 0.4, 'immobile_min_trajectory': 10}
     #criteria: immobile: 10 to 150, max_dist = 0.1697

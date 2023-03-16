@@ -44,13 +44,14 @@ plt.show()
 
 
 params = ReadParam.read('.')
-reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## model 13 is retrained over model7_lab
+reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## model 13 is retrained over model7_lab
            './result/pred_wholecells_by_cutoff/cutoff5_model13.csv',
            #'./result/pred_wholecells_by_cutoff/cutoff5_model14.csv',  ## retrained over model13
+           './result/pred_wholecells_by_cutoff/cutoff5_model17.csv',
            ]
 
 
-#DataAnalysis.confusion_matrix(reports)
+DataAnalysis.confusion_matrix(reports)
 #MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='./result/image')
 #MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model14.csv', option=0, img_save_path='./result/image')#
 

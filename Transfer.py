@@ -1,5 +1,6 @@
 import os
 import sys
+import numpy as np
 import time
 import git
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Suppress TensorFlow logging (1)
@@ -7,7 +8,7 @@ from imageProcessor import ImagePreprocessor, ImgGenerator
 from fileIO import DataLoad, ReadParam
 from model import ConvModel, Callback
 import matplotlib.pyplot as plt
-from physics import TrajectoryPhy
+from physics import TrajectoryPhy, DataSimulation
 from label import Labeling
 from keras.models import load_model
 import tensorflow as tf
@@ -40,13 +41,13 @@ if gpus:
         # Memory growth must be set before GPUs have been initialized
         print(e)
 
-epochs = 2
+epochs = 4
 params = ReadParam.read(cur_path)
 print(f'\nLoading the data...')
-#histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
-#histones = Labeling.label_from_report(histones, report_path)
-histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/old/30_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
-#histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
+histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
+histones = Labeling.label_from_report(histones, report_path)
+#histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/old/30_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
+histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
 
 print(f'Channel processing...')
 ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=params['nChannel'])
@@ -68,64 +69,70 @@ test_ds = ConvModel.tf.data.Dataset.from_generator(gen.test_generator,
                                                                    params['nChannel']), ())
                                                    ).batch(9)
 print(f'Training the data...')
+#training_model = ConvModel.HTC()
+#training_model.compile()
 training_model = load_model(model_dir, compile=False)
+#steps_per_epoch = gen.get_size()[0] // BATCH_SIZE
+#validation_steps = gen.get_size()[1] // BATCH_SIZE
+
 
 model = tf.keras.Sequential([
     # Explicitly define the input shape so the model can be properly
     # loaded by the TFLiteConverter
-    tf.keras.layers.InputLayer(input_shape=(500, 500) + (3,)),
+    tf.keras.layers.InputLayer(input_shape=((500, 500) + (3,))),
     hub.KerasLayer(training_model, trainable=False),
+    #tf.keras.layers.Conv2D(5,(5,5)),
     tf.keras.layers.Dropout(rate=0.2),
+    #tf.keras.layers.Flatten(),
     tf.keras.layers.Dense(3,
                           kernel_regularizer=tf.keras.regularizers.l2(0.0001))
 ])
 
 model.build((500, 500)+(3,))
-model.summary()
-training_model.summary()
 
-
-#training_model.trainable = False
-
+model.layers[0].trainable = False
 model.compile(
     optimizer=tf.keras.optimizers.SGD(learning_rate=0.1, momentum=0.9),
     loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-    metrics=['accuracy']
-)
+    metrics=['accuracy'])
 
-print(model.layers[0].trainable)
-#steps_per_epoch = gen.get_size()[0] // BATCH_SIZE
-#validation_steps = gen.get_size()[1] // BATCH_SIZE
+print('model:',model.trainable)
+print('tranined_model:',model.layers[0].trainable)
+
 
 hist = model.fit(
     train_ds,
-    epochs=epochs,
+    epochs=1,
     #steps_per_epoch=steps_per_epoch,
     validation_data=test_ds,
     #validation_steps=validation_steps,
     callbacks=[EarlyStopping(restore_best_weights=True, patience=20, verbose=1)],
     verbose=1
 ).history
-
 
 model.layers[0].trainable = True
 model.compile(
-    optimizer=tf.keras.optimizers.SGD(learning_rate=1e-5, momentum=0.9),
+    optimizer=tf.keras.optimizers.SGD(learning_rate=0.5, momentum=0.9),
     loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-    metrics=['accuracy'
-    ])
-training_model.summary()
-model.summary()
+    metrics=['accuracy'])
+
+print(np.array(model.layers[0].trainable_variables[0]).reshape(-1)[:8])
+print(np.array(model.layers[2].trainable_variables[0]).reshape(-1)[:8])
+
+print('model:',model.trainable)
+print('tranined_model:',model.layers[0].trainable)
+
 hist_2 = model.fit(
     train_ds,
-    epochs=epochs,
+    epochs=5,
     #steps_per_epoch=steps_per_epoch,
     validation_data=test_ds,
     #validation_steps=validation_steps,
     callbacks=[EarlyStopping(restore_best_weights=True, patience=20, verbose=1)],
     verbose=1
 ).history
-
+print(np.array(model.layers[0].trainable_variables[0]).reshape(-1)[:8])
+print(np.array(model.layers[2].trainable_variables[0]).reshape(-1)[:8])
 
 saved_model_path = f"./model/transfer_model_{0}"
 tf.saved_model.save(model, saved_model_path)

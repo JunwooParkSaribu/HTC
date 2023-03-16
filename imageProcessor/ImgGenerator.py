@@ -15,7 +15,7 @@ class DataGenerator:
         self.size = len(histones)
         self.train_size = int(self.size * ratio)
         self.test_size = self.size - self.train_size
-        self.n_class = len(set([histones[key].get_manuel_label() for key in self.keys]))
+        self.n_class = max(set([histones[key].get_manuel_label() for key in self.keys])) + 1
         self.split_num = int(self.size/split_size) if self.size % split_size == 0 else int(self.size/split_size) + 1
         self.train_split_indices = []
         self.test_split_indices = []

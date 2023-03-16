@@ -87,9 +87,10 @@ if __name__ == '__main__':
     # automated git push
     try:
         repo = git.Repo(os.getcwd())
+        origin = repo.remote(name='origin')
+        origin.pull()
         repo.git.add(f'{model_path}/{model_name}')
         repo.index.commit(f'auto - uploaded')
-        origin = repo.remote(name='origin')
         existing_branch = repo.heads['main']
         existing_branch.checkout()
         origin.push()

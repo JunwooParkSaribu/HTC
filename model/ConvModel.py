@@ -18,21 +18,27 @@ class HTC(keras.Model):
 
         self.conv0 = Conv2D(filters=32, kernel_size=(3, 3))
         self.pool0 = MaxPool2D(pool_size=(2, 2))
+        self.batch0 = BatchNormalization()
+        self.relu_activ0 = ReLU()
 
         self.conv1 = Conv2D(filters=64, kernel_size=(3, 3))
         self.conv2 = Conv2D(filters=64, kernel_size=(3, 3))
         self.pool1 = MaxPool2D(pool_size=(2, 2))
+        self.batch1 = BatchNormalization()
+        self.relu_activ1 = ReLU()
 
         self.conv3 = Conv2D(filters=128, kernel_size=(3, 3))
         self.conv4 = Conv2D(filters=256, kernel_size=(3, 3))
         self.pool2 = MaxPool2D(pool_size=(2, 2))
+        self.batch2 = BatchNormalization()
+        self.relu_activ2 = ReLU()
 
         self.conv5 = Conv2D(filters=512, kernel_size=(3, 3))
         self.pool3 = MaxPool2D(pool_size=(2, 2))
-        self.relu_activ0 = ReLU()
+        self.relu_activ3 = ReLU()
+        self.drop = Dropout(0.2)
 
         self.flatten = Flatten()
-        self.drop = Dropout(0.2)
         self.d1 = Dense(3)
         self.soft_activ = Activation("softmax")
 
@@ -50,21 +56,27 @@ class HTC(keras.Model):
     def call(self, inputs, training=False, mask=None):
         x = self.conv0(inputs)
         x = self.pool0(x)
+        x = self.batch0(x)
+        x = self.relu_activ0(x)
 
         x = self.conv1(x)
         x = self.conv2(x)
         x = self.pool1(x)
+        x = self.batch1(x)
+        x = self.relu_activ1(x)
 
         x = self.conv3(x)
         x = self.conv4(x)
         x = self.pool2(x)
+        x = self.batch2(x)
+        x = self.relu_activ2(x)
 
         x = self.conv5(x)
         x = self.pool3(x)
-        x = self.relu_activ0(x)
+        x = self.relu_activ3(x)
+        x = self.drop(x)
 
         x = self.flatten(x)
-        x = self.drop(x)
         x = self.d1(x)
         x = self.soft_activ(x)
 

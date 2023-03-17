@@ -64,8 +64,8 @@ if __name__ == '__main__':
                                                        ).batch(8)
     print(f'Training the data...')
     training_model = ConvModel.HTC()
-    training_model.build(input_shape=(None, gen.get_scaled_size()[0], gen.get_scaled_size()[1], params['nChannel']))
-    training_model.summary()
+    #training_model.build(input_shape=(None, gen.get_scaled_size()[0], gen.get_scaled_size()[1], params['nChannel']))
+    #training_model.summary()
     training_model.compile()
     train_history, test_history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
                                                      callbacks=[Callback.EarlyStoppingAtMinLoss(patience=30)],

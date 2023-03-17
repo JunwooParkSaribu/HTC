@@ -66,7 +66,7 @@ if __name__ == '__main__':
     training_model = ConvModel.HTC()
     training_model.compile()
     train_history, test_history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
-                                                     callbacks=[Callback.EarlyStoppingAtMinLoss(patience=15)],
+                                                     callbacks=[Callback.EarlyStoppingAtMinLoss(patience=30)],
                                                      trace='test_loss')
 
     model_name = ReadParam.write_model_info(training_model, model_path, train_history, test_history, len(histones),

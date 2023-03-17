@@ -6,7 +6,6 @@ from label import Labeling
 from imageProcessor import ImagePreprocessor, ImgGenerator
 from keras.models import load_model
 from tensorflow import device
-from physics import TrajectoryPhy
 
 
 def predict(gen, scaled_size, nChannel, progress_i, progress_total):
@@ -30,7 +29,8 @@ def predict(gen, scaled_size, nChannel, progress_i, progress_total):
     return y_predict, y_predict_proba, progress_i
 
 
-def main_pipe(full_histones, amp, nChannel, batch_size):
+def main_pipe(full_histones, scaled_size=(500, 500), immobile_cutoff=5,
+              hybrid_cutoff=12, amp=2, nChannel=3, batch_size=32):
     total_n_histone = 0
     for g in full_histones:
         total_n_histone += len(list(g.keys()))
@@ -40,20 +40,17 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
     ProgressBar.printProgressBar(progress_i, progress_total)
 
     for g_num, histones in enumerate(full_histones):
-        # Image Processing
         Labeling.make_label(histones, radius=0.4, density=0.6)
         #Labeling.label_from_report(histones, './result/old_eval_all_35300h2b.csv')
 
-        ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=nChannel)
-        histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=amp)
-        zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
-        histone_key_list = list(zoomed_imgs.keys())
-        # Image generator
-        gen = ImgGenerator.conversion(histones, zoomed_imgs, keylist=histone_key_list, batch_size=batch_size, eval=True)
-        # Prediction
-        batch_y_predict, batch_y_predict_proba, progress_i = predict(gen, scaled_size, nChannel, progress_i, progress_total)
-
-        for index, histone in enumerate(histone_key_list):
+        key_list = list(histones.keys())
+        ImagePreprocessor.make_channel(histones, immobile_cutoff=immobile_cutoff,
+                                       hybrid_cutoff=hybrid_cutoff, nChannel=nChannel)
+        gen = ImgGenerator.conversion(histones, key_list=key_list, scaled_size=scaled_size,
+                                      batch_size=batch_size, amp=amp, eval=True)
+        batch_y_predict, batch_y_predict_proba, progress_i = predict(gen, scaled_size,
+                                                                     nChannel, progress_i, progress_total)
+        for index, histone in enumerate(key_list):
             histones[histone].set_predicted_label(batch_y_predict[index])
             histones[histone].set_predicted_proba(batch_y_predict_proba[index])
 
@@ -66,16 +63,15 @@ if __name__ == '__main__':
     params = ReadParam.read(config_path)
 
     print(f'Loading the data...')
-    #full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
-    full_data = DataLoad.file_distrib(paths=['./data/SimulationData/27000_simulated_data.trxyt'], cutoff=2)
-    full_data = TrajectoryPhy.trjaectory_rotation(full_data, 8)
+    full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
 
-    HTC_model = load_model(params['model_dir'])
-    HTC_model.summary()
-
+    HTC_model = load_model(params['model_dir'], compile=False)
+    HTC_model.compile()
     # Main pipe start.
-    print(f'Predicting the data...')
-    main_pipe(full_data, params['amp'], params['nChannel'], params['batch_size'])
+    print(f'Predicting all data...')
+    main_pipe(full_data, scaled_size=(500, 500), immobile_cutoff=params['immobile_cutoff'],
+              hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],
+              nChannel=params['nChannel'], batch_size=params['batch_size'])
     print(f'Making reports... ', end=' ')
     DataSave.save_report(full_data, path=params['save_dir'], all=params['all'], eval=True)
     print(f'Done.')

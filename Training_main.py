@@ -47,7 +47,7 @@ if __name__ == '__main__':
     ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=params['nChannel'])
 
     print(f'Generator building...')
-    gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8, split_size=16)
+    gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8, split_size=32)
     print(f'Number of training items:{sum(gen.get_size())}, processed shape:{gen.get_scaled_size()}\n'
           f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
     train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,
@@ -55,13 +55,13 @@ if __name__ == '__main__':
                                                         output_shapes=((gen.get_scaled_size()[0],
                                                                         gen.get_scaled_size()[1],
                                                                         params['nChannel']), ())
-                                                        ).batch(16)
+                                                        ).batch(32)
     test_ds = ConvModel.tf.data.Dataset.from_generator(gen.test_generator,
                                                        output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
                                                        output_shapes=((gen.get_scaled_size()[0],
                                                                        gen.get_scaled_size()[1],
                                                                        params['nChannel']), ())
-                                                       ).batch(16)
+                                                       ).batch(32)
     print(f'Training the data...')
     training_model = ConvModel.HTC()
     training_model.build(input_shape=(None, gen.get_scaled_size()[0], gen.get_scaled_size()[1], params['nChannel']))

@@ -3,7 +3,7 @@ import numpy as np
 
 
 class DataGenerator:
-    def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, split_size=100, shuffle=True):
+    def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, split_size=32, shuffle=True):
         self.histones = histones
         self.train_keys = []
         self.test_keys = []
@@ -72,14 +72,15 @@ class DataGenerator:
                 yield zoomed_imgs[histone_id], test_histones[histone_id].get_manuel_label()
 
 
-def conversion(histones, training_set, keylist=None, batch_size=1000, eval=True):
-    size = len(training_set)
+def conversion(histones, key_list=None, scaled_size=(500, 500), batch_size=32, amp=2, eval=True):
     train_X = []
     train_Y = []
-    if keylist is None:
-        keys = list(training_set.keys())
+
+    if key_list is None:
+        keys = list(histones.keys())
     else:
-        keys = keylist
+        keys = key_list
+    size = len(keys)
 
     if not eval:
         i = 0
@@ -89,7 +90,10 @@ def conversion(histones, training_set, keylist=None, batch_size=1000, eval=True)
                 del train_Y
                 return
             while i < size:
-                train_X.append(training_set[keys[i]])
+                histones_imgs, img_size, _ = \
+                    ImagePreprocessor.preprocessing({keys[i]: histones[keys[i]].copy()}, img_scale=10, amp=amp)
+                zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=scaled_size)
+                train_X.append(zoomed_imgs[keys[i]])
                 i += 1
                 if i % batch_size == 0:
                     break
@@ -103,7 +107,10 @@ def conversion(histones, training_set, keylist=None, batch_size=1000, eval=True)
                 del train_Y
                 return
             while i < size:
-                train_X.append(training_set[keys[i]])
+                histones_imgs, img_size, time_scale = \
+                    ImagePreprocessor.preprocessing({keys[i]: histones[keys[i]].copy()}, img_scale=10, amp=amp)
+                zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=scaled_size)
+                train_X.append(zoomed_imgs[keys[i]])
                 train_Y.append(histones[keys[i]].get_manuel_label())
                 i += 1
                 if i % batch_size == 0:

@@ -34,9 +34,9 @@ if __name__ == '__main__':
             # Memory growth must be set before GPUs have been initialized
             print(e)
 
+    params = ReadParam.read(cur_path)
     epochs = 200
     batch_size = 32
-    params = ReadParam.read(cur_path)
     print(f'\nLoading the data...')
     histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
     histones = Labeling.label_from_reports(histones, report_path, min_nb_label=2240) #2240
@@ -44,7 +44,8 @@ if __name__ == '__main__':
     histones = TrajectoryPhy.trjaectory_rotation(histones, 8)
 
     print(f'Channel processing...')
-    ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=params['nChannel'])
+    ImagePreprocessor.make_channel(histones, immobile_cutoff=params['immobile_cutoff'],
+                                   hybrid_cutoff=params['hybrid_cutoff'], nChannel=params['nChannel'])
 
     print(f'Generator building...')
     gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8, split_size=batch_size)

@@ -13,7 +13,7 @@ def predict(gen, scaled_size, nChannel, progress_i, progress_total):
     y_predict = []
     y_predict_proba = []
 
-    for batch_num in range(99999):
+    for batch_num in range(9999999):
         batch = next(gen, -1)
         if batch == -1:
             break
@@ -28,7 +28,8 @@ def predict(gen, scaled_size, nChannel, progress_i, progress_total):
     return y_predict, y_predict_proba, progress_i
 
 
-def main_pipe(full_histones, amp, nChannel, batch_size):
+def main_pipe(full_histones, scaled_size=(500, 500), immobile_cutoff=5,
+              hybrid_cutoff=12, amp=2, nChannel=3, batch_size=32):
     total_n_histone = 0
     for g in full_histones:
         total_n_histone += len(list(g.keys()))
@@ -38,16 +39,14 @@ def main_pipe(full_histones, amp, nChannel, batch_size):
     ProgressBar.printProgressBar(progress_i, progress_total)
 
     for g_num, histones in enumerate(full_histones):
-        ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=nChannel)
-        histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histones, img_scale=10, amp=amp)
-        zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
-        histone_key_list = list(zoomed_imgs.keys())
-
-        gen = ImgGenerator.conversion(histones, zoomed_imgs, keylist=histone_key_list, batch_size=batch_size, eval=False)
+        key_list = list(histones.keys())
+        ImagePreprocessor.make_channel(histones, immobile_cutoff=immobile_cutoff,
+                                       hybrid_cutoff=hybrid_cutoff, nChannel=nChannel)
+        gen = ImgGenerator.conversion(histones, key_list=key_list, scaled_size=scaled_size,
+                                      batch_size=batch_size, amp=amp, eval=False)
         batch_y_predict, batch_y_predict_proba, progress_i = predict(gen, scaled_size,
                                                                      nChannel, progress_i, progress_total)
-
-        for index, histone in enumerate(histone_key_list):
+        for index, histone in enumerate(key_list):
             histones[histone].set_predicted_label(batch_y_predict[index])
             histones[histone].set_predicted_proba(batch_y_predict_proba[index])
 
@@ -61,15 +60,17 @@ if __name__ == '__main__':
 
     with device('/cpu:0'):
         print(f'Loading the data...', end=' ')
-        full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])  # 16GB RAM
-        print(f'Done.\nIf number of trajectories is bigger than {params["group_size"]}, '
-              f'data will be separated into groups to reduce the memory usage.')
+        full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
+        print(f'Done.\nIf the number of histone is bigger than {params["group_size"]}, '
+              f'data will be split into groups to reduce the memory usage.')
         HTC_model = load_model(params['model_dir'], compile=False)
         HTC_model.compile()
 
         # Main pipe start.
         print(f'Predicting all data...')
-        main_pipe(full_data, params['amp'], params['nChannel'], params['batch_size'])
+        main_pipe(full_data, scaled_size=(500, 500), immobile_cutoff=params['immobile_cutoff'],
+                  hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],
+                  nChannel=params['nChannel'], batch_size=params['batch_size'])
     print(f'Making reports... ', end=' ')
     DataSave.save_report(full_data, path=params['save_dir'], all=params['all'])
     print(f'Done.')

@@ -28,12 +28,13 @@ class HTC(keras.Model):
         self.pool2 = MaxPool2D(pool_size=(2, 2))
 
         self.conv5 = Conv2D(filters=512, kernel_size=(3, 3))
+        self.conv6 = Conv2D(filters=512, kernel_size=(3, 3))
         self.pool3 = MaxPool2D(pool_size=(2, 2))
         self.relu_activ0 = ReLU()
 
         self.flatten = Flatten()
         self.drop = Dropout(0.2)
-        self.d0 = Dense(256)
+        self.d0 = Dense(128)
         self.d1 = Dense(3)
         self.soft_activ = Activation("softmax")
 
@@ -61,6 +62,7 @@ class HTC(keras.Model):
         x = self.pool2(x)
 
         x = self.conv5(x)
+        x = self.conv6(x)
         x = self.pool3(x)
         x = self.relu_activ0(x)
 

@@ -50,8 +50,7 @@ reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## model
            #'./result/pred_wholecells_by_cutoff/cutoff5_model17.csv',  ## simulated data
            #'./result/pred_wholecells_by_cutoff/cutoff5_model18.csv',
            './result/pred_wholecells_by_cutoff/cutoff5_model19.csv',  ## 13 + 17
-           #'./result/pred_wholecells_by_cutoff/cutoff5_model20.csv',  ## 13 + 17
-           #'./result/pred_wholecells_by_cutoff/cutoff5_model21.csv',  ## 13 + 19
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model20.csv',  ## 7_lab + 19
            ]
 
 

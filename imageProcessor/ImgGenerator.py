@@ -51,24 +51,24 @@ class DataGenerator:
             train_histones = {}
             histones_id = self.train_split[i]
             for histone_id in histones_id:
-                train_histones[histone_id] = self.histones[histone_id]
+                train_histones[histone_id] = self.histones[histone_id].copy()
             histones_imgs, img_size, time_scale =\
                 ImagePreprocessor.preprocessing(train_histones, img_scale=10, amp=self.amp)
             zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=self.to_size)
             for histone_id in histones_id:
-                yield zoomed_imgs[histone_id], self.histones[histone_id].get_manuel_label()
+                yield zoomed_imgs[histone_id], train_histones[histone_id].get_manuel_label()
 
     def test_generator(self):
         for i in range(len(self.test_split)):
             test_histones = {}
             histones_id = self.test_split[i]
             for histone_id in histones_id:
-                test_histones[histone_id] = self.histones[histone_id]
+                test_histones[histone_id] = self.histones[histone_id].copy()
             histones_imgs, img_size, time_scale =\
                 ImagePreprocessor.preprocessing(test_histones, img_scale=10, amp=self.amp)
             zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=self.to_size)
             for histone_id in histones_id:
-                yield zoomed_imgs[histone_id], self.histones[histone_id].get_manuel_label()
+                yield zoomed_imgs[histone_id], test_histones[histone_id].get_manuel_label()
 
 
 def conversion(histones, training_set, keylist=None, batch_size=1000, eval=True):

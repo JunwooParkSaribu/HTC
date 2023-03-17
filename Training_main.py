@@ -14,7 +14,6 @@ from label import Labeling
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         cur_path = sys.argv[1]
-        os.chdir(cur_path)
     else:
         cur_path = '.'
 
@@ -39,9 +38,7 @@ if __name__ == '__main__':
     batch_size = 32
     params = ReadParam.read(cur_path)
     print(f'\nLoading the data...')
-    print(os.getcwd())
     histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
-    print(len(histones))
     histones = Labeling.label_from_reports(histones, report_path, min_nb_label=2240) #2240
     #histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/4500_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
     histones = TrajectoryPhy.trjaectory_rotation(histones, 8)

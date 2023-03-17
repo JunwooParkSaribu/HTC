@@ -11,17 +11,16 @@ from physics import TrajectoryPhy
 from label import Labeling
 
 
-data_path = './data/TrainingSample'
-model_path = './model'
-report_path = ['./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv',
-               './result/pred_wholecells_by_cutoff/cutoff5_model19.csv']
-
-
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         cur_path = sys.argv[1]
     else:
         cur_path = '.'
+
+    data_path = f'{cur_path}/data/TrainingSample'
+    model_path = f'{cur_path}/model'
+    report_path = [f'{cur_path}/result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv',
+                   f'{cur_path}/result/pred_wholecells_by_cutoff/cutoff5_model19.csv']
 
     gpus = ConvModel.tf.config.list_physical_devices('GPU')
     if gpus:
@@ -55,8 +54,8 @@ if __name__ == '__main__':
                                                         output_signature=(
                                                             ConvModel.tf.TensorSpec(
                                                                 shape=(gen.get_scaled_size()[0],
-                                                                        gen.get_scaled_size()[1],
-                                                                        params['nChannel']),
+                                                                       gen.get_scaled_size()[1],
+                                                                       params['nChannel']),
                                                                 dtype=ConvModel.tf.float64),
                                                             ConvModel.tf.TensorSpec(
                                                                 shape=(),
@@ -79,7 +78,7 @@ if __name__ == '__main__':
     training_model.summary()
     training_model.compile()
     train_history, test_history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
-                                                     callbacks=[Callback.EarlyStoppingAtMinLoss(patience=30)],
+                                                     callbacks=[Callback.EarlyStoppingAtMinLoss(patience=20)],
                                                      trace='test_loss')
 
     model_name = ReadParam.write_model_info(training_model, model_path, train_history, test_history, len(histones),

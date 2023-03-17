@@ -14,6 +14,7 @@ from label import Labeling
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         cur_path = sys.argv[1]
+        os.chdir(cur_path)
     else:
         cur_path = '.'
 

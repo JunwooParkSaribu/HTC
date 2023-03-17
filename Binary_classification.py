@@ -21,7 +21,6 @@ if __name__ == '__main__':
         config_path = '.'
     params = ReadParam.read(config_path)
 
-
     print(f'Loading the data...', end=' ')
     histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
     histones = Labeling.label_from_report(histones, report_path, equal=False)

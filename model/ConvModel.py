@@ -33,7 +33,6 @@ class HTC(keras.Model):
 
         self.flatten = Flatten()
         self.drop = Dropout(0.2)
-        self.d0 = Dense(128)
         self.d1 = Dense(3)
         self.soft_activ = Activation("softmax")
 
@@ -66,7 +65,6 @@ class HTC(keras.Model):
 
         x = self.flatten(x)
         x = self.drop(x)
-        x = self.d0(x)
         x = self.d1(x)
         x = self.soft_activ(x)
 

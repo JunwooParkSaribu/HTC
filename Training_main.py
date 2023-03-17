@@ -64,9 +64,9 @@ if __name__ == '__main__':
                                                        ).batch(32)
     print(f'Training the data...')
     training_model = ConvModel.HTC()
-    training_model.compile()
     training_model.build()
     training_model.summary()
+    training_model.compile()
     train_history, test_history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
                                                      callbacks=[Callback.EarlyStoppingAtMinLoss(patience=30)],
                                                      trace='test_loss')

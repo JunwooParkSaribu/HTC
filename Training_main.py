@@ -36,10 +36,11 @@ if __name__ == '__main__':
             print(e)
 
     epochs = 200
+    batch_size = 32
     params = ReadParam.read(cur_path)
     print(f'\nLoading the data...')
     histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
-    histones = Labeling.label_from_reports(histones, report_path, min_nb_label=2240)
+    histones = Labeling.label_from_reports(histones, report_path, min_nb_label=2240) #2240
     #histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/4500_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
     histones = TrajectoryPhy.trjaectory_rotation(histones, 8)
 
@@ -47,21 +48,31 @@ if __name__ == '__main__':
     ImagePreprocessor.make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=params['nChannel'])
 
     print(f'Generator building...')
-    gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8, split_size=32)
+    gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8, split_size=batch_size)
     print(f'Number of training items:{sum(gen.get_size())}, processed shape:{gen.get_scaled_size()}\n'
           f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
     train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,
-                                                        output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
-                                                        output_shapes=((gen.get_scaled_size()[0],
+                                                        output_signature=(
+                                                            ConvModel.tf.TensorSpec(
+                                                                shape=(gen.get_scaled_size()[0],
                                                                         gen.get_scaled_size()[1],
-                                                                        params['nChannel']), ())
-                                                        ).batch(32)
+                                                                        params['nChannel']),
+                                                                dtype=ConvModel.tf.float64),
+                                                            ConvModel.tf.TensorSpec(
+                                                                shape=(),
+                                                                dtype=ConvModel.tf.int32))
+                                                        ).batch(batch_size, drop_remainder=True)
     test_ds = ConvModel.tf.data.Dataset.from_generator(gen.test_generator,
-                                                       output_types=(ConvModel.tf.float64, ConvModel.tf.int32),
-                                                       output_shapes=((gen.get_scaled_size()[0],
-                                                                       gen.get_scaled_size()[1],
-                                                                       params['nChannel']), ())
-                                                       ).batch(32)
+                                                       output_signature=(
+                                                           ConvModel.tf.TensorSpec(
+                                                               shape=(gen.get_scaled_size()[0],
+                                                                      gen.get_scaled_size()[1],
+                                                                      params['nChannel']),
+                                                               dtype=ConvModel.tf.float64),
+                                                           ConvModel.tf.TensorSpec(
+                                                               shape=(),
+                                                               dtype=ConvModel.tf.int32))
+                                                       ).batch(batch_size, drop_remainder=True)
     print(f'Training the data...')
     training_model = ConvModel.HTC()
     training_model.build(input_shape=(None, gen.get_scaled_size()[0], gen.get_scaled_size()[1], params['nChannel']))

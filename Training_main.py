@@ -19,8 +19,8 @@ if __name__ == '__main__':
 
     data_path = f'{cur_path}/data/TrainingSample'
     model_path = f'{cur_path}/model'
-    report_path = [f'{cur_path}/result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv',
-                   f'{cur_path}/result/pred_wholecells_by_cutoff/cutoff5_model19.csv']
+    report_path = [f'{cur_path}/result/pred_wholecells_by_cutoff/cutoff5_model13.csv',
+                   f'{cur_path}/result/pred_wholecells_by_cutoff/cutoff5_model17.csv']
 
     gpus = ConvModel.tf.config.list_physical_devices('GPU')
     if gpus:

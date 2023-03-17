@@ -44,19 +44,20 @@ plt.show()
 
 
 params = ReadParam.read('.')
-reports = ['./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## model 13 is retrained over model7_lab
+reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simulated data
            #'./result/pred_wholecells_by_cutoff/cutoff5_model13.csv',  ## retarined over model7_lab
            #'./result/pred_wholecells_by_cutoff/cutoff5_model14.csv',  ## retrained over model13
            #'./result/pred_wholecells_by_cutoff/cutoff5_model17.csv',  ## simulated data
            #'./result/pred_wholecells_by_cutoff/cutoff5_model18.csv',
            './result/pred_wholecells_by_cutoff/cutoff5_model19.csv',  ## 13 + 17
            #'./result/pred_wholecells_by_cutoff/cutoff5_model20.csv',  ## 7_lab + 19
+           ## 13 + 17 (replica of model19 with newly constructed cnn)
            ]
 
 
-DataAnalysis.confusion_matrix(reports)
+#DataAnalysis.confusion_matrix(reports)
 #MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='./result/image')
-#MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model19.csv', option=0, img_save_path='./result/image')#
+#MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model19.csv', option=0, img_save_path='./result/image')
 
 #histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM
 #ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cell10_no_ir.rpt_tracked.trxyt', 2515, correction=True)

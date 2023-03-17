@@ -16,26 +16,25 @@ class HTC(keras.Model):
         self.test_loss = tf.keras.metrics.Mean(name='test_loss')
         self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
-        self.conv1 = Conv2D(filters=32, kernel_size=(3, 3))
+        self.conv0 = Conv2D(filters=32, kernel_size=(3, 3))
+        self.pool0 = MaxPool2D(pool_size=(2, 2))
+
+        self.conv1 = Conv2D(filters=64, kernel_size=(3, 3))
+        self.conv2 = Conv2D(filters=64, kernel_size=(3, 3))
         self.pool1 = MaxPool2D(pool_size=(2, 2))
 
-        self.conv2 = Conv2D(filters=64, kernel_size=(3, 3))
-        self.conv3 = Conv2D(filters=64, kernel_size=(3, 3))
+        self.conv3 = Conv2D(filters=128, kernel_size=(3, 3))
+        self.conv4 = Conv2D(filters=256, kernel_size=(3, 3))
         self.pool2 = MaxPool2D(pool_size=(2, 2))
 
-        self.conv4 = Conv2D(filters=128, kernel_size=(3, 3))
-        self.conv5 = Conv2D(filters=256, kernel_size=(3, 3))
+        self.conv5 = Conv2D(filters=512, kernel_size=(3, 3))
         self.pool3 = MaxPool2D(pool_size=(2, 2))
-
-        self.conv6 = Conv2D(filters=512, kernel_size=(3, 3))
-        self.conv7 = Conv2D(filters=512, kernel_size=(3, 3))
-        self.pool4 = MaxPool2D(pool_size=(2, 2))
-        self.relu_activ1 = ReLU()
+        self.relu_activ0 = ReLU()
 
         self.flatten = Flatten()
         self.drop = Dropout(0.2)
-        self.d1 = Dense(256)
-        self.d2 = Dense(3)
+        self.d0 = Dense(256)
+        self.d1 = Dense(3)
         self.soft_activ = Activation("softmax")
 
     def compile(self, optimizer=None, loss=None, **kwargs):
@@ -50,26 +49,25 @@ class HTC(keras.Model):
             self.loss_object = loss
 
     def call(self, inputs, training=False, mask=None):
-        x = self.conv1(inputs)
+        x = self.conv0(inputs)
+        x = self.pool0(x)
+
+        x = self.conv1(x)
+        x = self.conv2(x)
         x = self.pool1(x)
 
-        x = self.conv2(x)
         x = self.conv3(x)
+        x = self.conv4(x)
         x = self.pool2(x)
 
-        x = self.conv4(x)
         x = self.conv5(x)
         x = self.pool3(x)
-
-        x = self.conv6(x)
-        x = self.conv7(x)
-        x = self.pool4(x)
-        x = self.relu_activ1(x)
+        x = self.relu_activ0(x)
 
         x = self.flatten(x)
         x = self.drop(x)
+        x = self.d0(x)
         x = self.d1(x)
-        x = self.d2(x)
         x = self.soft_activ(x)
 
         return x

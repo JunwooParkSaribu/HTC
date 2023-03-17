@@ -55,7 +55,7 @@ def label_from_report(histones, report, equal=False):
         return histones
 
 
-def label_from_reports(histones, reports, nb_labels=3):
+def label_from_reports(histones, reports, min_nb_label=np.inf, nb_labels=3):
     headers = []
     datas = []
 
@@ -92,7 +92,6 @@ def label_from_reports(histones, reports, nb_labels=3):
         if same:
             same_label_histones[first_label].append(key)
 
-    min_nb_label = np.inf
     for group in same_label_histones:
         min_nb_label = min(len(group), min_nb_label)
 

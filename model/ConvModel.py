@@ -33,7 +33,7 @@ class HTC(keras.Model):
         self.relu_activ1 = ReLU()
 
         self.flatten = Flatten()
-        self.d1 = Dense(2048)
+        self.d1 = Dense(512)
         self.d2 = Dense(3)
         self.soft_activ = Activation("softmax")
 

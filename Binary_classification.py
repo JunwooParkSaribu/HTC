@@ -32,7 +32,7 @@ if __name__ == '__main__':
     print('Labeling done...')
     histones = TrajectoryPhy.trjaectory_rotation(histones, 8)
 
-    nb_samples = [1600, 3200, 1600]
+    nb_samples = [3200, 6400, 3200]
     new_histones = {}
     label0_keys = []
     label1_keys = []

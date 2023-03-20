@@ -57,12 +57,12 @@ if __name__ == '__main__':
             break
 
     epochs = 200
-    batch_size = 10
+    batch_size = 32
     train_acc = []
     test_acc = []
     ImagePreprocessor.make_channel(new_histones, immobile_cutoff=params['immobile_cutoff'],
                                    hybrid_cutoff=params['hybrid_cutoff'], nChannel=params['nChannel'])
-    kf = KFold(n_splits=32, random_state=None, shuffle=False)
+    kf = KFold(n_splits=10, random_state=None, shuffle=False)
     np.random.shuffle(label0_keys)
     np.random.shuffle(label1_keys)
     for (train_index_0, test_index_0), (train_index_1, test_index_1) in zip((kf.split(label0_keys)), kf.split((label1_keys))):
@@ -107,10 +107,9 @@ if __name__ == '__main__':
                                                                    dtype=ConvModel.tf.int32))
                                                            ).batch(batch_size, drop_remainder=True)
         print(f'Training the data...')
-        training_model = ConvModel.HTC(end_neurons=1)
+        training_model = ConvModel.HTC(end_neurons=2)
         training_model.build(input_shape=(None, gen.get_scaled_size()[0], gen.get_scaled_size()[1], params['nChannel']))
-        training_model.compile(optimizer=ConvModel.tf.keras.optimizers.Adam(learning_rate=1e-7),
-                               loss=ConvModel.tf.keras.losses.BinaryCrossentropy())
+        training_model.compile(optimizer=ConvModel.tf.keras.optimizers.Adam(learning_rate=1e-7))
         history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
                                      callbacks=[Callback.EarlyStoppingAtMinLoss(patience=35)],
                                      trace='test_loss')

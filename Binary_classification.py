@@ -9,7 +9,7 @@ from fileIO import DataLoad, DataSave, ReadParam
 from imageProcessor import ImagePreprocessor, ImgGenerator
 from keras.models import load_model
 from tensorflow import device
-from physics import DataSimulation
+from physics import DataSimulation, TrajectoryPhy
 from sklearn.model_selection import KFold
 from model import ConvModel, Callback
 import matplotlib.pyplot as plt
@@ -56,6 +56,7 @@ if __name__ == '__main__':
             del histones
             break
 
+    histones = TrajectoryPhy.trjaectory_rotation(new_histones, 4)
     epochs = 200
     batch_size = 32
     train_acc = []

@@ -56,7 +56,9 @@ if __name__ == '__main__':
             del histones
             break
 
+    print(len(new_histones))
     new_histones = TrajectoryPhy.trjaectory_rotation(new_histones, 4)
+    print(len(new_histones))
     epochs = 200
     batch_size = 32
     train_acc = []

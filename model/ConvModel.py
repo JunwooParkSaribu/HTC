@@ -52,7 +52,7 @@ class HTC(keras.Model):
     def compile(self, optimizer=None, loss=None, **kwargs):
         super().compile()
         if optimizer is None:
-            self.optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
+            self.optimizer = tf.keras.optimizers.Adam(learning_rate=1e-6)
         else:
             self.optimizer = optimizer
         if loss is None:

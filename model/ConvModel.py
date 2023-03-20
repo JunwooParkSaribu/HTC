@@ -12,9 +12,11 @@ class HTC(keras.Model):
         self.loss_object = None
         self.optimizer = None
         self.train_loss = tf.keras.metrics.Mean(name='train_loss')
-        self.train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy')
+        #self.train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy')
+        self.train_accuracy = tf.keras.metrics.BinaryAccuracy(name='train_accuracy')
         self.test_loss = tf.keras.metrics.Mean(name='test_loss')
-        self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
+        #self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
+        self.test_accuracy = tf.keras.metrics.BinaryAccuracy(name='test_accuracy')
 
         self.conv0 = Conv2D(filters=32, kernel_size=(8, 8))
         self.pool0 = MaxPool2D(pool_size=(5, 5))
@@ -43,9 +45,9 @@ class HTC(keras.Model):
         self.drop = Dropout(0.2)
 
         self.flatten = Flatten()
-        self.d1 = Dense(end_neurons, activation='softmax')
+        self.d1 = Dense(end_neurons, activation='sigmoid')
         self.batch5 = BatchNormalization()
-        self.soft_activ = Activation("softmax")
+        self.soft_activ = Activation("sigmoid")
 
     def compile(self, optimizer=None, loss=None, **kwargs):
         super().compile()
@@ -54,7 +56,8 @@ class HTC(keras.Model):
         else:
             self.optimizer = optimizer
         if loss is None:
-            self.loss_object = tf.keras.losses.SparseCategoricalCrossentropy()
+            #self.loss_object = tf.keras.losses.SparseCategoricalCrossentropy()
+            self.loss_object = tf.keras.losses.BinaryCrossentropy()
         else:
             self.loss_object = loss
 

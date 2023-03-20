@@ -30,8 +30,9 @@ if __name__ == '__main__':
     print('Done.')
     histones = Labeling.label_from_report(histones, report_path, equal=False)
     print('Labeling done...')
+    histones = TrajectoryPhy.trjaectory_rotation(histones, 4)
 
-    nb_samples = [1000, 2000, 1000]
+    nb_samples = [2000, 4000, 2000]
     new_histones = {}
     label0_keys = []
     label1_keys = []
@@ -56,9 +57,6 @@ if __name__ == '__main__':
             del histones
             break
 
-    print(len(new_histones))
-    new_histones = TrajectoryPhy.trjaectory_rotation(new_histones, 4)
-    print(len(new_histones))
     epochs = 200
     batch_size = 32
     train_acc = []

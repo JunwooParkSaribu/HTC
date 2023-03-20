@@ -62,7 +62,7 @@ if __name__ == '__main__':
     test_acc = []
     ImagePreprocessor.make_channel(new_histones, immobile_cutoff=params['immobile_cutoff'],
                                    hybrid_cutoff=params['hybrid_cutoff'], nChannel=params['nChannel'])
-    kf = KFold(n_splits=10, random_state=None, shuffle=False)
+    kf = KFold(n_splits=32, random_state=None, shuffle=False)
     np.random.shuffle(label0_keys)
     np.random.shuffle(label1_keys)
     for (train_index_0, test_index_0), (train_index_1, test_index_1) in zip((kf.split(label0_keys)), kf.split((label1_keys))):

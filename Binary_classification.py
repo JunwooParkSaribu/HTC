@@ -110,7 +110,7 @@ if __name__ == '__main__':
         print(f'Training the data...')
         training_model = ConvModel.HTC(end_neurons=2)
         training_model.build(input_shape=(None, gen.get_scaled_size()[0], gen.get_scaled_size()[1], params['nChannel']))
-        training_model.compile(optimizer=ConvModel.tf.keras.optimizers.Adam(learning_rate=1e-6),
+        training_model.compile(optimizer=ConvModel.tf.keras.optimizers.Adam(learning_rate=1e-1),
                                loss=ConvModel.tf.keras.losses.BinaryCrossentropy())
         history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
                                      callbacks=[Callback.EarlyStoppingAtMinLoss(patience=35)],

@@ -16,8 +16,6 @@ class DataGenerator:
         self.train_split_indices = []
         self.test_split_indices = []
         n_c_check = [0] * self.n_class
-        if shuffle:
-            np.random.shuffle(self.keys)
 
         if train_keys is None and test_keys is None:
             self.train_keys = []
@@ -32,6 +30,11 @@ class DataGenerator:
         else:
             self.train_keys = train_keys
             self.test_keys = test_keys
+
+        if shuffle:
+            np.random.shuffle(self.train_keys)
+            np.random.shuffle(self.test_keys)
+
         self.train_size = len(self.train_keys)
         self.test_size = len(self.test_keys)
 

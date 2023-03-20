@@ -46,8 +46,8 @@ class HTC(keras.Model):
 
         self.flatten = Flatten()
         self.d1 = Dense(1, activation='sigmoid')
-        self.batch5 = BatchNormalization()
-        self.soft_activ = Activation('sigmoid')
+        #self.batch5 = BatchNormalization()
+        #self.soft_activ = Activation('sigmoid')
 
     def compile(self, optimizer=None, loss=None, **kwargs):
         super().compile()
@@ -92,8 +92,8 @@ class HTC(keras.Model):
 
         x = self.flatten(x)
         x = self.d1(x)
-        x = self.batch5(x)
-        x = self.soft_activ(x)
+        #x = self.batch5(x)
+        #x = self.soft_activ(x)
 
         return x
 

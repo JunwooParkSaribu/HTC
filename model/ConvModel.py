@@ -45,9 +45,9 @@ class HTC(keras.Model):
         self.drop = Dropout(0.2)
 
         self.flatten = Flatten()
-        self.d1 = Dense(end_neurons, activation='sigmoid')
+        self.d1 = Dense(1, activation='softmax')
         self.batch5 = BatchNormalization()
-        self.soft_activ = Activation("sigmoid")
+        self.soft_activ = Activation("softmax")
 
     def compile(self, optimizer=None, loss=None, **kwargs):
         super().compile()

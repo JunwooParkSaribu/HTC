@@ -79,6 +79,8 @@ if __name__ == '__main__':
             test_keys.append(label1_keys[index])
         train_keys = np.array(train_keys)
         test_keys = np.array(test_keys)
+        np.random.shuffle(train_keys)
+        np.random.shuffle(test_keys)
 
         print(f'Generator building...')
         gen = ImgGenerator.DataGenerator(new_histones, amp=params['amp'], to_size=(500, 500), ratio=0.8,

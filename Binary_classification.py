@@ -12,6 +12,7 @@ from tensorflow import device
 from physics import DataSimulation
 from sklearn.model_selection import KFold
 from model import ConvModel, Callback
+import matplotlib.pyplot as plt
 
 
 report_path = './result/pred_wholecells_by_cutoff/cutoff5_model19.csv'
@@ -25,13 +26,12 @@ if __name__ == '__main__':
     params = ReadParam.read(config_path)
 
     print(f'Loading the data...', end=' ')
-    #histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
-    print('data loaded1')
-    #histones = Labeling.label_from_report(histones, report_path, equal=False)
-    print('data loaded2')
-    histones = DataSimulation.make_simulation_data(30)
+    histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
+    print('Done.')
+    histones = Labeling.label_from_report(histones, report_path, equal=False)
+    print('Labeling done...')
 
-    nb_samples = [5, 10, 5]
+    nb_samples = [500, 1000, 500]
     new_histones = {}
     label0_keys = []
     label1_keys = []
@@ -56,13 +56,15 @@ if __name__ == '__main__':
             del histones
             break
 
-    print(len(new_histones))
     epochs = 200
-    batch_size = 20
+    batch_size = 10
+    train_acc = []
+    test_acc = []
     ImagePreprocessor.make_channel(new_histones, immobile_cutoff=params['immobile_cutoff'],
                                    hybrid_cutoff=params['hybrid_cutoff'], nChannel=params['nChannel'])
-    key_list = np.array(list(new_histones.keys()))
     kf = KFold(n_splits=10, random_state=None, shuffle=False)
+    np.random.shuffle(label0_keys)
+    np.random.shuffle(label1_keys)
     for (train_index_0, test_index_0), (train_index_1, test_index_1) in zip((kf.split(label0_keys)), kf.split((label1_keys))):
         train_keys = []
         test_keys = []
@@ -76,8 +78,6 @@ if __name__ == '__main__':
             test_keys.append(label1_keys[index])
         train_keys = np.array(train_keys)
         test_keys = np.array(test_keys)
-        np.random.shuffle(train_keys)
-        np.random.shuffle(test_keys)
 
         print(f'Generator building...')
         gen = ImgGenerator.DataGenerator(new_histones, amp=params['amp'], to_size=(500, 500), ratio=0.8,
@@ -107,9 +107,19 @@ if __name__ == '__main__':
                                                                    dtype=ConvModel.tf.int32))
                                                            ).batch(batch_size, drop_remainder=True)
         print(f'Training the data...')
-        training_model = ConvModel.HTC()
+        training_model = ConvModel.HTC(end_neurons=2)
         training_model.build(input_shape=(None, gen.get_scaled_size()[0], gen.get_scaled_size()[1], params['nChannel']))
         training_model.compile()
-        train_history, test_history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
-                                                         callbacks=[Callback.EarlyStoppingAtMinLoss(patience=20)],
-                                                         trace='test_loss')
+        history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
+                                     callbacks=[Callback.EarlyStoppingAtMinLoss(patience=20)],
+                                     trace='test_loss')
+
+        best_epoch = np.argmin(history[1])
+        train_acc.append(history[2][best_epoch])
+        test_acc.append(history[3][best_epoch])
+
+    # loss history figure save
+    plt.figure()
+    plt.boxplot([train_acc, test_acc])
+    plt.legend()
+    plt.savefig(f'./img/box_plot.png')

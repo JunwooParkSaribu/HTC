@@ -7,7 +7,7 @@ print("TensorFlow version:", tf.__version__)
 
 
 class HTC(keras.Model):
-    def __init__(self,  *args, **kwargs):
+    def __init__(self, end_neurons=3, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.loss_object = None
         self.optimizer = None
@@ -43,7 +43,7 @@ class HTC(keras.Model):
         self.drop = Dropout(0.2)
 
         self.flatten = Flatten()
-        self.d1 = Dense(3, activation='softmax')
+        self.d1 = Dense(end_neurons, activation='softmax')
         self.batch5 = BatchNormalization()
         self.soft_activ = Activation("softmax")
 
@@ -134,7 +134,7 @@ class HTC(keras.Model):
             train_ds=None,
             batch_size=None,
             epochs=1,
-            verbose=0,
+            verbose=1,
             callbacks=None,
             validation_split=0.0,
             validation_data=None,
@@ -156,6 +156,8 @@ class HTC(keras.Model):
 
         train_loss_results = []
         test_loss_results = []
+        train_accuracy_results = []
+        test_accuracy_results = []
 
         for epoch in range(epochs):
             # Reset the metrics at the start of the next epoch
@@ -172,15 +174,18 @@ class HTC(keras.Model):
 
             train_loss_results.append(self.train_loss.result())
             test_loss_results.append(self.test_loss.result())
+            train_accuracy_results.append(self.train_accuracy.result())
+            test_accuracy_results.append(self.test_accuracy.result())
 
-            print(
-                f'Epoch {epoch + 1 : >3} | '
-                f'Loss:{self.train_loss.result() : <9.5f} '
-                f'Accuracy:{self.train_accuracy.result() * 100 : <9.5f} '
-                f'Test Loss:{self.test_loss.result() : <9.5f} '
-                f'Test Accuracy:{self.test_accuracy.result() * 100 : <9.5f} ',
-                end=' '
-            )
+            if verbose == 1:
+                print(
+                    f'Epoch {epoch + 1 : >3} | '
+                    f'Loss:{self.train_loss.result() : <9.5f} '
+                    f'Accuracy:{self.train_accuracy.result() * 100 : <9.5f} '
+                    f'Test Loss:{self.test_loss.result() : <9.5f} '
+                    f'Test Accuracy:{self.test_accuracy.result() * 100 : <9.5f} ',
+                    end=' '
+                )
 
             # Callback
             if trace == 'training_loss':
@@ -198,4 +203,4 @@ class HTC(keras.Model):
 
         best_weight = callbacks[0].on_train_end()
         self.set_weights(best_weight)
-        return train_loss_results, test_loss_results
+        return [train_loss_results, test_loss_results, train_accuracy_results, test_accuracy_results]

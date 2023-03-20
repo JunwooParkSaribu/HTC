@@ -33,7 +33,7 @@ def read(file):
     return params
 
 
-def write_model_info(training_model, path: str, train_history: list, test_history: list, nb_histones: int, date: str) -> str:
+def write_model_info(training_model, path: str, history: list, nb_histones: int, date: str) -> str:
     new_model_num = 0
     try:
         if os.path.isdir(path):
@@ -50,8 +50,9 @@ def write_model_info(training_model, path: str, train_history: list, test_histor
 
     with open(f'{path}/{modelname}/log.txt', 'w') as info_file:
         info_file.write(f'{date}, number of trained h2bs:{str(nb_histones)}\n')
-        info_file.write(f'train history, test history\n')
-        for line_num in range(len(train_history)):
-            info_file.write(f'{str(train_history[line_num])}\t{str(test_history[line_num])}\n')
+        info_file.write(f'train history, test history, train_acc, test_acc\n')
+        for line_num in range(len(history[0])):
+            info_file.write(f'{str(history[0][line_num])}\t{str(history[1][line_num])}\t'
+                            f'{str(history[2][line_num])}\t{str(history[3][line_num])}\n')
 
     return modelname

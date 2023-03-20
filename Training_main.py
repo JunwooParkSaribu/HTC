@@ -74,23 +74,23 @@ if __name__ == '__main__':
                                                                dtype=ConvModel.tf.int32))
                                                        ).batch(batch_size, drop_remainder=True)
     print(f'Training the data...')
-    training_model = ConvModel.HTC()
+    training_model = ConvModel.HTC(end_neurons=3)
     training_model.build(input_shape=(None, gen.get_scaled_size()[0], gen.get_scaled_size()[1], params['nChannel']))
     training_model.summary()
     training_model.compile()
-    train_history, test_history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
-                                                     callbacks=[Callback.EarlyStoppingAtMinLoss(patience=20)],
-                                                     trace='test_loss')
+    history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
+                                 callbacks=[Callback.EarlyStoppingAtMinLoss(patience=20)],
+                                 trace='test_loss')
 
-    model_name = ReadParam.write_model_info(training_model, model_path, train_history, test_history, len(histones),
+    model_name = ReadParam.write_model_info(training_model, model_path, history, len(histones),
                                             f'{time.gmtime().tm_mday}/{time.gmtime().tm_mon}/{time.gmtime().tm_year}, '
                                             f'{time.gmtime().tm_hour + 1}:{time.gmtime().tm_min}')
     print(f'{model_name} saved...')
 
     # loss history figure save
     plt.figure()
-    plt.plot(range(0, len(train_history)), train_history, label='Train loss')
-    plt.plot(range(0, len(test_history)), test_history, label='Validation loss')
+    plt.plot(range(0, len(history[0])), history[0], label='Train loss')
+    plt.plot(range(0, len(history[1])), history[1], label='Validation loss')
     plt.legend()
     plt.savefig(f'{model_path}/{model_name}/loss_history.png')
 

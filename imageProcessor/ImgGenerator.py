@@ -12,8 +12,6 @@ class DataGenerator:
         self.to_size = to_size
         self.keys = list(histones.keys())
         self.size = len(histones)
-        self.train_size = int(self.size * ratio)
-        self.test_size = self.size - self.train_size
         self.n_class = max(set([histones[key].get_manuel_label() for key in self.keys])) + 1
         self.train_split_indices = []
         self.test_split_indices = []
@@ -26,7 +24,7 @@ class DataGenerator:
             self.test_keys = []
             for i, key in enumerate(self.keys):
                 label = self.histones[key].get_manuel_label()
-                if n_c_check[label] < int(self.train_size/self.n_class):
+                if n_c_check[label] < int(int(self.size * ratio)/self.n_class):
                     self.train_keys.append(key)
                     n_c_check[label] += 1
                 else:
@@ -34,11 +32,13 @@ class DataGenerator:
         else:
             self.train_keys = train_keys
             self.test_keys = test_keys
+        self.train_size = len(self.train_keys)
+        self.test_size = len(self.test_keys)
 
         self.train_split_indices = [int(i * split_size) for i in
-                                    range(1, int(len(self.train_keys) / split_size) + 1)]
+                                    range(1, int(self.train_size / split_size) + 1)]
         self.test_split_indices = [int(i * split_size) for i in
-                                   range(1, int(len(self.test_keys) / split_size) + 1)]
+                                   range(1, int(self.test_size / split_size) + 1)]
 
         self.train_split = np.split(np.array(self.train_keys), self.train_split_indices)
         self.test_split = np.split(np.array(self.test_keys), self.test_split_indices)

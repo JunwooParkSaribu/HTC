@@ -52,12 +52,11 @@ class HTC(keras.Model):
     def compile(self, optimizer=None, loss=None, **kwargs):
         super().compile()
         if optimizer is None:
-            self.optimizer = tf.keras.optimizers.Adam(learning_rate=1e-6)
+            self.optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
         else:
             self.optimizer = optimizer
         if loss is None:
-            #self.loss_object = tf.keras.losses.SparseCategoricalCrossentropy()
-            self.loss_object = tf.keras.losses.BinaryCrossentropy()
+            self.loss_object = tf.keras.losses.SparseCategoricalCrossentropy()
         else:
             self.loss_object = loss
 

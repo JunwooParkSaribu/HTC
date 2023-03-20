@@ -16,35 +16,35 @@ class HTC(keras.Model):
         self.test_loss = tf.keras.metrics.Mean(name='test_loss')
         self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
-        self.conv0 = Conv2D(filters=32, kernel_size=(3, 3))
-        self.pool0 = MaxPool2D(pool_size=(2, 2))
+        self.conv0 = Conv2D(filters=32, kernel_size=(8, 8))
+        self.pool0 = MaxPool2D(pool_size=(5, 5))
         self.batch0 = BatchNormalization()
         self.relu_activ0 = ReLU()
 
-        self.conv1 = Conv2D(filters=64, kernel_size=(3, 3))
-        self.pool1 = MaxPool2D(pool_size=(2, 2))
+        self.conv1 = Conv2D(filters=64, kernel_size=(5, 5))
+        self.pool1 = MaxPool2D(pool_size=(3, 3))
         self.batch1 = BatchNormalization()
         self.relu_activ1 = ReLU()
 
-        self.conv4 = Conv2D(filters=256, kernel_size=(3, 3))
+        self.conv2 = Conv2D(filters=128, kernel_size=(2, 2))
         self.pool2 = MaxPool2D(pool_size=(2, 2))
         self.batch2 = BatchNormalization()
         self.relu_activ2 = ReLU()
 
-        self.conv5 = Conv2D(filters=512, kernel_size=(3, 3))
+        self.conv3 = Conv2D(filters=256, kernel_size=(2, 2))
         self.pool3 = MaxPool2D(pool_size=(2, 2))
         self.batch3 = BatchNormalization()
         self.relu_activ3 = ReLU()
 
-        self.conv6 = Conv2D(filters=512, kernel_size=(3, 3))
-        self.conv7 = Conv2D(filters=1024, kernel_size=(3, 3))
-        #self.pool5 = MaxPool2D(pool_size=(2, 2))
-        self.batch5 = BatchNormalization()
-        self.relu_activ5 = ReLU()
+        self.conv4 = Conv2D(filters=512, kernel_size=(2, 2))
+        self.pool4 = MaxPool2D(pool_size=(2, 2))
+        self.batch4 = BatchNormalization()
+        self.relu_activ4 = ReLU()
+        self.drop = Dropout(0.2)
 
         self.flatten = Flatten()
-        self.drop = Dropout(0.2)
-        self.d1 = Dense(3)
+        self.d1 = Dense(3, activation='softmax')
+        self.batch5 = BatchNormalization()
         self.soft_activ = Activation("softmax")
 
     def compile(self, optimizer=None, loss=None, **kwargs):
@@ -69,25 +69,28 @@ class HTC(keras.Model):
         x = self.batch1(x)
         x = self.relu_activ1(x)
 
-        x = self.conv4(x)
+        x = self.conv2(x)
         x = self.pool2(x)
         x = self.batch2(x)
         x = self.relu_activ2(x)
 
-        x = self.conv5(x)
+        x = self.conv3(x)
         x = self.pool3(x)
         x = self.batch3(x)
         x = self.relu_activ3(x)
 
-        x = self.conv6(x)
-        x = self.conv7(x)
-        #x = self.pool5(x)
-        x = self.batch5(x)
-        x = self.relu_activ5(x)
+        x = self.conv4(x)
+        x = self.pool4(x)
+        x = self.batch4(x)
+        x = self.relu_activ4(x)
+        # prevent dropout err NHWC to NCHW
+        x = tf.transpose(x, [0, 3, 1, 2])
+        x = self.drop(x, training=training)
+        x = tf.transpose(x, [0, 2, 3, 1])
 
         x = self.flatten(x)
-        x = self.drop(x)
         x = self.d1(x)
+        x = self.batch5(x)
         x = self.soft_activ(x)
 
         return x

@@ -3,10 +3,9 @@ import numpy as np
 
 
 class DataGenerator:
-    def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, split_size=32, shuffle=True):
+    def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, split_size=32,
+                 shuffle=True, train_keys=None, test_keys=None):
         self.histones = histones
-        self.train_keys = []
-        self.test_keys = []
         self.train_split = []
         self.test_split = []
         self.amp = amp
@@ -22,13 +21,19 @@ class DataGenerator:
         if shuffle:
             np.random.shuffle(self.keys)
 
-        for i, key in enumerate(self.keys):
-            label = self.histones[key].get_manuel_label()
-            if n_c_check[label] < int(self.train_size/self.n_class):
-                self.train_keys.append(key)
-                n_c_check[label] += 1
-            else:
-                self.test_keys.append(key)
+        if train_keys is None and test_keys is None:
+            self.train_keys = []
+            self.test_keys = []
+            for i, key in enumerate(self.keys):
+                label = self.histones[key].get_manuel_label()
+                if n_c_check[label] < int(self.train_size/self.n_class):
+                    self.train_keys.append(key)
+                    n_c_check[label] += 1
+                else:
+                    self.test_keys.append(key)
+        else:
+            self.train_keys = train_keys
+            self.test_keys = test_keys
 
         self.train_split_indices = [int(i * split_size) for i in
                                     range(1, int(len(self.train_keys) / split_size) + 1)]

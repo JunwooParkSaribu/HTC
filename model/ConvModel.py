@@ -59,32 +59,26 @@ class HTC(keras.Model):
             self.loss_object = loss
 
     def call(self, inputs, training=False, mask=None):
-        print(inputs.shape)
         x = self.conv0(inputs)
         x = self.pool0(x)
         x = self.batch0(x)
         x = self.relu_activ0(x)
 
-        print(x.shape)
         x = self.conv1(x)
         x = self.pool1(x)
         x = self.batch1(x)
         x = self.relu_activ1(x)
 
-        print(x.shape)
         x = self.conv4(x)
         x = self.pool2(x)
         x = self.batch2(x)
         x = self.relu_activ2(x)
 
-        print(x.shape)
         x = self.conv5(x)
         x = self.pool3(x)
-        print(x.shape)
         x = self.batch3(x)
         x = self.relu_activ3(x)
 
-        print(x.shape)
         x = self.conv6(x)
         x = self.conv7(x)
         #x = self.pool5(x)
@@ -92,7 +86,6 @@ class HTC(keras.Model):
         x = self.relu_activ5(x)
 
         x = self.flatten(x)
-        print(x.shape)
         x = self.drop(x)
         x = self.d1(x)
         x = self.soft_activ(x)

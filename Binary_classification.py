@@ -11,7 +11,7 @@ from keras.models import load_model
 from tensorflow import device
 
 
-report_path = './result/pred_wholecells_by_cutoff/cutoff5_model14.csv'
+report_path = './result/pred_wholecells_by_cutoff/cutoff5_model19.csv'
 
 
 if __name__ == '__main__':
@@ -20,7 +20,6 @@ if __name__ == '__main__':
     else:
         config_path = '.'
     params = ReadParam.read(config_path)
-
 
     print(f'Loading the data...', end=' ')
     histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]

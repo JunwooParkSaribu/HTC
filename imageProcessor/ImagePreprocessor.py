@@ -223,8 +223,10 @@ def interpolate3D(current_pos, next_pos):  # 3D interpolation
     return pos
 
 
-def make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=3):
+def make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=3):
     histones_velocity = TrajectoryPhy.velocity(histones)
+    immobile_cutoff = float(immobile_cutoff)
+    hybrid_cutoff = float(hybrid_cutoff)
 
     hist_channel = {}
     for histone in histones:
@@ -244,7 +246,7 @@ def make_channel(histones, immobile_cutoff=3, hybrid_cutoff=8, nChannel=3):
     del histones_velocity
 
 
-def zoom(imgs, size=1000, to_size=(300, 300)):
+def zoom(imgs, size=1000, to_size=(500, 500)):
     zoomed_imgs = {}
     keys = list(imgs.keys())
     for histone in keys:
@@ -309,8 +311,8 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
     plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png')
 
 
-def make_gif(full_histones, filename, id, immobile_cutoff=3,
-             hybrid_cutoff=8, nChannel=3, img_scale=5, amp=2, correction=False):
+def make_gif(full_histones, filename, id, immobile_cutoff=5,
+             hybrid_cutoff=12, nChannel=3, img_scale=5, amp=2, correction=False):
     try:
         histones = {}
 

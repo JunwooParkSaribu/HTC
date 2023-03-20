@@ -114,7 +114,7 @@ if __name__ == '__main__':
         training_model.build(input_shape=(None, gen.get_scaled_size()[0], gen.get_scaled_size()[1], params['nChannel']))
         training_model.compile(optimizer=ConvModel.tf.keras.optimizers.Adam(learning_rate=1e-5))
         history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
-                                     callbacks=[Callback.EarlyStoppingAtMinLoss(patience=35)],
+                                     callbacks=[Callback.EarlyStoppingAtMinLoss(patience=30)],
                                      trace='test_loss')
 
         best_epoch = np.argmin(history[1])

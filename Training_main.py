@@ -79,7 +79,7 @@ if __name__ == '__main__':
     training_model.summary()
     training_model.compile()
     history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
-                                 callbacks=[Callback.EarlyStoppingAtMinLoss(patience=20)],
+                                 callbacks=[Callback.EarlyStoppingAtMinLoss(patience=30)],
                                  trace='test_loss')
 
     model_name = ReadParam.write_model_info(training_model, model_path, history, len(histones),

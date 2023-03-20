@@ -31,7 +31,7 @@ if __name__ == '__main__':
     histones = Labeling.label_from_report(histones, report_path, equal=False)
     print('Labeling done...')
 
-    nb_samples = [500, 1000, 500]
+    nb_samples = [1000, 2000, 1000]
     new_histones = {}
     label0_keys = []
     label1_keys = []

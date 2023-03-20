@@ -6,6 +6,7 @@ class DataGenerator:
     def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, split_size=32,
                  shuffle=True, train_keys=None, test_keys=None):
         self.histones = histones
+        print(histones)
         self.train_split = []
         self.test_split = []
         self.amp = amp

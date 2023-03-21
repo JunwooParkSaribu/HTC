@@ -73,13 +73,14 @@ def comparison_from_reports(reports: list, data_path='.', img_save_path='.') -> 
     print('Generating the images...')
     # simple recursive search
     for filename in list(img_list.keys()):
-        for dt in img_list[filename]:
+        for i, dt in enumerate(img_list[filename]):
             h2b_id, cls = dt[0], dt[1]
 
             # add conditions of classes (cls)
             cls_sum = sum([int(x) for x in cls])
             #if cls_sum % len(cls) != 0:
-            if int(cls[0]) == 0 and int(cls[1]) == 2:
+            #if int(cls[0]) == 0 and int(cls[1]) == 2:
+            if i % 100 == 0:
                 recursive_filesearch(data_path, filename, params, [h2b_id], cls, img_save_path, lbs=None)
 
 

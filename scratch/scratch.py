@@ -1,7 +1,7 @@
 import os
 import sys
 print(os.getcwd())
-#os.chdir('../')
+os.chdir('../')
 print(os.getcwd())
 print(sys.path)
 from analysis import DataAnalysis

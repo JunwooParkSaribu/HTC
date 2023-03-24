@@ -17,12 +17,15 @@ def make_label(histones, radius=0.4, density=0.5) -> []:
 
 def label_from_report(histones, report, equal=False):
     header, data = DataLoad.read_report(report)
+    report_labels = {}
+    for dt_dic in data:
+        key = f"{dt_dic['filename']}@{dt_dic['h2b_id']}"
+        report_labels[key] = int(dt_dic['predicted_class_id'])
+
     for histone in histones:
-        for dt_dic in data:
-            key = f"{dt_dic['filename']}@{dt_dic['h2b_id']}"
-            if histone == key:
-                histones[histone].set_manuel_label(int(dt_dic['predicted_class_id']))
+        histones[histone].set_manuel_label(report_labels[histone])
     del data
+
     if equal:
         labels = [int(histones[key].get_manuel_label()) for key in histones if histones[key].get_manuel_label() is not None]
         nb_class = [0] * len(set(labels))

@@ -12,6 +12,7 @@ from xgboost import XGBClassifier, plot_tree
 import xgboost as xgb
 import matplotlib.pyplot as plt
 import graphviz
+from label import Labeling
 from sklearn.model_selection import train_test_split
 
 
@@ -49,17 +50,17 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
            #'./result/pred_wholecells_by_cutoff/cutoff5_model14.csv',  ## retrained over model13
            #'./result/pred_wholecells_by_cutoff/cutoff5_model17.csv',  ## simulated data
            #'./result/pred_wholecells_by_cutoff/cutoff5_model18.csv',
-           #'./result/pred_wholecells_by_cutoff/cutoff5_model19.csv',  ## 13 + 17
+           './result/pred_wholecells_by_cutoff/cutoff5_model19.csv',  ## 13 + 17
            #'./result/pred_wholecells_by_cutoff/cutoff5_model20.csv',  ## 7_lab + 19
            #'./result/pred_wholecells_by_cutoff/cutoff5_model21.csv',  ## 7_lab + 19
-           './result/pred_wholecells_by_cutoff/cutoff5_model22.csv',  ## 13 + 17 (1st replica of model19 with same cnn)
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model22.csv',  ## 13 + 17 (1st replica of model19 with same cnn)
            #'./result/pred_wholecells_by_cutoff/cutoff5_model23.csv',  ## 13 + 17 (2nd replica of model19 with same cnn)
            ]
 
 
 #[print(DataAnalysis.ratio_calcul(report)) for report in reports]
 #DataAnalysis.confusion_matrix(reports)
-#MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='./result/image')
+MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='/mnt/c/Users/jwoo/Desktop/19_hybrid')
 #MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model19.csv', option=0, img_save_path='./result/image')
 
 #histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM
@@ -77,6 +78,21 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
 
 #histones = DataSimulation.make_simulation_data(9000)
 #DataSave.save_simulated_data(histones, './data/SimulationData/27000_resimulated_data.trxyt')
+
+
+
+"""
+histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
+histones = Labeling.label_from_report(histones, reports[0], equal=False)
+dips = Labeling.displacements(histones)
+
+for histone in histones:
+    pred_class = histones[histone].get_manuel_label()
+    if pred_class == 2:
+        print(pred_class, np.mean(dips[histone]), np.std(dips[histone]))
+"""
+
+
 
 """"
 histones = DataLoad.file_distrib(paths=['./data/SimulationData/27000_resimulated_data.trxyt'], cutoff=2,

@@ -3,7 +3,7 @@ import sys
 print(os.getcwd())
 root_path = os.getcwd().split('/scratch')[0]
 print(root_path)
-sys.path.append(root_path)
+os.chdir(root_path)
 print(sys.path)
 from analysis import DataAnalysis
 from physics import DataSimulation, TrajectoryPhy

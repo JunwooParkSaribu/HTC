@@ -1,7 +1,9 @@
 import os
+import sys
 print(os.getcwd())
 #os.chdir('../')
 print(os.getcwd())
+print(sys.path)
 from analysis import DataAnalysis
 from physics import DataSimulation, TrajectoryPhy
 from imageProcessor import ImagePreprocessor, MakeImage

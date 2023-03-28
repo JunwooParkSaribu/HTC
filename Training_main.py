@@ -39,7 +39,7 @@ if __name__ == '__main__':
     batch_size = 32
     print(f'\nLoading the data...')
     histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
-    histones = Labeling.label_from_reports(histones, report_path, min_nb_label=32) #2240
+    histones = Labeling.label_from_reports(histones, report_path, min_nb_label=2240) #2240
     #histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/4500_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
     histones = TrajectoryPhy.trjaectory_rotation(histones, 8)
 

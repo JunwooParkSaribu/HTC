@@ -59,44 +59,6 @@ class HTC(keras.Model):
         else:
             self.loss_object = loss
 
-    def call(self, inputs, training=False, mask=None):
-        x = self.conv0(inputs)
-        print('trainable:',self.conv0.trainable)
-        print(self.conv0.trainable_weights)
-        x = self.pool0(x)
-        x = self.batch0(x)
-        x = self.relu_activ0(x)
-
-        x = self.conv1(x)
-        x = self.pool1(x)
-        x = self.batch1(x)
-        x = self.relu_activ1(x)
-
-        x = self.conv2(x)
-        x = self.pool2(x)
-        x = self.batch2(x)
-        x = self.relu_activ2(x)
-
-        x = self.conv3(x)
-        x = self.pool3(x)
-        x = self.batch3(x)
-        x = self.relu_activ3(x)
-
-        x = self.conv4(x)
-        x = self.pool4(x)
-        x = self.batch4(x)
-        x = self.relu_activ4(x)
-        # prevent dropout err NHWC to NCHW
-        x = tf.transpose(x, [0, 3, 1, 2])
-        x = self.drop(x, training=training)
-        print('drop trainable:', self.drop.trainable)
-        x = tf.transpose(x, [0, 2, 3, 1])
-
-        x = self.flatten(x)
-        x = self.d1(x)
-        x = self.activ(x)
-
-        return x
 
     @tf.function
     def train_step(self, data):

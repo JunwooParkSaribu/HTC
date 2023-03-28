@@ -61,8 +61,8 @@ class HTC(keras.Model):
 
     def call(self, inputs, training=False, mask=None):
         x = self.conv0(inputs)
-        print('trainable:',self.conv0.trainable[0])
-        print(self.conv0.trainable_weights)
+        print('trainable:',self.conv0.trainable)
+        print(self.conv0.trainable_weights[0])
         x = self.pool0(x)
         x = self.batch0(x)
         x = self.relu_activ0(x)

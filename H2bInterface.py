@@ -422,15 +422,18 @@ def main():
                     input_str += 'data = '
                     input_str += ficher
                     input_str += '\n'
-
                 input_str += f'save_dir = {save_dir}\n'
                 input_str += f'model_dir = {model_dir}\n'
                 input_str += f'cut_off = {cutoff_val}\n'
                 input_str += f'all = {all_val}\n'
+
+                input_str += '\n'
+                input_str += 'immobile_cutoff = 5\n'
+                input_str += 'hybrid_cutoff = 12\n'
                 input_str += 'amp = 2\n'
                 input_str += 'nChannel = 3\n'
-                input_str += 'batch_size = 200\n'
-                input_str += 'group_size = 2000\n'
+                input_str += 'batch_size = 32\n'
+                input_str += 'group_size = 320\n'
                 f.write(input_str)
 
             sg.cprint('Classification on below files...', c='white on green', end='\n')

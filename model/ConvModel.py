@@ -59,7 +59,7 @@ class HTC(keras.Model):
         else:
             self.loss_object = loss
 
-    def call(self, inputs, training=False, mask=None):
+    def call(self, inputs, training=None, mask=None):
         x = self.conv0(inputs)
         print('trainable:',self.conv0.trainable)
         print(self.conv0.trainable_weights[0])
@@ -98,7 +98,7 @@ class HTC(keras.Model):
 
         return x
 
-    @tf.function
+    #@tf.function
     def train_step(self, data):
         # Unpack the data
         x, y = data
@@ -119,7 +119,7 @@ class HTC(keras.Model):
         self.train_loss.update_state(loss)
         self.train_accuracy.update_state(y, y_pred)
 
-    @tf.function
+    #@tf.function
     def test_step(self, data):
         # training=False is only needed if there are layers with different
         # behavior during training versus inference (e.g. Dropout).

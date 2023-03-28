@@ -78,11 +78,10 @@ if __name__ == '__main__':
     training_model.build(input_shape=(None, gen.get_scaled_size()[0], gen.get_scaled_size()[1], params['nChannel']))
     training_model.summary()
     training_model.compile()
-    #history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
-    #                             callbacks=[Callback.EarlyStoppingAtMinLoss(patience=30)],
-    #                             trace='test_loss')
-    training_model.predict(train_ds)
-    history=1
+    history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
+                                 callbacks=[Callback.EarlyStoppingAtMinLoss(patience=30)],
+                                 trace='test_loss')
+
     model_name = ReadParam.write_model_info(training_model, model_path, history, len(histones),
                                             f'{time.gmtime().tm_mday}/{time.gmtime().tm_mon}/{time.gmtime().tm_year}, '
                                             f'{time.gmtime().tm_hour + 1}:{time.gmtime().tm_min}')

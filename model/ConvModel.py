@@ -60,7 +60,7 @@ class HTC(keras.Model):
             self.loss_object = loss
 
     def call(self, inputs, training=None, mask=None):
-        super.__call__(inputs, training, mask)
+        super.__call__(inputs)
         print('drop trainable:', self.drop.trainable)
 
         """

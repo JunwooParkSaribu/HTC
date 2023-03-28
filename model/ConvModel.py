@@ -60,10 +60,6 @@ class HTC(keras.Model):
             self.loss_object = loss
 
     def call(self, inputs, training=None, mask=None):
-        super.__call__(inputs)
-        print('drop trainable:', self.drop.trainable)
-
-        """
         x = self.conv0(inputs)
         print('trainable:',self.conv0.trainable)
         #print(self.conv0.trainable_weights[0])
@@ -88,7 +84,8 @@ class HTC(keras.Model):
 
         x = self.conv4(x)
         x = self.pool4(x)
-        x = self.batch4(x)
+        x = self.batch4(x, training=training)
+        print('batch4', self.batch4)
         x = self.relu_activ4(x)
         # prevent dropout err NHWC to NCHW
         x = tf.transpose(x, [0, 3, 1, 2])
@@ -99,7 +96,7 @@ class HTC(keras.Model):
         x = self.flatten(x)
         x = self.d1(x)
         x = self.activ(x)
-        """
+
         return x
 
     @tf.function

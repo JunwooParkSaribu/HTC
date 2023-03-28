@@ -40,7 +40,7 @@ class HTC(keras.Model):
         self.pool4 = MaxPool2D(pool_size=(2, 2))
         self.batch4 = BatchNormalization()
         self.relu_activ4 = ReLU()
-        #self.drop = Dropout(0.2)
+        self.drop = Dropout(0.2)
 
         self.flatten = Flatten()
         self.d1 = Dense(end_neurons)
@@ -85,7 +85,8 @@ class HTC(keras.Model):
         x = self.relu_activ4(x)
         # prevent dropout err NHWC to NCHW
         x = tf.transpose(x, [0, 3, 1, 2])
-        #x = self.drop(x, training=training)
+        if training:
+            x = self.drop(x, training=training)
         x = tf.transpose(x, [0, 2, 3, 1])
 
         x = self.flatten(x)

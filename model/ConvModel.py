@@ -89,7 +89,7 @@ class HTC(keras.Model):
         print('batch4', self.batch4)
         #print('batch4', type(self.batch4.trainable_weights), len(self.batch4.trainable_weights), self.batch4.trainable_weights[1])
         x = self.batch4(x, training=training)
-        print('batch4', self.batch4.trainable_weights[0])
+        #print('batch4', self.batch4.trainable_weights[0])
         x = self.relu_activ4(x)
         # prevent dropout err NHWC to NCHW
         x = tf.transpose(x, [0, 3, 1, 2])

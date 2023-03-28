@@ -13,10 +13,8 @@ class HTC(keras.Model):
         self.optimizer = None
         self.train_loss = tf.keras.metrics.Mean(name='train_loss')
         self.train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy')
-        #self.train_accuracy = tf.keras.metrics.BinaryAccuracy(name='train_accuracy')
         self.test_loss = tf.keras.metrics.Mean(name='test_loss')
         self.test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
-        #self.test_accuracy = tf.keras.metrics.BinaryAccuracy(name='test_accuracy')
 
         self.conv0 = Conv2D(filters=32, kernel_size=(8, 8))
         self.pool0 = MaxPool2D(pool_size=(5, 5))
@@ -59,42 +57,35 @@ class HTC(keras.Model):
         else:
             self.loss_object = loss
 
-    #@tf.function
+    @tf.function
     def call(self, inputs, training=None, mask=None):
-        print('training?=',training)
-        x = self.conv0(inputs, training=training)
-        print('trainable:',self.conv0.trainable)
-        #print(self.conv0.trainable_weights[0])
+        x = self.conv0(inputs)
         x = self.pool0(x)
-        x = self.batch0(x)
+        x = self.batch0(x, training=training)
         x = self.relu_activ0(x)
 
         x = self.conv1(x)
         x = self.pool1(x)
-        x = self.batch1(x)
+        x = self.batch1(x, training=training)
         x = self.relu_activ1(x)
 
         x = self.conv2(x)
         x = self.pool2(x)
-        x = self.batch2(x)
+        x = self.batch2(x, training=training)
         x = self.relu_activ2(x)
 
         x = self.conv3(x)
         x = self.pool3(x)
-        x = self.batch3(x)
+        x = self.batch3(x, training=training)
         x = self.relu_activ3(x)
 
         x = self.conv4(x)
         x = self.pool4(x)
-        print('batch4', self.batch4)
-        #print('batch4', type(self.batch4.trainable_weights), len(self.batch4.trainable_weights), self.batch4.trainable_weights[1])
         x = self.batch4(x, training=training)
-        #print('batch4', self.batch4.trainable_weights[0])
         x = self.relu_activ4(x)
         # prevent dropout err NHWC to NCHW
         x = tf.transpose(x, [0, 3, 1, 2])
         x = self.drop(x, training=training)
-        print('drop trainable:', self.drop.trainable)
         x = tf.transpose(x, [0, 2, 3, 1])
 
         x = self.flatten(x)
@@ -103,7 +94,7 @@ class HTC(keras.Model):
 
         return x
 
-    #@tf.function
+    @tf.function
     def train_step(self, data):
         # Unpack the data
         x, y = data
@@ -124,14 +115,13 @@ class HTC(keras.Model):
         self.train_loss.update_state(loss)
         self.train_accuracy.update_state(y, y_pred)
 
-    #@tf.function
+    @tf.function
     def test_step(self, data):
         # training=False is only needed if there are layers with different
         # behavior during training versus inference (e.g. Dropout).
         # Unpack the data
         x, y = data
         # Compute predictions
-        print('test_step called')
         y_pred = self(x, training=False)
         # Tracking the loss
         t_loss = self.loss_object(y, y_pred)
@@ -175,11 +165,9 @@ class HTC(keras.Model):
             self.test_loss.reset_states()
             self.test_accuracy.reset_states()
 
-            print('training_start')
             for train_data in train_ds:
                 self.train_step(train_data)
 
-            print('test_start')
             for test_data in test_ds:
                 self.test_step(test_data)
 

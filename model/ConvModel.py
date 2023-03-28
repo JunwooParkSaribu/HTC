@@ -61,6 +61,7 @@ class HTC(keras.Model):
 
     def call(self, inputs, training=False, mask=None):
         x = self.conv0(inputs)
+        print('trainable:',self.conv0.trainable)
         x = self.pool0(x)
         x = self.batch0(x)
         x = self.relu_activ0(x)
@@ -166,9 +167,11 @@ class HTC(keras.Model):
             self.test_loss.reset_states()
             self.test_accuracy.reset_states()
 
+            print('training_start')
             for train_data in train_ds:
                 self.train_step(train_data)
 
+            print('test_start')
             for test_data in test_ds:
                 self.test_step(test_data)
 

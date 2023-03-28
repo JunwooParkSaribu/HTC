@@ -59,53 +59,51 @@ class HTC(keras.Model):
         else:
             self.loss_object = loss
 
-    @tf.function
+    #@tf.function
     def call(self, inputs, training=None, mask=None):
-        x = inputs
-        if training:
-            print('training?=',training)
-            x = self.conv0(inputs, training=training)
-            print('trainable:',self.conv0.trainable)
-            #print(self.conv0.trainable_weights[0])
-            x = self.pool0(x)
-            x = self.batch0(x)
-            x = self.relu_activ0(x)
+        print('training?=',training)
+        x = self.conv0(inputs, training=training)
+        print('trainable:',self.conv0.trainable)
+        #print(self.conv0.trainable_weights[0])
+        x = self.pool0(x)
+        x = self.batch0(x)
+        x = self.relu_activ0(x)
 
-            x = self.conv1(x)
-            x = self.pool1(x)
-            x = self.batch1(x)
-            x = self.relu_activ1(x)
+        x = self.conv1(x)
+        x = self.pool1(x)
+        x = self.batch1(x)
+        x = self.relu_activ1(x)
 
-            x = self.conv2(x)
-            x = self.pool2(x)
-            x = self.batch2(x)
-            x = self.relu_activ2(x)
+        x = self.conv2(x)
+        x = self.pool2(x)
+        x = self.batch2(x)
+        x = self.relu_activ2(x)
 
-            x = self.conv3(x)
-            x = self.pool3(x)
-            x = self.batch3(x)
-            x = self.relu_activ3(x)
+        x = self.conv3(x)
+        x = self.pool3(x)
+        x = self.batch3(x)
+        x = self.relu_activ3(x)
 
-            x = self.conv4(x)
-            x = self.pool4(x)
-            print('batch4', self.batch4)
-            #print('batch4', type(self.batch4.trainable_weights), len(self.batch4.trainable_weights), self.batch4.trainable_weights[1])
-            x = self.batch4(x, training=training)
-            print('batch4', self.batch4.trainable_weights)
-            x = self.relu_activ4(x)
-            # prevent dropout err NHWC to NCHW
-            x = tf.transpose(x, [0, 3, 1, 2])
-            x = self.drop(x, training=training)
-            print('drop trainable:', self.drop.trainable)
-            x = tf.transpose(x, [0, 2, 3, 1])
+        x = self.conv4(x)
+        x = self.pool4(x)
+        print('batch4', self.batch4)
+        #print('batch4', type(self.batch4.trainable_weights), len(self.batch4.trainable_weights), self.batch4.trainable_weights[1])
+        x = self.batch4(x, training=training)
+        print('batch4', self.batch4.trainable_weights)
+        x = self.relu_activ4(x)
+        # prevent dropout err NHWC to NCHW
+        x = tf.transpose(x, [0, 3, 1, 2])
+        x = self.drop(x, training=training)
+        print('drop trainable:', self.drop.trainable)
+        x = tf.transpose(x, [0, 2, 3, 1])
 
-            x = self.flatten(x)
-            x = self.d1(x)
-            x = self.activ(x)
+        x = self.flatten(x)
+        x = self.d1(x)
+        x = self.activ(x)
 
         return x
 
-    @tf.function
+    #@tf.function
     def train_step(self, data):
         # Unpack the data
         x, y = data
@@ -126,7 +124,7 @@ class HTC(keras.Model):
         self.train_loss.update_state(loss)
         self.train_accuracy.update_state(y, y_pred)
 
-    @tf.function
+    #@tf.function
     def test_step(self, data):
         # training=False is only needed if there are layers with different
         # behavior during training versus inference (e.g. Dropout).

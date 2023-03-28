@@ -131,6 +131,7 @@ class HTC(keras.Model):
         # Unpack the data
         x, y = data
         # Compute predictions
+        print('test_step called')
         y_pred = self(x, training=False)
         # Tracking the loss
         t_loss = self.loss_object(y, y_pred)

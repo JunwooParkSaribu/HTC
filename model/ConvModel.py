@@ -61,9 +61,10 @@ class HTC(keras.Model):
 
     @tf.function
     def call(self, inputs, training=None, mask=None):
+        x = inputs
         if training:
             print('training?=',training)
-            x = self.conv0(inputs)
+            x = self.conv0(inputs, training=training)
             print('trainable:',self.conv0.trainable)
             #print(self.conv0.trainable_weights[0])
             x = self.pool0(x)

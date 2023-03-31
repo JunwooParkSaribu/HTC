@@ -68,8 +68,8 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
 #MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='/mnt/c/Users/jwoo/Desktop/19_immobile')
 #MakeImage.make_image_from_single_report('./result/pred_wholecells_by_cutoff/cutoff5_model19.csv', option=0, img_save_path='./result/image')
 
-histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM
-ImagePreprocessor.make_gif(histones, '20220301_H2B Halo_Field17_no_ir.rpt_tracked.trxyt', 3299, correction=True)
+#histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM
+#ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cell6_no_ir003.rpt_tracked.trxyt', 767, correction=True)
 
 #histones = DataSimulation.make_simulation_data(30)
 #DataSave.save_simulated_data(histones, './data/SimulationData/4500_simulated_data.trxyt')

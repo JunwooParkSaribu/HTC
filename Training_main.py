@@ -19,8 +19,9 @@ if __name__ == '__main__':
 
     data_path = f'{cur_path}/data/TrainingSample'
     model_path = f'{cur_path}/model'
-    report_path = [f'{cur_path}/result/pred_wholecells_by_cutoff/cutoff5_model13.csv',
-                   f'{cur_path}/result/pred_wholecells_by_cutoff/cutoff5_model17.csv']
+    #report_path = [f'{cur_path}/result/pred_wholecells_by_cutoff/cutoff5_model13.csv',
+    #               f'{cur_path}/result/pred_wholecells_by_cutoff/cutoff5_model17.csv']
+    report_path = [f'{cur_path}/data/TrainingSample/manuel_labels/manuel_label_data.csv']
 
     gpus = ConvModel.tf.config.list_physical_devices('GPU')
     if gpus:
@@ -39,7 +40,8 @@ if __name__ == '__main__':
     batch_size = 32
     print(f'\nLoading the data...')
     histones = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], chunk=False)[0]
-    histones = Labeling.label_from_reports(histones, report_path, min_nb_label=2240) #2240
+    #histones = Labeling.label_from_reports(histones, report_path, min_nb_label=2240)  # 2240
+    histones = Labeling.label_from_reports(histones, report_path, label_header='label') #2240
     #histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/4500_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
     histones = TrajectoryPhy.trjaectory_rotation(histones, 8)
 

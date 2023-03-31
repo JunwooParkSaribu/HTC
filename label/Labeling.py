@@ -1,6 +1,8 @@
 from physics import TrajectoryPhy, DataSimulation
 from fileIO import DataLoad
 import numpy as np
+import os
+import csv
 
 
 def make_label(histones, radius=0.4, density=0.5) -> []:
@@ -58,7 +60,7 @@ def label_from_report(histones, report, equal=False):
         return histones
 
 
-def label_from_reports(histones, reports, min_nb_label=np.inf, nb_labels=3):
+def label_from_reports(histones, reports, min_nb_label=np.inf, nb_labels=3, label_header='predicted_class_id'):
     headers = []
     datas = []
 
@@ -71,7 +73,7 @@ def label_from_reports(histones, reports, min_nb_label=np.inf, nb_labels=3):
     for data in datas:
         for dt_dic in data:
             key = f"{dt_dic['filename']}@{dt_dic['h2b_id']}"
-            label = int(dt_dic['predicted_class_id'])
+            label = int(dt_dic[label_header])
 
             if key not in key_labels:
                 key_labels[key] = [label]
@@ -85,7 +87,7 @@ def label_from_reports(histones, reports, min_nb_label=np.inf, nb_labels=3):
             print('reports are not same')
             raise Exception
 
-    same_label_histones = [[] for x in range(nb_labels)]
+    same_label_histones = [[] for _ in range(nb_labels)]
     for key in key_labels:
         same = 1
         first_label = key_labels[key][0]
@@ -154,3 +156,28 @@ def binary_labeling(histones):  # binary labeling between immobile,mobile / hybr
             histones[histone].set_manuel_label(0)
             new_histnoes[histone] = histones[histone]
     return new_histnoes
+
+
+def make_labelreport_from_folders(path):
+    filedict = {}
+    assert os.path.isdir(path)
+
+    for root, dirs, files, dirfd in os.fwalk(path, topdown=False):
+        label = root.strip().split('/')[-1]
+        for file in files:
+            if '.png' in file:
+                key = file.strip().split('.png')[0]
+                filedict[key] = label
+
+    with open(f'{path}/manuel_label_data.csv', 'w', newline='') as f:
+        fieldnames = ['filename', 'h2b_id', 'label']
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+
+        for key in filedict:
+            filename, h2b_id = key.split('@')
+            label = filedict[key]
+            writer.writerow({'filename': filename, 'h2b_id': h2b_id, 'label': label})
+
+
+#make_labelreport_from_folders('/Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/TrainingSample/manuel_labels')

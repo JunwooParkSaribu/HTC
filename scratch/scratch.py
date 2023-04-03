@@ -62,7 +62,7 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
            #'./result/pred_wholecells_by_cutoff/cutoff5_model24.csv',  ## 13 + 17 (3rd replica of model19 with same cnn)
            #'./result/pred_wholecells_by_cutoff/cutoff5_model25.csv',  ## manuel label , 1024
            #'./result/pred_wholecells_by_cutoff/cutoff5_model26.csv',  ## manuel label , 1024
-           './result/pred_wholecells_by_cutoff/cutoff5_model26.csv',  ## manuel label ,
+           './result/pred_wholecells_by_cutoff/cutoff5_model27.csv',  ## manuel label ,
            ]
 
 

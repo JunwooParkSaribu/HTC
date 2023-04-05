@@ -31,8 +31,8 @@ def read_file(file: str, cutoff: int, filetype='trxyt') -> dict:
                 time_step = float(temp[3].strip())
             else:
                 key = file_name + '@' + temp[3].strip()  # filename + h2b_id
-                x_pos = float(temp[1].strip()) / 1
-                y_pos = float(temp[2].strip()) / 1
+                x_pos = float(temp[1].strip()) / 6.25
+                y_pos = float(temp[2].strip()) / 6.25
                 time_step = float(temp[0].strip()) / 100
 
             if labeled:

@@ -31,8 +31,8 @@ def read_file(file: str, cutoff: int, filetype='trxyt') -> dict:
                 time_step = float(temp[3].strip())
             else:
                 key = file_name + '@' + temp[3].strip()  # filename + h2b_id
-                x_pos = float(temp[1].strip())
-                y_pos = float(temp[2].strip())
+                x_pos = float(temp[1].strip()) / 1
+                y_pos = float(temp[2].strip()) / 1
                 time_step = float(temp[0].strip()) / 100
 
             if labeled:
@@ -70,7 +70,10 @@ def file_distrib(paths: list, cutoff=5, group_size=2000, chunk=True) -> list:
         histones = {}
         if len(files) > 0:
             for file in files:
-                if 'trxyt' in file or 'sos' in file:
+                if 'trxyt' in file:
+                    h = read_file(paths[0] + '/' + file, cutoff=cutoff, filetype='trxyt')
+                    histones |= h
+                if 'sos' in file:
                     h = read_file(paths[0] + '/' + file, cutoff=cutoff, filetype='sos')
                     histones |= h
         if not chunk:

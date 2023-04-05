@@ -23,7 +23,10 @@ def recursive_filesearch(path, filename, params, h2b_ids, cls, img_save_path, lb
             files.append(f)
 
     if filename in files:
-        histones = DataLoad.read_file(f'{path}/{filename}', cutoff=0)
+        if 'trxyt' in filename:
+            histones = DataLoad.read_file(f'{path}/{filename}', cutoff=0, filetype='trxyt')
+        else:
+            histones = DataLoad.read_file(f'{path}/{filename}', cutoff=0, filetype='sos')
         temp = {}
         for hist in histones:
             for index, hid in enumerate(h2b_ids):

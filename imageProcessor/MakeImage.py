@@ -19,7 +19,7 @@ def recursive_filesearch(path, filename, params, h2b_ids, cls, img_save_path, lb
     for f in f_dirs:
         if os.path.isdir(f'{path}/{f}'):
             dirs.append(f)
-        if f.strip().split('.')[-1] == 'trxyt' or f.strip().split('.')[-1] == 'sos':
+        if f.strip().split('.')[-1] == 'trxyt':
             files.append(f)
 
     if filename in files:

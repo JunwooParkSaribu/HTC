@@ -70,8 +70,8 @@ def file_distrib(paths: list, cutoff=5, group_size=2000, chunk=True) -> list:
         histones = {}
         if len(files) > 0:
             for file in files:
-                if 'trxyt' in file:
-                    h = read_file(paths[0] + '/' + file, cutoff=cutoff)
+                if 'trxyt' in file or 'sos' in file:
+                    h = read_file(paths[0] + '/' + file, cutoff=cutoff, filetype='sos')
                     histones |= h
         if not chunk:
             return [histones]

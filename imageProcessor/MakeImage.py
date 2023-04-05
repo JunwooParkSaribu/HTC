@@ -126,6 +126,7 @@ def make_image_from_single_report(report: str, option=1, data_path='.', img_save
 
     # simple recursive search
     for filename in list(img_list.keys()):
+        print(filename)
         if option == 1:
             h2b_ids, cls, lbs = img_list[filename]
         else:

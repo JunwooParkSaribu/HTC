@@ -69,6 +69,7 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
 #[print(DataAnalysis.ratio_calcul(report)) for report in reports]
 #DataAnalysis.confusion_matrix(reports)
 #MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='/mnt/c/Users/jwoo/Desktop/25_26_diff_images')
+print("hello")
 MakeImage.make_image_from_single_report('./scratch/tracks.simple.filtered.sos.txt.csv', option=0, img_save_path='./scratch/test_image')
 
 #histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM

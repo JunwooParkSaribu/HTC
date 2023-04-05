@@ -70,7 +70,7 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
 #DataAnalysis.confusion_matrix(reports)
 #MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='/mnt/c/Users/jwoo/Desktop/25_26_diff_images')
 print("hello")
-MakeImage.make_image_from_single_report('./scratch/tracks.simple.filtered.trxyt.csv', option=0, img_save_path='./scratch/test_image')
+MakeImage.make_image_from_single_report('./scratch/tracks.simple.filtered.sos.csv', option=0, img_save_path='./scratch/test_image')
 
 #histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM
 #ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt', 3230, correction=True)

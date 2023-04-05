@@ -6,7 +6,7 @@ from histone.H2B import H2B
 from itertools import islice
 
 
-def read_file(file: str, cutoff: int) -> dict:
+def read_file(file: str, cutoff: int, filetype='trxyt') -> dict:
     histones = {}
     trajectory = {}
     time = {}
@@ -21,22 +21,29 @@ def read_file(file: str, cutoff: int) -> dict:
         file_name = file.strip().split('/')[-1].strip()
         for line in lines:
             temp = line.split('\t')
-            if len(temp) == 5:
+            if len(temp) == 5: ## change?
                 labeled = True
 
-            temp[0] = file_name + '@' + temp[0].strip()  # filename + h2b_id
-            temp[1] = float(temp[1].strip())
-            temp[2] = float(temp[2].strip())
-            temp[3] = float(temp[3].strip())
+            if filetype == 'trxyt':
+                key = file_name + '@' + temp[0].strip()  # filename + h2b_id
+                x_pos = float(temp[1].strip())
+                y_pos = float(temp[2].strip())
+                time_step = float(temp[3].strip())
+            else:
+                key = file_name + '@' + temp[3].strip()  # filename + h2b_id
+                x_pos = float(temp[1].strip())
+                y_pos = float(temp[2].strip())
+                time_step = float(temp[3].strip()) / 100
 
             if labeled:
-                label[temp[0]] = int(temp[4].strip())  # label
-            if temp[0] in trajectory:
-                trajectory[temp[0]].append([temp[1], temp[2]])
-                time[temp[0]].append(temp[3])
+                label[key] = int(temp[4].strip())  # label
+
+            if key in trajectory:
+                trajectory[key].append([x_pos, y_pos])
+                time[key].append(time_step)
             else:
-                trajectory[temp[0]] = [[temp[1], temp[2]]]
-                time[temp[0]] = [temp[3]]
+                trajectory[key] = [[x_pos, y_pos]]
+                time[key] = [time_step]
 
         for histone in trajectory:
             if len(trajectory[histone]) >= cutoff:

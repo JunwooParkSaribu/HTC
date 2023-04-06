@@ -1,4 +1,4 @@
-data = ./scratch/test_data
+data = ./data/TrainingSample
 save_dir = ./scratch
 model_dir = ./model/model27
 cut_off = 5

@@ -1,7 +1,7 @@
 data = ./scratch/test_data
 save_dir = ./scratch
 model_dir = ./model/model27
-cut_off = 15
+cut_off = 5
 all = False
 
 immobile_cutoff = 5

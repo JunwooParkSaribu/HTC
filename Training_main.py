@@ -43,7 +43,7 @@ if __name__ == '__main__':
     #histones = Labeling.label_from_reports(histones, report_path, min_nb_label=2240)  # 2240
     histones = Labeling.label_from_reports(histones, report_path, label_header='label')  # 1024
     #histones = DataLoad.file_distrib(paths=[f'{cur_path}/data/SimulationData/4500_simulated_data.trxyt'], cutoff=2, chunk=False)[0]
-    histones = TrajectoryPhy.trjaectory_rotation(histones, 8)
+    histones = TrajectoryPhy.trjaectory_rotation(histones, 12)
 
     print(f'Channel processing...')
     ImagePreprocessor.make_channel(histones, immobile_cutoff=params['immobile_cutoff'],

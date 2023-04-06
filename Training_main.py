@@ -17,7 +17,7 @@ if __name__ == '__main__':
     else:
         cur_path = '.'
 
-    data_path = f'{cur_path}/data/TrainingSample'
+    data_path = f'{cur_path}/data/TrainingSample/all_data'
     model_path = f'{cur_path}/model'
     #report_path = [f'{cur_path}/result/pred_wholecells_by_cutoff/cutoff5_model13.csv',
     #               f'{cur_path}/result/pred_wholecells_by_cutoff/cutoff5_model17.csv']

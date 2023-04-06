@@ -1,8 +1,8 @@
-data = ./data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell
-save_dir = ./result/pred_wholecells_by_cutoff
+data = ./scratch/test_data
+save_dir = ./scratch
 model_dir = ./model/model27
-cut_off = 5
-all = True
+cut_off = 15
+all = False
 
 immobile_cutoff = 5
 hybrid_cutoff = 12

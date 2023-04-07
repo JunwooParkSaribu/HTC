@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
     params = ReadParam.read(cur_path)
     epochs = 200
-    batch_size = 32
+    batch_size = params['batch_size']
     print(f'\nLoading the data...')
     histones = DataLoad.file_distrib([data_path], cutoff=params['cut_off'], chunk=False)[0]
     #histones = Labeling.label_from_reports(histones, report_path, min_nb_label=2240)  # 2240

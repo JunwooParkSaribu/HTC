@@ -1,6 +1,6 @@
 data = ./data/TrainingSample
 save_dir = ./scratch
-model_dir = ./model/model27
+model_dir = ./model/model28
 cut_off = 5
 all = False
 

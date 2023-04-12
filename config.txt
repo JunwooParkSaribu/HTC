@@ -1,12 +1,12 @@
 data = ./data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell
 save_dir = ./
-model_dir = ./model/model31
-cut_off = 5
+model_dir = ./model/model28
+cut_off = 15
 all = True
 
 immobile_cutoff = 5
 hybrid_cutoff = 12
 amp = 2
 nChannel = 3
-batch_size = 32
-group_size = 320
+batch_size = 16
+group_size = 160

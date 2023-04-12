@@ -66,12 +66,19 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
            './result/pred_wholecells_by_cutoff/cutoff5_model28.csv',  ## manuel label , 1040
            './result/pred_wholecells_by_cutoff/cutoff5_model29.csv',  ## manuel label , 1040
            './result/pred_wholecells_by_cutoff/cutoff5_model30.csv',  ## manuel label , 1040
+           './result/pred_wholecells_by_cutoff/cutoff5_model31.csv',  ## manuel label , 1040
+           './result/pred_wholecells_by_cutoff/cutoff5_model32.csv',  ## manuel label , 1040
+           './result/pred_wholecells_by_cutoff/cutoff5_model33.csv',  ## manuel label , 1040
+           './result/pred_wholecells_by_cutoff/cutoff5_model34.csv',  ## manuel label , 1040
+           './result/pred_wholecells_by_cutoff/cutoff5_model35.csv',  ## manuel label , 1040
+           './result/pred_wholecells_by_cutoff/cutoff5_model36.csv',  ## manuel label , 1040
+           './result/pred_wholecells_by_cutoff/cutoff5_model37.csv',  ## manuel label , 1040
            #'./scratch/6.mn_tracked.trxyt.csv'
            ]
 
 
-[print(DataAnalysis.ratio_calcul(report)) for report in reports]
-DataAnalysis.confusion_matrix(reports)
+#[print(DataAnalysis.ratio_calcul(report)) for report in reports]
+#DataAnalysis.confusion_matrix(reports)
 #MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='/mnt/c/Users/jwoo/Desktop/25_26_diff_images')
 #MakeImage.make_image_from_single_report(reports[0], option=0, img_save_path='./scratch/test_image')
 
@@ -207,5 +214,12 @@ DataSave.save_report(histones, path=params['save_dir'], all=params['all'])
 
 """
 
-acc = [0.9875801, 0.9878472, 0.98517627, 0.9807692, 0.984375, 0.98504275, 0.98170406, ]
-ratio = []
+acc = [0.9875801, 0.9878472, 0.98517627, 0.9807692, 0.984375, 0.98504275, 0.98170406, 0.98183763, 0.99038464, 0.9885149]
+ratio = [[],  # immobile
+         [],  # hybrid
+         []]  # mobile
+
+
+fig, axs = plt.subplots(1, 1)
+axs.boxplot(acc)
+plt.show()

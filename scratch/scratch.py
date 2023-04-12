@@ -206,3 +206,6 @@ print(y_predict.shape)
 DataSave.save_report(histones, path=params['save_dir'], all=params['all'])
 
 """
+
+acc = [0.9875801, 0.9878472, 0.98517627, 0.9807692, 0.984375, 0.98504275, 0.98170406, ]
+ratio = []

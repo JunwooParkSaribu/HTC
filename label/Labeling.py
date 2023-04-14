@@ -180,4 +180,4 @@ def make_labelreport_from_folders(path):
             writer.writerow({'filename': filename, 'h2b_id': h2b_id, 'label': label})
 
 
-#make_labelreport_from_folders('/Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/TrainingSample/manuel_labels/training_data_model28')
+#make_labelreport_from_folders('/Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/TrainingSample/manuel_labels/training_data_model38')

@@ -63,23 +63,23 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
            #'./result/pred_wholecells_by_cutoff/cutoff5_model25.csv',  ## manuel label , 1024
            #'./result/pred_wholecells_by_cutoff/cutoff5_model26.csv',  ## manuel label , 1024
            #'./result/pred_wholecells_by_cutoff/cutoff5_model27.csv',  ## manuel label , 300,300,300
-           './result/pred_wholecells_by_cutoff/cutoff15_model28.csv',  ## manuel label , 1040
-           './result/pred_wholecells_by_cutoff/cutoff15_model29.csv',  ## manuel label , 1040
-           './result/pred_wholecells_by_cutoff/cutoff15_model30.csv',  ## manuel label , 1040
-           './result/pred_wholecells_by_cutoff/cutoff15_model31.csv',  ## manuel label , 1040
-           './result/pred_wholecells_by_cutoff/cutoff15_model32.csv',  ## manuel label , 1040
-           './result/pred_wholecells_by_cutoff/cutoff15_model33.csv',  ## manuel label , 1040
-           './result/pred_wholecells_by_cutoff/cutoff15_model34.csv',  ## manuel label , 1040
-           './result/pred_wholecells_by_cutoff/cutoff15_model35.csv',  ## manuel label , 1040
-           './result/pred_wholecells_by_cutoff/cutoff15_model36.csv',  ## manuel label , 1040
-           './result/pred_wholecells_by_cutoff/cutoff15_model37.csv',  ## manuel label , 1040
+           ##'./result/pred_wholecells_by_cutoff/cutoff5_model28.csv',  ## manuel label , 1040
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model29.csv',  ## manuel label , 1040
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model30.csv',  ## manuel label , 1040
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model31.csv',  ## manuel label , 1040
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model32.csv',  ## manuel label , 1040
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model33.csv',  ## manuel label , 1040
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model34.csv',  ## manuel label , 1040
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model35.csv',  ## manuel label , 1040
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model36.csv',  ## manuel label , 1040
+           ##'./result/pred_wholecells_by_cutoff/cutoff5_model37.csv',  ## manuel label , 1040
            #'./scratch/6.mn_tracked.trxyt.csv'
            ]
 
 
 [print(DataAnalysis.ratio_calcul(report)) for report in reports]
 #DataAnalysis.confusion_matrix(reports)
-#MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='/mnt/c/Users/jwoo/Desktop/25_26_diff_images')
+MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='/mnt/c/Users/jwoo/Desktop/25_26_diff_images')
 #MakeImage.make_image_from_single_report(reports[0], option=0, img_save_path='./scratch/test_image')
 
 #histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM

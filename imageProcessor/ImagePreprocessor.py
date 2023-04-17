@@ -415,3 +415,46 @@ def make_gif(full_histones, filename, id, immobile_cutoff=5,
     except Exception as e:
         print(e)
         print(f'There is no matching filename and id in the data')
+
+
+def classified_cellmap(histones, amp=2, interpolation=True) -> np.ndarray:
+    channel = 3  # nb of classes
+    min_x = 0
+    max_x = 0
+    min_y = 0
+    max_y = 0
+
+    for histone in histones:
+        trajectory = histones[histone].get_trajectory()
+        for traj in trajectory:
+            x, y = traj[0], traj[1]
+            max_x = max(max_x, x)
+            max_y = max(max_y, y)
+
+    max_x += 1
+    max_y += 1
+    max_x = max_x * (10 ** amp)
+    max_y = max_y * (10 ** amp)
+
+    img_x_size = int(max_x - min_x)
+    img_y_size = int(max_y - min_y)
+    img = np.zeros((img_y_size, img_x_size, channel))
+    for histone in histones:
+        histone_trajectory = histones[histone].get_trajectory()
+        current_xval, current_yval = int(histone_trajectory[0][0] * (10 ** amp)), int(histone_trajectory[0][1] * (10 ** amp))
+        for index, trajectory in enumerate(histone_trajectory):
+            x_val = int(trajectory[0] * (10 ** amp))
+            y_val = int(trajectory[1] * (10 ** amp))
+            label = int(histones[histone].get_predicted_label())
+
+            if not interpolation:
+                img[y_val][x_val][label] = 1
+            else:
+                interpolate_pos = interpolate([current_xval, current_yval], [x_val, y_val])
+                current_xval = x_val
+                current_yval = y_val
+                for inter_pos in interpolate_pos:
+                    # add channels or not (val in float 0.0 ~ 1.0)
+                    img[inter_pos[1]][inter_pos[0]][label] = 1
+    plt.imshow(img, cmap='coolwarm', origin='lower', label='cellmap')
+    plt.savefig(f'./cellmap.png', dpi=1000)

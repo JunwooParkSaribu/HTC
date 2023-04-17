@@ -1,4 +1,6 @@
 import os
+
+import imageProcessor.ImagePreprocessor
 from fileIO import DataLoad, ReadParam
 from imageProcessor import ImagePreprocessor
 
@@ -139,3 +141,23 @@ def make_image_from_single_report(report: str, option=1, data_path='.', img_save
             h2b_ids, cls = img_list[filename]
             lbs = []
         recursive_filesearch(data_path, filename, params, h2b_ids, cls, img_save_path, lbs, img_option=option)
+
+
+def make_classified_cell_map(report, path, interpolation):
+    header, data = DataLoad.read_report(report)
+    params = ReadParam.read(path)
+    search_file_names = set([dt['filename'] for dt in data])
+
+    histones = {}
+    for root, dirs, files, dirfd in os.fwalk(path, topdown=False):
+        for file in files:
+            if file in search_file_names:
+                histone = DataLoad.read_file(f'{root}/{file}', params['cut_off'])
+                histones |= histone
+
+    new_histones = {}
+    for dt in data:
+        selected_histone = histones[f'{dt["filename"]}@{dt["h2b_id"]}']
+        selected_histone.set_predicted_label(dt['predicted_class_id'])
+        new_histones[f'{dt["filename"]}@{dt["h2b_id"]}'] = selected_histone.copy()
+    imageProcessor.ImagePreprocessor.classified_cellmap(histones=new_histones, interpolation=interpolation)

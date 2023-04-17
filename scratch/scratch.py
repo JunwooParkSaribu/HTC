@@ -74,7 +74,7 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
            #'./result/pred_wholecells_by_cutoff/cutoff5_model35.csv',  ## manuel label , 1040
            #'./result/pred_wholecells_by_cutoff/cutoff5_model36.csv',  ## manuel label , 1040
            ##'./result/pred_wholecells_by_cutoff/cutoff5_model37.csv',  ## manuel label , 1040
-           #'./scratch/6.mn_tracked.trxyt.csv'
+           #'./scratch/6.mn_tracked.trxyt.csv',
 
            #'./result/pred_wholecells_by_cutoff/cutoff5_model38.csv',  ## manuel label , 1040
            #'./result/pred_wholecells_by_cutoff/cutoff5_model39.csv',  ## manuel label , 1040

@@ -384,9 +384,12 @@ def main():
             stop_status = 1
 
         elif event == 'Continue':
-            sg.cprint(f'Continue prediction', text_color='white', background_color='red')
-            proc.send_signal(signal.SIGCONT)
-            stop_status = 0
+            if proc != 0:
+                sg.cprint(f'Continue prediction', text_color='white', background_color='red')
+                proc.send_signal(signal.SIGCONT)
+                stop_status = 0
+            else:
+                sg.cprint(f'no current running subprocess')
 
         elif event == 'Browse':
             save_dir = sg.PopupGetFolder('Report save directory')

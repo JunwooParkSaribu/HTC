@@ -76,17 +76,17 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
            ##'./result/pred_wholecells_by_cutoff/cutoff5_model37.csv',  ## manuel label , 1040
            #'./scratch/6.mn_tracked.trxyt.csv'
 
-           './result/pred_wholecells_by_cutoff/cutoff5_model38.csv',  ## manuel label , 1040
-           './result/pred_wholecells_by_cutoff/cutoff5_model39.csv',  ## manuel label , 1040
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model38.csv',  ## manuel label , 1040
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model39.csv',  ## manuel label , 1040
            './result/pred_wholecells_by_cutoff/cutoff5_model40.csv',  ## manuel label , 1040
            ]
 
 
-[print(DataAnalysis.ratio_calcul(report)) for report in reports]
-DataAnalysis.confusion_matrix(reports)
+#[print(DataAnalysis.ratio_calcul(report)) for report in reports]
+#DataAnalysis.confusion_matrix(reports)
 #MakeImage.make_classified_cell_map(reports[0], path='./', interpolation=True)
-#MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='/mnt/c/Users/jwoo/Desktop/25_26_diff_images')
-#MakeImage.make_image_from_single_report(reports[0], option=0, img_save_path='./scratch/test_image')
+MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='/shared/home/jpark/jwoo/HTC/40_immobile')
+#MakeImage.make_image_from_single_report(reports[0], option=0, img_save_path='/shared/home/jpark/jwoo/HTC/40_immobile')
 
 #histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM
 #ImagePreprocessor.make_gif(histones, 'tracks.simple.filtered.sos', 240, correction=True)
@@ -219,7 +219,7 @@ print(y_predict.shape)
 DataSave.save_report(histones, path=params['save_dir'], all=params['all'])
 
 """
-
+"""
 acc = [0.9875801, 0.9878472, 0.98517627, 0.9807692, 0.984375, 0.98504275, 0.98170406, 0.98183763, 0.99038464, 0.9885149]
 ratio = [[],  # immobile
          [],  # hybrid
@@ -230,5 +230,6 @@ for report in reports:
     ratio[1].append(ratio_result[1])
     ratio[2].append(ratio_result[2])
 fig, axs = plt.subplots(1, 1)
-#axs.boxplot(ratio)
-#plt.show()
+axs.boxplot(ratio)
+plt.show()
+"""

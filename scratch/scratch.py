@@ -75,16 +75,16 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
            #'./result/pred_wholecells_by_cutoff/cutoff5_model36.csv',  ## manuel label , 1040
            ##'./result/pred_wholecells_by_cutoff/cutoff5_model37.csv',  ## manuel label , 1040
            #'./scratch/6.mn_tracked.trxyt.csv'
-           './20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt.csv',
 
            './result/pred_wholecells_by_cutoff/cutoff5_model38.csv',  ## manuel label , 1040
            './result/pred_wholecells_by_cutoff/cutoff5_model39.csv',  ## manuel label , 1040
+           './result/pred_wholecells_by_cutoff/cutoff5_model40.csv',  ## manuel label , 1040
            ]
 
 
 [print(DataAnalysis.ratio_calcul(report)) for report in reports]
-#DataAnalysis.confusion_matrix(reports)
-MakeImage.make_classified_cell_map(reports[0], path='./', interpolation=True)
+DataAnalysis.confusion_matrix(reports)
+#MakeImage.make_classified_cell_map(reports[0], path='./', interpolation=True)
 #MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='/mnt/c/Users/jwoo/Desktop/25_26_diff_images')
 #MakeImage.make_image_from_single_report(reports[0], option=0, img_save_path='./scratch/test_image')
 

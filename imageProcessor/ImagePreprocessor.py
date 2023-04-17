@@ -308,7 +308,7 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
                            (histone_first_pos[1] - img_size / 2) / (10 ** amp),
                            (histone_first_pos[1] + img_size / 2) / (10 ** amp)], label='a')
     plt.legend(title=ps)
-    plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=500)
+    plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=600)
 
 
 def make_gif(full_histones, filename, id, immobile_cutoff=5,
@@ -458,4 +458,4 @@ def classified_cellmap(histones, amp=2, interpolation=True) -> np.ndarray:
                     img[inter_pos[1]][inter_pos[0]][label] = 1
     plt.imshow(img, cmap='coolwarm', origin='lower', label='cellmap',
                extent=[min_x/(10**amp), max_x/(10**amp), min_y/(10**amp), max_y/(10**amp)])
-    plt.savefig(f'./cellmap.png', dpi=1000)
+    plt.savefig(f'./cellmap.png', dpi=1200)

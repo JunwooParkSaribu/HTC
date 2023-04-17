@@ -84,9 +84,9 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
 
 [print(DataAnalysis.ratio_calcul(report)) for report in reports]
 #DataAnalysis.confusion_matrix(reports)
-#MakeImage.make_classified_cell_map(reports[0], path='./', interpolation=True)
+MakeImage.make_classified_cell_map(reports[0], path='./', interpolation=True)
 #MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='/mnt/c/Users/jwoo/Desktop/25_26_diff_images')
-MakeImage.make_image_from_single_report(reports[0], option=0, img_save_path='./scratch/test_image')
+#MakeImage.make_image_from_single_report(reports[0], option=0, img_save_path='./scratch/test_image')
 
 #histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM
 #ImagePreprocessor.make_gif(histones, 'tracks.simple.filtered.sos', 240, correction=True)

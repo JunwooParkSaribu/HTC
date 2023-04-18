@@ -140,7 +140,7 @@ def make_image_from_single_report(report: str, option=1, data_path='.', img_save
         recursive_filesearch(data_path, filename, params, h2b_ids, cls, img_save_path, lbs, img_option=option)
 
 
-def make_classified_cell_map(reports, full_Data, params, root_path, interpolation=True):
+def make_classified_cell_map(reports, fullh2bs, interpolation=True):
     search_file_names = set()
     datas = [DataLoad.read_report(report)[1] for report in reports]
     for data in datas:
@@ -148,7 +148,7 @@ def make_classified_cell_map(reports, full_Data, params, root_path, interpolatio
             search_file_names.add(dt['filename'])
 
     histones = {}
-    for hs in full_Data:
+    for hs in fullh2bs:
         histones |= hs
 
     for data, report in zip(datas, reports):

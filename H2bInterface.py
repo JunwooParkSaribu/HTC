@@ -225,7 +225,7 @@ def make_window(treedata, starting_path=''):
     save_tooltip = "Save directory of report files"
 
     left_col = sg.Column([
-        [sg.Tree(data=treedata, headings=[], auto_size_columns=True, num_rows=40, col0_width=80,
+        [sg.Tree(data=treedata, headings=[], auto_size_columns=True, num_rows=30, col0_width=80,
                  vertical_scroll_only=False,
                  key='-DEMO LIST-', show_expanded=False, font=("Arial", 13))],
         [sg.Text('Cutoff:', tooltip=cutoff_tooltip),
@@ -248,7 +248,7 @@ def make_window(treedata, starting_path=''):
         element_justification='l', expand_x=True, expand_y=True)
 
     right_col = [
-        [sg.Multiline(size=(70, 21), write_only=True, expand_x=True, expand_y=True,
+        [sg.Multiline(size=(60, 21), write_only=True, expand_x=True, expand_y=True,
                       key='-ML-', reroute_stdout=True, echo_stdout_stderr=True, reroute_cprint=True,
                       autoscroll=True)],
         [sg.B('Settings'), sg.Button('Exit')],

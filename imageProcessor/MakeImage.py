@@ -148,7 +148,7 @@ def make_classified_cell_map(reports, params, root_path, interpolation=True):
             search_file_names.add(dt['filename'])
 
     histones = {}
-    for root, dirs, files, dirfd in os.fwalk(root_path, topdown=False):
+    for root, dirs, files in os.walk(root_path, topdown=False):
         for file in files:
             if file in search_file_names:
                 histone = DataLoad.read_file(f'{root}/{file}', params['cut_off'])

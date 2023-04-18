@@ -492,7 +492,8 @@ def main():
                 sg.cprint(fichier.split('\\')[-1].split('/')[-1], text_color='white', background_color='purple')
             try:
                 # Subprocess calling
-                proc = run_command(['python3', 'HTCclassifier.py'])
+                proc = run_command(['./HTCclassifier.exe'])
+                #proc = run_command(['python3', 'HTCclassifier.py'])
                 start_time = time.time()
 
             except Exception as e:

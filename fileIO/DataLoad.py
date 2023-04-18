@@ -19,7 +19,6 @@ def read_file(file: str, cutoff: int, filetype='trxyt') -> dict:
         lines = input.strip().split('\n')
 
         file_name = file.strip().split('\\')[-1].split('/')[-1].strip()
-        print(file_name)
         for line in lines:
             temp = line.split('\t')
             if len(temp) == 5: ## change?

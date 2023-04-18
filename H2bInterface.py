@@ -358,7 +358,7 @@ def main():
                         sg.cprint(fichier.split('\\')[-1].split('/')[-1], text_color='white', background_color='purple')
                     sg.cprint(f'Processing is finished', text_color='white', background_color='red')
                     for out in iter(proc.stdout.readline, b''):
-                        out = str(out).strip().split("\'")[1].split('\\n')[0].split('\r')[0]
+                        out = str(out).strip().split("\'")[1].split('\\n')[0].split('\\r')[0]
                         if out.endswith('%'):
                             continue
                         else:

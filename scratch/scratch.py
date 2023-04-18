@@ -78,7 +78,7 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
 
            #'./result/pred_wholecells_by_cutoff/cutoff5_model38.csv',  ## manuel label , 1040
            #'./result/pred_wholecells_by_cutoff/cutoff5_model39.csv',  ## manuel label , 1040
-           './result/pred_wholecells_by_cutoff/cutoff5_model40.csv',  ## manuel label , 1040
+           #'./result/pred_wholecells_by_cutoff/cutoff5_model40.csv',  ## manuel label , 1040
            ]
 
 
@@ -86,7 +86,7 @@ reports = [#'./result/pred_wholecells_by_cutoff/cutoff5_model7_lab.csv', ## simu
 #DataAnalysis.confusion_matrix(reports)
 #MakeImage.make_classified_cell_map(reports[0], path='./', interpolation=True)
 #MakeImage.comparison_from_reports(reports, data_path='.', img_save_path='/shared/home/jpark/jwoo/HTC/40_hybrid')
-#MakeImage.make_image_from_single_report(reports[0], option=0, img_save_path='/shared/home/jpark/jwoo/HTC/40_immobile')
+#MakeImage.make_image_from_single_report(reports[0], option=0, img_save_path='./scratch/test_image')
 
 #histones = DataLoad.file_distrib(paths=params['data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM
 #ImagePreprocessor.make_gif(histones, 'tracks.simple.filtered.sos', 240, correction=True)

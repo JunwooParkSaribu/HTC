@@ -1,8 +1,9 @@
 import csv
 
 
-def save_report(full_data, path='', all=False, eval=False):
+def save_report(full_data, path='', all=False, eval=False) -> list:
     histones = {}
+    report_names = []
 
     if type(full_data) is list:
         for chunked_data in full_data:
@@ -36,6 +37,7 @@ def save_report(full_data, path='', all=False, eval=False):
             else:
                 write_file_name = f'{path}/{filename}.csv'
             with open(write_file_name, 'w', newline='') as f:
+                report_names.append(write_file_name)
                 if eval:
                     fieldnames = ['filename', 'h2b_id', 'predicted_class_id', 'predicted_class_name', 'probability',
                                   'maximum_radius', 'labeled_class_id', 'first_x_position', 'first_y_position']
@@ -79,6 +81,7 @@ def save_report(full_data, path='', all=False, eval=False):
         else:
             write_file_name = f'{path}/pred_all.csv'
         with open(write_file_name, 'w', newline='') as f:
+            report_names.append(write_file_name)
             if eval:
                 fieldnames = ['filename', 'h2b_id', 'predicted_class_id', 'predicted_class_name', 'probability',
                               'maximum_radius', 'labeled_class_id', 'first_x_position', 'first_y_position']
@@ -118,6 +121,7 @@ def save_report(full_data, path='', all=False, eval=False):
                                      'predicted_class_name': pred_class_name, 'probability': proba,
                                      'maximum_radius': max_r,
                                      'first_x_position': first_x_pos, 'first_y_position': first_y_pos})
+    return report_names
 
 
 def save_simulated_data(histones, filepath):

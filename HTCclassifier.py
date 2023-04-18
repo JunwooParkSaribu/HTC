@@ -4,7 +4,7 @@ import sys
 import numpy as np
 import ProgressBar
 from fileIO import DataLoad, DataSave, ReadParam
-from imageProcessor import ImagePreprocessor, ImgGenerator
+from imageProcessor import ImagePreprocessor, ImgGenerator, MakeImage
 from keras.models import load_model
 from tensorflow import device
 
@@ -33,7 +33,7 @@ def main_pipe(full_histones, scaled_size=(500, 500), immobile_cutoff=5,
     total_n_histone = 0
     for g in full_histones:
         total_n_histone += len(list(g.keys()))
-    print(f'Number of histones after cutting off : {total_n_histone}')
+    print(f'Total number of histones after cutting off : {total_n_histone}')
     progress_i = 0
     progress_total = int(total_n_histone / params['batch_size']) + 1
     ProgressBar.printProgressBar(progress_i, progress_total)
@@ -59,18 +59,14 @@ if __name__ == '__main__':
     params = ReadParam.read(config_path)
 
     with device('/cpu:0'):
-        print(f'Loading the data...', end=' ')
         full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
-        print(f'Done.\nIf the number of histone is bigger than {params["group_size"]}, '
-              f'data will be split into groups to reduce the memory usage.')
         HTC_model = load_model(params['model_dir'], compile=False)
         HTC_model.compile()
 
         # Main pipe start.
-        print(f'Predicting all data...')
         main_pipe(full_data, scaled_size=(500, 500), immobile_cutoff=params['immobile_cutoff'],
                   hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],
                   nChannel=params['nChannel'], batch_size=params['batch_size'])
-    print(f'Making reports... ', end=' ')
-    DataSave.save_report(full_data, path=params['save_dir'], all=params['all'])
-    print(f'Done.')
+    reports = DataSave.save_report(full_data, path=params['save_dir'], all=params['all'])
+    if params['makeImage']:
+        MakeImage.make_classified_cell_map(reports, params=params, root_path=config_path)

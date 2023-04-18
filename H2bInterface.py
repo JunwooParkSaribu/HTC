@@ -24,7 +24,7 @@ def get_gui_path():
     :return: Path to list of files using the user settings for this file.  Returns folder of this file if not found
     :rtype: str
     """
-    #demo_path = sg.user_settings_get_entry('-demos folder-', os.path.dirname(__file__))
+    # demo_path = sg.user_settings_get_entry('-demos folder-', os.path.dirname(__file__))
     return os.getcwd()
 
 
@@ -129,7 +129,8 @@ def window_choose_line_to_edit(filename, full_filename, line_num_list, match_lis
     layout = [[sg.T(f'Choose line from {filename}', font='_ 14')]]
     for line in sorted(set(line_num_list)):
         match_text = match_list[i]
-        layout += [[sg.Text(f'Line {line} : {match_text}', key=('-T-', line), enable_events=True, size=(min(len(match_text), 90), None))]]
+        layout += [[sg.Text(f'Line {line} : {match_text}', key=('-T-', line), enable_events=True,
+                            size=(min(len(match_text), 90), None))]]
         i += 1
     layout += [[sg.B('Cancel')]]
 
@@ -172,29 +173,18 @@ def settings_window(path, model_path):
     except:
         global_theme = ''
 
-    layout = [[sg.T('Program Settings', font='DEFAULT 25')],
-              [sg.T('Change working path', font='_ 16')],
+    layout = [[sg.T('Settings', font='DEFAULT 25')],
+              [sg.T('Change root directory', font='_ 16')],
               [sg.Combo([path],
                         default_value=path, size=(50, 1),
                         key='-FOLDERNAME-'),
                sg.FolderBrowse('Folder Browse', target='-FOLDERNAME-')],
-              [sg.T('Model path', font='_ 16')],
+              [sg.T('Select model', font='_ 16')],
               [sg.Combo([model_path],
                         default_value=model_path, size=(50, 1),
                         key='-MODELPATH-'),
                sg.FolderBrowse('Folder Browse', target='-MODELPATH-')],
-
-              [sg.T('File Explorer Program', font='_ 16')],
-              [sg.T('Leave blank to use global default'), sg.T(global_explorer)],
-              [sg.In(sg.user_settings_get_entry('-explorer program-'), k='-EXPLORER PROGRAM-'), sg.FileBrowse()],
-              [sg.T('Theme', font='_ 16')],
-              [sg.T('Leave blank to use global default'), sg.T(global_theme)],
-              [sg.Combo([''] + sg.theme_list(), sg.user_settings_get_entry('-theme-', ''), readonly=True, k='-THEME-')],
-              [sg.T('Double-click a File Will:'), sg.R('Run', 2, sg.user_settings_get_entry('-dclick runs-', False), k='-DCLICK RUNS-'),
-               sg.R('Edit', 2, sg.user_settings_get_entry('-dclick edits-', False), k='-DCLICK EDITS-'),
-               sg.R('Nothing', 2, sg.user_settings_get_entry('-dclick none-', False), k='-DCLICK NONE-')],
-              [sg.CB('Use Advanced Interface', default=advanced_mode(), k='-ADVANCED MODE-')],
-              [sg.B('Ok', bind_return_key=True), sg.B('Cancel')],
+              [sg.B('Ok', bind_return_key=True), sg.B('Cancel')]
               ]
 
     window = sg.Window('Settings', layout)
@@ -206,7 +196,7 @@ def settings_window(path, model_path):
         if event in ('Cancel', sg.WIN_CLOSED):
             break
         if event == 'Ok':
-            sg.user_settings_set_entry('-theme-', values['-THEME-'])
+            # sg.user_settings_set_entry('-theme-', values['-THEME-'])
             if path != values['-FOLDERNAME-']:
                 settings_changed = True
             break
@@ -231,18 +221,30 @@ def make_window(treedata, starting_path=''):
     sg.theme(theme)
     # First the window layout...2 columns
 
-    cutoff_tooltip = "Minimum number of h2b trajectory (default=5)."
-    save_tooltip = "Current save directory of report file"
+    cutoff_tooltip = "Minimum number of trajectory for a single h2b(default=10)."
+    save_tooltip = "Save directory of report files"
 
     left_col = sg.Column([
-        [sg.Tree(data=treedata, headings=[], auto_size_columns=True, num_rows=40, col0_width=80, vertical_scroll_only=False,
+        [sg.Tree(data=treedata, headings=[], auto_size_columns=True, num_rows=40, col0_width=80,
+                 vertical_scroll_only=False,
                  key='-DEMO LIST-', show_expanded=False, font=("Arial", 13))],
-        [sg.Text('Cutoff:', tooltip=cutoff_tooltip), sg.Input(size=(10, 1), focus=True, enable_events=True, key='-CUTOFF-', tooltip=cutoff_tooltip)
+        [sg.Text('Cutoff:', tooltip=cutoff_tooltip),
+         sg.Input(size=(10, 1), focus=True, enable_events=True, key='-CUTOFF-', tooltip=cutoff_tooltip),
+         sg.CB('Separated report', default=True, enable_events=True, k='-SEPARATE-',
+               tooltip='Generate a report file for each trajectory file,'
+                       ' Uncheck this box if you want to generate all data into a single report.'),
+         sg.CB('Make image', default=True, enable_events=True, k='-MAKEIMAGE-',
+               tooltip='Make nucleus trajectory map.'
+                       ' if separated report is checked, image will be created for each report.')
          ],
-        [sg.Button('Run'), sg.Button('Stop'), sg.Button('Continue'), sg.Button('Kill')],
+        [sg.Button('Run'),
+         # sg.Button('Stop'),
+         # sg.Button('Continue'),
+         sg.Button('Kill')
+         ],
         [sg.Text('Save folder:', tooltip=save_tooltip),
-         sg.Text(size=(80,1), key='-REPORTPATH-'), sg.Button('Browse', tooltip=save_tooltip),
-         sg.CB('Seperate report', enable_events=True, k='-SEPERATE-', tooltip='Generate a report file for each trajectory file')]],
+         sg.Text(size=(95, 1), key='-REPORTPATH-'), sg.Button('Browse', tooltip=save_tooltip),
+         ]],
         element_justification='l', expand_x=True, expand_y=True)
 
     right_col = [
@@ -253,24 +255,30 @@ def make_window(treedata, starting_path=''):
         [sg.T('Python ver ' + sys.version, font='Default 8', pad=(0, 0))],
         [sg.T('Interpreter ' + sg.execute_py_get_interpreter(), font='Default 8', pad=(0, 0))],
     ]
-
+    """
     options_at_bottom = sg.pin(sg.Column([[sg.CB('Evaluation mode', default=False, enable_events=True, k='-EVALMODE-'),
                                            sg.CB('Show ALL file types', default=False, enable_events=True, k='-SHOW ALL FILES-')]],
                                          pad=(0, 0), k='-OPTIONS BOTTOM-', expand_x=True, expand_y=False), expand_x=True, expand_y=False)
+    """
 
     choose_folder_at_top = sg.pin(sg.Column([[sg.T('Current working directory'),
-                                              sg.Combo(sorted(sg.user_settings_get_entry('-folder names-', [])), default_value=starting_path,
-                                                       size=(70, 30), key='-FOLDERNAME-', enable_events=True, readonly=True)]], pad=(0, 0), k='-FOLDER CHOOSE-'))
+                                              sg.Combo(sorted(sg.user_settings_get_entry('-folder names-', [])),
+                                                       default_value=starting_path,
+                                                       size=(70, 30), key='-FOLDERNAME-', enable_events=True,
+                                                       readonly=True)]], pad=(0, 0), k='-FOLDER CHOOSE-'))
     # ----- Full layout -----
     layout = [[sg.Text('H2B Trajectory Classifier', font='Any 20')],
               [choose_folder_at_top],
               [sg.Pane([sg.Column([[left_col]], element_justification='l', expand_x=True, expand_y=True),
-                        sg.Column(right_col, element_justification='c', expand_x=True, expand_y=True)], orientation='h', relief=sg.RELIEF_SUNKEN, expand_x=True, expand_y=True,
+                        sg.Column(right_col, element_justification='c', expand_x=True, expand_y=True)], orientation='h',
+                       relief=sg.RELIEF_SUNKEN, expand_x=True, expand_y=True,
                        k='-PANE-')],
-              [options_at_bottom, sg.Sizegrip()]]
+              [  # options_at_bottom,
+                  sg.Sizegrip()]]
 
     # --------------------------------- Create Window ---------------------------------
-    window = sg.Window('H2B Trajectory Classifier', layout, finalize=True, resizable=True, use_default_focus=False, right_click_menu=sg.MENU_RIGHT_CLICK_EDITME_VER_EXIT)
+    window = sg.Window('H2B Trajectory Classifier', layout, finalize=True, resizable=True, use_default_focus=False,
+                       right_click_menu=sg.MENU_RIGHT_CLICK_EDITME_VER_EXIT)
     window.set_min_size(window.size)
     window.bind('<F1>', '-FOCUS FILTER-')
     window.bind('<F2>', '-FOCUS FIND-')
@@ -286,6 +294,23 @@ def make_window(treedata, starting_path=''):
 def run_command(cmd):
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return process
+
+
+def model_check(model_path) -> bool:
+    try:
+        isVariables = os.path.isfile(f'{model_path}/variables/variables.data-00000-of-00001')
+        isVarIndex = os.path.isfile(f'{model_path}/variables/variables.index')
+        isModel = os.path.isfile(f'{model_path}/saved_model.pb')
+        if isVariables and isVarIndex and isModel:
+            return True
+        else:
+            sg.cprint(f'Problems on the model, please recheck the model',
+                      text_color='white', background_color='red')
+            return False
+    except:
+        sg.cprint(f'Problems on the model, please recheck the model',
+                  text_color='white', background_color='red')
+        return False
 
 
 # --------------------------------- Main Program Layout ---------------------------------
@@ -310,14 +335,15 @@ def main():
 
     STARTING_PATH = sg.PopupGetFolder('Choose working directory')
     reloaded_dir = STARTING_PATH
-    model_dir = f'{get_gui_path()}/model'
+    model_dir = f'{get_gui_path()}/model/model_h2b'
     treedata = sg.TreeData()
     add_files_in_folder(treedata, '', STARTING_PATH)
     window = make_window(treedata, STARTING_PATH)
     window.force_focus()
-    save_dir = get_gui_path()
+    save_dir = STARTING_PATH
     window['-REPORTPATH-'].update(save_dir)
-    window['-CUTOFF-'].update('5')
+    window['-CUTOFF-'].update('10')
+    data_list = []
     proc = 0
     stop_status = 0
     while True:
@@ -331,7 +357,6 @@ def main():
                     for fichier in file_run_list:
                         sg.cprint(fichier, text_color='white', background_color='purple')
                     sg.cprint(f'Processing is finished', text_color='white', background_color='red')
-                    sg.cprint(f'Subprocess killed : {proc}')
                     for out in iter(proc.stdout.readline, b''):
                         out = str(out).strip().split("\'")[1].split('\\n')[0]
                         if out.endswith('%'):
@@ -351,7 +376,7 @@ def main():
                     for fichier in file_run_list:
                         sg.cprint(fichier, text_color='white', background_color='purple')
                     sg.cprint(f'Prediction is running...', text_color='white', background_color='red')
-                    sg.cprint(f'process time : {int(cur_time - start_time)} seconds')
+                    sg.cprint(f'{int(cur_time - start_time)} seconds')
                     window.refresh()
 
                 else:  # Unexpected subprocess termination handling
@@ -377,11 +402,16 @@ def main():
                 proc.kill()
                 proc = 0
                 window.refresh()
+            else:
+                sg.cprint(f'Nu current running process')
 
         elif event == 'Stop':
             sg.cprint(f'Stop prediction', text_color='white', background_color='red')
-            proc.send_signal(signal.SIGSTOP)
-            stop_status = 1
+            if isinstance(proc, int):
+                sg.cprint(f'no current running prediction')
+            else:
+                proc.send_signal(signal.SIGSTOP)
+                stop_status = 1
 
         elif event == 'Continue':
             if proc != 0:
@@ -396,11 +426,24 @@ def main():
             window['-REPORTPATH-'].update(save_dir)
 
         elif event == 'Run':
-            ## model check
+            #  model check
+            if model_check(model_dir):
+                sg.cprint(f'Selected model:{model_dir}',
+                          text_color='white', background_color='red')
+            else:
+                sg.cprint(f'Current selected model:{model_dir}',
+                          text_color='white', background_color='red')
+                continue
 
+            #  data check
+            for selected_data in values['-DEMO LIST-']:
+                if '.trxyt' in selected_data.split('/')[-1]:
+                    data_list.append(selected_data)
+            if len(data_list) == 0:
+                sg.cprint(f'There is no selected data, choose trxyt files',
+                          text_color='white', background_color='red')
+                continue
 
-
-            ##########
             if proc != 0:
                 sg.cprint(f'Already a prediction is on processing...\n'
                           f'Wait for its end or kill it before starting new one.',
@@ -411,13 +454,17 @@ def main():
             cutoff_val = window['-CUTOFF-'].get().strip()
             if len(cutoff_val) == 0:
                 cutoff_val = '5'
-            if window['-SEPERATE-'].get():
+            if window['-SEPARATE-'].get():
                 all_val = 'False'
             else:
                 all_val = 'True'
+            if window['-MAKEIMAGE-'].get():
+                makeimage = 'True'
+            else:
+                makeimage = 'False'
 
             file_run_list = []
-            for file in values['-DEMO LIST-']:
+            for file in data_list:
                 file_run_list.append(file)
             with open('config.txt', 'w') as f:
                 input_str = ''
@@ -429,6 +476,7 @@ def main():
                 input_str += f'model_dir = {model_dir}\n'
                 input_str += f'cut_off = {cutoff_val}\n'
                 input_str += f'all = {all_val}\n'
+                input_str += f'makeImage = {makeimage}\n'
 
                 input_str += '\n'
                 input_str += 'immobile_cutoff = 5\n'
@@ -444,19 +492,17 @@ def main():
                 sg.cprint(fichier, text_color='white', background_color='purple')
             try:
                 # Subprocess calling
-                if window['-EVALMODE-'].get():
-                    proc = run_command(['python3', 'Evaluation_main.py'])
-                else:
-                    proc = run_command(['python3', 'HTCclassifier.py'])
+                proc = run_command(['python3', 'HTCclassifier.py'])
                 start_time = time.time()
 
             except Exception as e:
                 sg.cprint(f'Error trying to run file.  Error info:', e, c='white on red')
             try:
                 sg.cprint(f'Prediction is running...', text_color='white', background_color='red')
-                sg.cprint(f'Subprocess created : {proc}')
+                #sg.cprint(f'Subprocess created : {proc}')
             except AttributeError:
-                sg.cprint('Your version of PySimpleGUI needs to be upgraded to fully use the "WAIT" feature.', c='white on red')
+                sg.cprint('Your version of PySimpleGUI needs to be upgraded to fully use the "WAIT" feature.',
+                          c='white on red')
 
         elif event == 'Settings':
             set_changed, reloaded_dir, model_dir = settings_window(reloaded_dir, model_dir)

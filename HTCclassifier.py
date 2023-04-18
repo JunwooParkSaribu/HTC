@@ -69,4 +69,4 @@ if __name__ == '__main__':
                   nChannel=params['nChannel'], batch_size=params['batch_size'])
     reports = DataSave.save_report(full_data, path=params['save_dir'], all=params['all'])
     if params['makeImage']:
-        MakeImage.make_classified_cell_map(reports, params=params, root_path=config_path)
+        MakeImage.make_classified_cell_map(reports, full_data, params=params, root_path=config_path)

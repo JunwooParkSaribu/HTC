@@ -26,7 +26,7 @@ def save_report(full_data, path='', all=False, eval=False) -> list:
         print(histone_names)
         filenames = set()
         for histone in histone_names:
-            filenames.add(histone.split('@')[0])
+            filenames.add(histone.split('\\')[-1].split('@')[0])
 
         for filename in filenames:
             h = {}

@@ -23,6 +23,7 @@ def save_report(full_data, path='', all=False, eval=False) -> list:
 
     if all == False:
         histone_names = list(histones.keys())
+        print(histone_names)
         filenames = set()
         for histone in histone_names:
             filenames.add(histone.split('@')[0])

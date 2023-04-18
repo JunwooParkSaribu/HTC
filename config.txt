@@ -1,7 +1,7 @@
-data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/30s/20220301_H2B Halo_Field6_30s_crop.mldatx_tracked.trxyt
+data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/1_WT-H2BHalo_noIR/zone/20220217_h2b halo_before_irradiation_crop/20220217_h2b halo_cell10_before_irradiation_crop.trxyt
 save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC
 model_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/model/model_h2b
-cut_off = 10
+cut_off = 5
 all = False
 makeImage = True
 

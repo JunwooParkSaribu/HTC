@@ -343,7 +343,7 @@ def main():
     save_dir = STARTING_PATH
     window['-REPORTPATH-'].update(save_dir)
     window['-CUTOFF-'].update('10')
-    data_list = []
+    data_list = set()
     proc = 0
     stop_status = 0
     while True:
@@ -438,7 +438,7 @@ def main():
             #  data check
             for selected_data in values['-DEMO LIST-']:
                 if '.trxyt' in selected_data.split('/')[-1]:
-                    data_list.append(selected_data)
+                    data_list.add(selected_data)
             if len(data_list) == 0:
                 sg.cprint(f'There is no selected data, choose trxyt files',
                           text_color='white', background_color='red')

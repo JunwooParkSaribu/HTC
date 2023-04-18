@@ -355,10 +355,10 @@ def main():
                     window['-ML-'].update('')
                     sg.cprint('Classification on below files...', c='white on green', end='\n')
                     for fichier in file_run_list:
-                        sg.cprint(fichier, text_color='white', background_color='purple')
+                        sg.cprint(fichier.split('\\')[-1].split('/')[-1], text_color='white', background_color='purple')
                     sg.cprint(f'Processing is finished', text_color='white', background_color='red')
                     for out in iter(proc.stdout.readline, b''):
-                        out = str(out).strip().split("\'")[1].split('\\n')[0]
+                        out = str(out).strip().split("\'")[1].split('\\n')[0].split('\r')[0]
                         if out.endswith('%'):
                             continue
                         else:
@@ -374,7 +374,7 @@ def main():
                     window['-ML-'].update('')
                     sg.cprint('Classification on below files...', c='white on green', end='\n')
                     for fichier in file_run_list:
-                        sg.cprint(fichier.split('/')[-1], text_color='white', background_color='purple')
+                        sg.cprint(fichier.split('\\')[-1].split('/')[-1], text_color='white', background_color='purple')
                     sg.cprint(f'Prediction is running...', text_color='white', background_color='red')
                     sg.cprint(f'{int(cur_time - start_time)} seconds')
                     window.refresh()
@@ -489,7 +489,7 @@ def main():
 
             sg.cprint('Classification on below files...', c='white on green', end='\n')
             for fichier in file_run_list:
-                sg.cprint(fichier, text_color='white', background_color='purple')
+                sg.cprint(fichier.split('\\')[-1].split('/')[-1], text_color='white', background_color='purple')
             try:
                 # Subprocess calling
                 proc = run_command(['python3', 'HTCclassifier.py'])

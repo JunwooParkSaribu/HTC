@@ -60,9 +60,10 @@ if __name__ == '__main__':
 
     with device('/cpu:0'):
         full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
+        print("dataload")
         HTC_model = load_model(params['model_dir'], compile=False)
         HTC_model.compile()
-
+        print("model load")
         # Main pipe start.
         main_pipe(full_data, scaled_size=(500, 500), immobile_cutoff=params['immobile_cutoff'],
                   hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],

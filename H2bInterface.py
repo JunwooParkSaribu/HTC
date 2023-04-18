@@ -374,7 +374,7 @@ def main():
                     window['-ML-'].update('')
                     sg.cprint('Classification on below files...', c='white on green', end='\n')
                     for fichier in file_run_list:
-                        sg.cprint(fichier, text_color='white', background_color='purple')
+                        sg.cprint(fichier.split('/')[-1], text_color='white', background_color='purple')
                     sg.cprint(f'Prediction is running...', text_color='white', background_color='red')
                     sg.cprint(f'{int(cur_time - start_time)} seconds')
                     window.refresh()

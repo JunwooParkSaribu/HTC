@@ -157,6 +157,7 @@ def make_classified_cell_map(reports, params, root_path, interpolation=True):
     for data, report in zip(datas, reports):
         new_histones = {}
         for dt in data:
+            print(list(histones.keys()))
             selected_histone = histones[f'{dt["filename"]}@{dt["h2b_id"]}']
             selected_histone.set_predicted_label(dt['predicted_class_id'])
             new_histones[f'{dt["filename"]}@{dt["h2b_id"]}'] = selected_histone.copy()

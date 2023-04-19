@@ -236,7 +236,7 @@ plt.show()
 """
 
 
-
+"""
 histones = DataLoad.file_distrib(paths=['./data/TrainingSample/all_data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM
 selec_histone_list = {}
 
@@ -256,3 +256,4 @@ histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(selec_hist
                                                                      ,correction=True)
 zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
 MakeImage.make_image(selec_histone_list, zoomed_imgs, scaled_size, params['amp'], '.')
+"""

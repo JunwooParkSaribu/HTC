@@ -494,6 +494,7 @@ def main():
                 # Subprocess calling
                 proc = run_command(['./HTCclassifier.exe'])
                 #proc = run_command(['python3', 'HTCclassifier.py'])
+                data_list = set()  # reset data list
                 start_time = time.time()
 
             except Exception as e:

@@ -77,9 +77,9 @@ def save_report(full_data, path='', all=False, eval=False) -> list:
                                          'first_x_position':first_x_pos, 'first_y_position':first_y_pos})
     else:
         if eval == True:
-            write_file_name = f'{path}/eval_all.csv'
+            write_file_name = f'{path}/evaluation_all.csv'
         else:
-            write_file_name = f'{path}/pred_all.csv'
+            write_file_name = f'{path}/prediction_all.csv'
         with open(write_file_name, 'w', newline='') as f:
             report_names.append(write_file_name)
             if eval:

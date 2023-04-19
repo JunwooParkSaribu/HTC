@@ -21,12 +21,12 @@ from label import Labeling
 from sklearn.model_selection import train_test_split
 
 
-
 #DataAnalysis.bootstrapping_mean('./result/before/all.csv', repeat=10000)
 #DataAnalysis.confusion_matrix(['./result/pred1_vs_pred2.csv'])
 #histones = DataLoad.file_distrib(['./data/1_WT-H2BHalo_noIR/whole cells/20220217_h2b halo_before_irradiation_entire_Cell/20220217_h2b halo_cell6_no_ir003.rpt_tracked.trxyt'], cutoff=5)[0][0]
 #ImagePreprocessor.make_gif(histones, '20220217_h2b halo_cell6_no_ir003.rpt_tracked.trxyt', '1846')
 #DataAnalysis.cell_radius_map('./result/20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt.csv', [0])
+
 
 """
 plt.figure()

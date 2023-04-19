@@ -3,7 +3,7 @@ save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC
 model_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/model/model_h2b
 cut_off = 10
 all = False
-makeImage = True
+makeImage = False
 
 immobile_cutoff = 5
 hybrid_cutoff = 12

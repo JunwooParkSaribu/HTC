@@ -140,22 +140,23 @@ def make_image_from_single_report(report: str, option=1, data_path='.', img_save
         recursive_filesearch(data_path, filename, params, h2b_ids, cls, img_save_path, lbs, img_option=option)
 
 
-def make_classified_cell_map(reports, fullh2bs, interpolation=True):
-    search_file_names = set()
-    datas = [DataLoad.read_report(report)[1] for report in reports]
-    for data in datas:
-        for dt in data:
-            search_file_names.add(dt['filename'])
+def make_classified_cell_map(reports, fullh2bs, interpolation=True, make='true'):
+    if make.lower() == 'true' or make == '1':
+        search_file_names = set()
+        datas = [DataLoad.read_report(report)[1] for report in reports]
+        for data in datas:
+            for dt in data:
+                search_file_names.add(dt['filename'])
 
-    histones = {}
-    for hs in fullh2bs:
-        histones |= hs
+        histones = {}
+        for hs in fullh2bs:
+            histones |= hs
 
-    for data, report in zip(datas, reports):
-        new_histones = {}
-        for dt in data:
-            selected_histone = histones[f'{dt["filename"]}@{dt["h2b_id"]}']
-            selected_histone.set_predicted_label(dt['predicted_class_id'])
-            new_histones[f'{dt["filename"]}@{dt["h2b_id"]}'] = selected_histone.copy()
-        ImagePreprocessor.classified_cellmap(histones=new_histones, report_name=report,
-                                             interpolation=interpolation)
+        for data, report in zip(datas, reports):
+            new_histones = {}
+            for dt in data:
+                selected_histone = histones[f'{dt["filename"]}@{dt["h2b_id"]}']
+                selected_histone.set_predicted_label(dt['predicted_class_id'])
+                new_histones[f'{dt["filename"]}@{dt["h2b_id"]}'] = selected_histone.copy()
+            ImagePreprocessor.classified_cellmap(histones=new_histones, report_name=report,
+                                                 interpolation=interpolation)

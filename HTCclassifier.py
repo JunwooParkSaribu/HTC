@@ -68,5 +68,4 @@ if __name__ == '__main__':
                   hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],
                   nChannel=params['nChannel'], batch_size=params['batch_size'])
     reports = DataSave.save_report(full_data, path=params['save_dir'], all=params['all'])
-    if params['makeImage']:
-        MakeImage.make_classified_cell_map(reports, fullh2bs=full_data)
+    MakeImage.make_classified_cell_map(reports, fullh2bs=full_data, make=params['makeImage'])

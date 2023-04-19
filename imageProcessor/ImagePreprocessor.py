@@ -307,9 +307,14 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
                            (histone_first_pos[0] + img_size / 2) / (10 ** amp),
                            (histone_first_pos[1] - img_size / 2) / (10 ** amp),
                            (histone_first_pos[1] + img_size / 2) / (10 ** amp)], label='a')
-    plt.legend(title=ps)
-    plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=600)
-
+    #plt.legend(title=ps)
+    #plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=600)
+    if label=='0':
+        plt.savefig(f'./0/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=600)
+    elif label=='1':
+        plt.savefig(f'./1/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=600)
+    else:
+        plt.savefig(f'./2/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=600)
 
 def make_gif(full_histones, filename, id, immobile_cutoff=5,
              hybrid_cutoff=12, nChannel=3, img_scale=5, amp=2, correction=False):

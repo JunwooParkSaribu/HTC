@@ -38,7 +38,8 @@ def recursive_filesearch(path, filename, params, h2b_ids, cls, img_save_path, lb
                         temp[hist].set_predicted_label(cls[index])
                     if img_option == 1 and len(lbs) != 0:
                         temp[hist].set_manuel_label(lbs[index])
-        ImagePreprocessor.make_channel(temp, immobile_cutoff=3, hybrid_cutoff=8, nChannel=params['nChannel'])
+        ImagePreprocessor.make_channel(temp, immobile_cutoff=params['immobile_cutoff'],
+                                       hybrid_cutoff=params['hybrid_cutoff'], nChannel=params['nChannel'])
         histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(temp, img_scale=10, amp=params['amp']
                                                                               , correction=True)
         zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))

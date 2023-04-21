@@ -1,9 +1,9 @@
-data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/zone/30s/20220301_H2B Halo_Field5_cell2_30s_crop.mldatx_tracked copy.trxyt
-save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC
-model_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/model/model_h2b
-cut_off = 10
+data = ./data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell
+save_dir = ./
+model_dir = ./model/model_h2b
+cut_off = 2
 all = False
-makeImage = False
+makeImage = True
 
 immobile_cutoff = 5
 hybrid_cutoff = 12

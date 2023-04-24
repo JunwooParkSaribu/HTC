@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from fileIO import DataLoad
-from sklearn import metrics
+#from sklearn import metrics
 
 
 def confusion_matrix(report: list | str) -> None:

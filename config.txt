@@ -1,7 +1,7 @@
-data = ./data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell
+data = ./data/1_WT-H2BHalo_noIR/zone/20220301_H2B Halo_Before_Irradiation_Crop/20220301_H2B Halo_Field1_no_IR_crop.mldatx_tracked.trxyt
 save_dir = ./
-model_dir = ./model/model_h2b
-cut_off = 2
+model_dir = ./model/model40
+cut_off = 10
 all = False
 makeImage = True
 

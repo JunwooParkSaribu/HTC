@@ -152,3 +152,16 @@ def calcul_max_radius(histones):
             dist = np.sqrt((first_position[0] - trajectory[0])**2 + (first_position[1] - trajectory[1])**2)
             max_r = max(max_r, dist)
         histones[histone].set_max_radius(max_r)
+
+
+def diff_coef(histones):
+    for histone in histones:
+        trajectories = histones[histone].get_trajectory()
+        times = histones[histone].get_time()
+        coef = []
+        for i in range(1, len(trajectories)):
+            x_disp = trajectories[i][0] - trajectories[i-1][0]
+            y_disp = trajectories[i][1] - trajectories[i-1][1]
+            disp = np.sqrt(x_disp**2 + y_disp**2)
+            coef.append(disp / (4 * (times[i]-times[i-1])))
+        histones[histone].set_diff_coef(coef)

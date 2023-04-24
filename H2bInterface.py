@@ -453,7 +453,7 @@ def main():
             stop_status = 0
             cutoff_val = window['-CUTOFF-'].get().strip()
             if len(cutoff_val) == 0:
-                cutoff_val = '5'
+                cutoff_val = '10'
             if window['-SEPARATE-'].get():
                 all_val = 'False'
             else:
@@ -515,7 +515,7 @@ def main():
                 window = make_window(treedata, reloaded_dir)
                 window.force_focus()
                 window['-REPORTPATH-'].update(save_dir)
-                window['-CUTOFF-'].update('5')
+                window['-CUTOFF-'].update('10')
 
         elif event == '-SHOW ALL FILES-':
             """

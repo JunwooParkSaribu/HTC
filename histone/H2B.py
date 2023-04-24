@@ -10,6 +10,7 @@ class H2B():
         self.predicted_label = None
         self.manuel_label = None
         self.predicted_proba = None
+        self.diff_coef = None
 
     def get_trajectory(self):
         return self.trajectory
@@ -76,6 +77,12 @@ class H2B():
 
     def get_manuel_label(self):
         return self.manuel_label
+
+    def set_diff_coef(self, coef):
+        self.diff_coef = coef
+
+    def get_diff_coef(self):
+        return self.diff_coef
 
     def copy(self):
         copy_h2b = H2B()

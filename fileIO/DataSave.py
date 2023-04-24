@@ -1,5 +1,4 @@
 import csv
-import xlsxwriter
 from analysis.DataAnalysis import ratio_calcul
 
 
@@ -123,6 +122,7 @@ def save_diffcoef(full_data, path='', all=False, exel=False) -> list:
                 ratio_file.close()
 
             if exel:
+                """
                 # Workbook() takes one, non-optional, argument
                 # which is the filename that we want to create.
                 workbook = xlsxwriter.Workbook(write_file_name)
@@ -141,6 +141,7 @@ def save_diffcoef(full_data, path='', all=False, exel=False) -> list:
                         else:
                             worksheet.write('', '', diff_coef)
                 workbook.close()
+                """
 
             else:
                 with open(write_file_name, 'w', newline='') as f:

@@ -1,4 +1,5 @@
 # HTC
 
-![](https://github.com/JunwooParkSaribu/HTC/blob/main/img/interface_image.png)
-![](https://github.com/JunwooParkSaribu/HTC/blob/main/img/cel8_cutoff10_model40.gif)
+![](https://github.com/JunwooParkSaribu/HTC/blob/main/img/h2binterface_image.png)
+![](https://github.com/JunwooParkSaribu/HTC/blob/main/img/cell8_image.png)
+![](https://github.com/JunwooParkSaribu/HTC/blob/main/img/cell9_image.png)

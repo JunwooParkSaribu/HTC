@@ -1,7 +1,7 @@
 # H2B mobility classifier
-<h3>Purpose</h3> 
+<h3>IO</h3> 
 Input : <b>.trxyt</b> [columns(1:h2b id, 2:x position, 3:y position, 4:time)<br>
-Ouput : Classified mobility(3types) of h2b in nucleus.
+Output : Classified mobility(3types) of h2b in nucleus.
 <br>
 <br>
 

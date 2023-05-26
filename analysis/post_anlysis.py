@@ -183,6 +183,8 @@ if __name__ == '__main__':
     plot_list.append('')
     ax2.set_xticklabels(plot_list)
 
+
+
     coef_data = []
     plot_list = ['before', '15s', '30s', '1min', '2min']
     for time in plot_list:
@@ -190,7 +192,7 @@ if __name__ == '__main__':
         for nb in range(len(coefs[time])):
             tmp.extend(coefs[time][nb])
         tmp = np.array(tmp)
-        coef_data.append(tmp * 0.1) # 0.1 for micrometer/millisecond
+        coef_data.append(tmp * 0.1) # 0.01 for centimeter/second
 
     fig, ax1 = plt.subplots(figsize=(10, 8))
     fig.canvas.manager.set_window_title('H2B diff_coef boxplot')
@@ -210,7 +212,7 @@ if __name__ == '__main__':
         axisbelow=True,  # Hide the grid behind plot objects
         title='Change of H2B diffusion coefficient over time',
         xlabel='Time',
-        ylabel='diffusion coefficient (\u03bcm/ms)',
+        ylabel='D (\u03bcm/ms)',
     )
 
     # Now fill the boxes with desired colors

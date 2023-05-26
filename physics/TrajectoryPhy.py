@@ -163,5 +163,5 @@ def diff_coef(histones):
             x_disp = trajectories[i][0] - trajectories[i-1][0]
             y_disp = trajectories[i][1] - trajectories[i-1][1]
             disp = np.sqrt(x_disp**2 + y_disp**2)
-            coef.append(disp / (4 * (times[i]-times[i-1])))
+            coef.append(disp**2 / (4 * (times[i]-times[i-1])))
         histones[histone].set_diff_coef(coef)

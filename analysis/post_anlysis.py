@@ -210,9 +210,9 @@ if __name__ == '__main__':
 
     ax1.set(
         axisbelow=True,  # Hide the grid behind plot objects
-        title='Change of H2B diffusion coefficient over time',
+        title='H2B diffusion coefficient over time',
         xlabel='Time',
-        ylabel='D (\u03bcm/ms)',
+        ylabel='D ($10^{%d}cm^{%d}/s$)' % (-6, 2)
     )
 
     # Now fill the boxes with desired colors
@@ -250,7 +250,7 @@ if __name__ == '__main__':
 
     # Set the axes ranges and axes labels
     ax1.set_xlim(0.5, num_boxes + 0.5)
-    top = 0.75
+    top = 0.1
     bottom = 0
     ax1.set_ylim(bottom, top)
     ax1.set_xticklabels(plot_list, rotation=0, fontsize=10)

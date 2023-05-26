@@ -19,6 +19,20 @@ def read_ratio_file(file):
     return ratio
 
 
+def read_coef_file(file):
+    coef = []
+    with open(file) as f:
+        lines = f.readlines()
+        for line in lines[1:]:  # first line is fieldname
+            try:
+                val = line.strip().split(',')[-1].strip()
+                coef.append(float(val))
+            except Exception as e:
+                print(e)
+                print('Err while reading diff_coef files')
+    return coef
+
+
 def dir_search(path):
     ratio_dict = {}
     diffcoef_dict = {}
@@ -34,7 +48,8 @@ def dir_search(path):
                 ratio = read_ratio_file(f'{root}/{file}')
                 ratio_dict[hint].append(ratio)
             if 'diffcoef.csv' in file:
-                diffcoef_dict[hint].append(file)
+                coef = read_coef_file(f'{root}/{file}')
+                diffcoef_dict[hint].append(coef)
     return ratio_dict, diffcoef_dict
 
 
@@ -45,10 +60,7 @@ if __name__ == '__main__':
         config_path = '.'
 
     path = '/Users/junwoopark/Downloads/h2b_zone'
-    ratio, diffcoef_files = dir_search(path)
-    types = list(ratio.keys())
-    print(diffcoef_files)
-
+    ratio, coefs = dir_search(path)
     plot_list = ['before', '15s', '30s', '1min', '2min']
 
     data = []
@@ -170,5 +182,96 @@ if __name__ == '__main__':
     ax2.set_xticks([0.1, 0.3, 0.5, 0.7, 0.9, 1])
     plot_list.append('')
     ax2.set_xticklabels(plot_list)
+
+    coef_data = []
+    plot_list = ['before', '15s', '30s', '1min', '2min']
+    for time in plot_list:
+        tmp = []
+        for nb in range(len(coefs[time])):
+            tmp.extend(coefs[time][nb])
+        tmp = np.array(tmp)
+        coef_data.append(tmp * 0.1) # 0.1 for micrometer/millisecond
+
+    fig, ax1 = plt.subplots(figsize=(10, 8))
+    fig.canvas.manager.set_window_title('H2B diff_coef boxplot')
+    fig.subplots_adjust(left=0.075, right=0.95, top=0.9, bottom=0.25)
+
+    bp = ax1.boxplot(coef_data, notch=False, sym='', vert=True, whis=1.5)
+    plt.setp(bp['boxes'], color='black')
+    plt.setp(bp['whiskers'], color='black', linestyle='dashdot')
+    plt.setp(bp['fliers'], color='red', marker='+')
+
+    # Add a horizontal grid to the plot, but make it very light in color
+    # so we can use it for reading data values but not be distracting
+    ax1.yaxis.grid(True, linestyle='-', which='major', color='lightgrey',
+                   alpha=0.4)
+
+    ax1.set(
+        axisbelow=True,  # Hide the grid behind plot objects
+        title='Change of H2B diffusion coefficient over time',
+        xlabel='Time',
+        ylabel='diffusion coefficient (\u03bcm/ms)',
+    )
+
+    # Now fill the boxes with desired colors
+    coef_coord = []
+    avgs = []
+    box_colors = ['royalblue']
+    num_boxes = len(coef_data)
+    medians = np.empty(num_boxes)
+    for i in range(num_boxes):
+        box = bp['boxes'][i]
+        box_x = []
+        box_y = []
+        for j in range(5):
+            box_x.append(box.get_xdata()[j])
+            box_y.append(box.get_ydata()[j])
+        box_coords = np.column_stack([box_x, box_y])
+        # Alternate between Dark Khaki and Royal Blue
+        ax1.add_patch(Polygon(box_coords, facecolor=box_colors[i % 1]))
+        # Now draw the median lines back over what we just filled in
+        med = bp['medians'][i]
+        median_x = []
+        median_y = []
+        for j in range(2):
+            median_x.append(med.get_xdata()[j])
+            median_y.append(med.get_ydata()[j])
+            #ax1.plot(median_x, median_y, 'k')
+        medians[i] = median_y[0]
+        # Finally, overplot the sample averages, with horizontal alignment
+        # in the center of each box
+        coef_coord.append(np.average(med.get_xdata()))
+        mean_val = np.mean(coef_data[i])
+        avgs.append(mean_val)
+        ax1.plot(np.average(med.get_xdata()), mean_val,
+                 color='w', marker='.', markeredgecolor='k')
+
+    # Set the axes ranges and axes labels
+    ax1.set_xlim(0.5, num_boxes + 0.5)
+    top = 0.75
+    bottom = 0
+    ax1.set_ylim(bottom, top)
+    ax1.set_xticklabels(plot_list, rotation=0, fontsize=10)
+
+    # Due to the Y-axis scale being different across samples, it can be
+    # hard to compare differences in medians across the samples. Add upper
+    # X-axis tick labels with the sample medians to aid in comparison
+    # (just use two decimal places of precision)
+    pos = np.arange(num_boxes) + 1
+    upper_labels = [str(round(s, 3)) for s in avgs]
+    weights = ['bold', 'semibold', 'bold']
+    for tick, label in zip(range(num_boxes), ax1.get_xticklabels()):
+        k = tick % 1
+        ax1.text(pos[tick], .95, upper_labels[tick],
+                 transform=ax1.get_xaxis_transform(),
+                 horizontalalignment='center', size='x-small',
+                 weight=weights[k], color=box_colors[k])
+
+    coef_line = []
+    for i in range(len(coef_data)):
+        coef_line.append([i, np.average(coef_data[i])])
+    coef_line = np.array(coef_line)
+
+    plt.plot(coef_coord, coef_line[:, 1], color=box_colors[0], alpha=0.5)
 
     plt.show()

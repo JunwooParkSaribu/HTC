@@ -62,8 +62,12 @@ if __name__ == '__main__':
 
     path = '/Users/junwoopark/Downloads/h2b_zone'
     ratio, coefs = dir_search(path)
-    plot_list = ['before', '15s', '30s', '1min', '2min']
 
+
+
+    """
+    
+    plot_list = ['before', '15s', '30s', '1min', '2min']
     data = []
     for time in plot_list:
         immobile = np.array(ratio[time])[:, 0]
@@ -532,4 +536,90 @@ if __name__ == '__main__':
         coef_line.append([i, np.average(coef_data[i])])
     coef_line = np.array(coef_line)
     plt.plot(coef_coord, coef_line[:, 1], color=box_colors[0], alpha=0.5)
+
+    """
+
+    ###### MERGED INTO ONE FILE VERSION (CUTOFF = 8)######
+    plot_list = ['before', '15s', '30s', '1min', '2min']
+
+    data = [0.8308571428571428, 0.10228571428571429, 0.06685714285714285,
+            0.7718120805369127, 0.15268456375838926, 0.07550335570469799,
+            0.7561349693251533, 0.16411042944785276, 0.07975460122699386,
+            0.76, 0.14666666666666667, 0.09333333333333334,
+            0.7722132471728594, 0.14378029079159935, 0.0840064620355412]
+
+    new_data = []
+    immobile_tmp = []
+    hybrid_tmp = []
+    mobile_tmp = []
+    for i, dt in enumerate(data):
+        if i % 3 == 0:
+            immobile_tmp.append(dt)
+        elif i % 3 == 1:
+            hybrid_tmp.append(dt)
+        else:
+            mobile_tmp.append(dt)
+    new_data.append(immobile_tmp)
+    new_data.append(hybrid_tmp)
+    new_data.append(mobile_tmp)
+    new_data = np.array(new_data)
+
+    fig, ax1 = plt.subplots(figsize=(10, 8))
+    fig.canvas.manager.set_window_title('H2B class ratio bar')
+    fig.subplots_adjust(left=0.075, right=0.95, top=0.9, bottom=0.25)
+
+    # Add a horizontal grid to the plot, but make it very light in color
+    # so we can use it for reading data values but not be distracting
+    ax1.yaxis.grid(True, linestyle='-', which='major', color='lightgrey',
+                   alpha=0.4)
+
+    ax1.set(
+        axisbelow=True,  # Hide the grid behind plot objects
+        title='Change of H2B type over time',
+        xlabel='Time',
+        ylabel='Percentage',
+    )
+
+    # Now fill the boxes with desired colors
+    box_colors = ['red', 'green', 'royalblue']
+
+    X = np.arange(5)
+    ax1.bar(X + 0.00, new_data[0], color='red', width=0.23, label='immobile', alpha=0.75)
+    ax1.bar(X + 0.25, new_data[1], color='green', width=0.23, label='hybrid', alpha=0.75)
+    ax1.bar(X + 0.50, new_data[2], color='royalblue', width=0.23, label='mobile', alpha=0.75)
+    x_coord = np.array([0.25, 1.25, 2.25, 3.25, 4.25])
+    top = 1
+    bottom = 0
+    ax1.set_ylim(bottom, top)
+    ax1.set_xticks(x_coord, plot_list)
+    ax1.legend(loc='center right')
+    ax1.plot(x_coord-.25, immobile_tmp, color='red', alpha=0.8)
+    ax1.plot(x_coord, hybrid_tmp, color='green', alpha=0.8)
+    ax1.plot(x_coord+.25, mobile_tmp, color='royalblue', alpha=0.8)
+
+    ax1.scatter(x_coord-.25, immobile_tmp, color='red', alpha=0.8, s=8)
+    ax1.scatter(x_coord, hybrid_tmp, color='green', alpha=0.8, s=8)
+    ax1.scatter(x_coord+.25, mobile_tmp, color='royalblue', alpha=0.8, s=8)
+
+    pos = np.arange(15) + 1
+    upper_labels = np.array([str(round(s, 3)) for s in data])
+    weights = ['bold', 'semibold', 'bold']
+    for i, x_pos in enumerate((x_coord-.25)):
+        val = upper_labels[int(i * 3)]
+        ax1.text(x_pos, .95, val,
+                 transform=ax1.get_xaxis_transform(),
+                 horizontalalignment='center', size='x-small',
+                 color='red')
+    for i, x_pos in enumerate((x_coord)):
+        val = upper_labels[int(i * 3 + 1)]
+        ax1.text(x_pos, .95, val,
+                 transform=ax1.get_xaxis_transform(),
+                 horizontalalignment='center', size='x-small',
+                 color='green')
+    for i, x_pos in enumerate((x_coord+.25)):
+        val = upper_labels[int(i * 3 + 2)]
+        ax1.text(x_pos, .95, val,
+                 transform=ax1.get_xaxis_transform(),
+                 horizontalalignment='center', size='x-small',
+                 color='royalblue')
     plt.show()

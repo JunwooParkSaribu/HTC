@@ -3,6 +3,7 @@ import sys
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 import numpy as np
+import scipy
 
 
 def read_ratio_file(file):
@@ -73,6 +74,15 @@ if __name__ == '__main__':
         data.append(hybrid)
         data.append(mobile)
 
+    print('ttest in each class')
+    for time in range(1, len(plot_list)):
+        print(scipy.stats.ttest_ind(np.array(ratio[plot_list[0]])[:, 0], np.array(ratio[plot_list[time]])[:, 0]))
+        print(scipy.stats.ttest_ind(np.array(ratio[plot_list[0]])[:, 1], np.array(ratio[plot_list[time]])[:, 1]))
+        print(scipy.stats.ttest_ind(np.array(ratio[plot_list[0]])[:, 2], np.array(ratio[plot_list[time]])[:, 2]))
+        print()
+
+
+######## THREE PLOTS #########
     fig, ax1 = plt.subplots(figsize=(10, 8))
     fig.canvas.manager.set_window_title('H2B class boxplot')
     fig.subplots_adjust(left=0.075, right=0.95, top=0.9, bottom=0.25)
@@ -91,7 +101,7 @@ if __name__ == '__main__':
         axisbelow=True,  # Hide the grid behind plot objects
         title='Change of H2B type over time',
         xlabel='Time',
-        ylabel='Value',
+        ylabel='Percentage',
     )
 
     # Now fill the boxes with desired colors
@@ -178,13 +188,256 @@ if __name__ == '__main__':
     plt.plot(mobile_coord, mobile_line[:, 1], color=box_colors[2], alpha=0.5)
 
     ax2 = ax1.twiny()
-
     ax2.set_xticks([0.1, 0.3, 0.5, 0.7, 0.9, 1])
     plot_list.append('')
     ax2.set_xticklabels(plot_list)
 
 
+######## IMMOBILE PLOT #############
+    plot_list = ['before', '15s', '30s', '1min', '2min']
+    fig, ax1 = plt.subplots(figsize=(10, 8))
+    fig.canvas.manager.set_window_title('Immobile boxplot')
+    fig.subplots_adjust(left=0.075, right=0.95, top=0.9, bottom=0.25)
 
+    new_data = []
+    for i in range(15):
+        if i%3==0:
+            new_data.append(data[i])
+    bp = ax1.boxplot(new_data, notch=False, sym='+', vert=True, whis=1.5)
+    plt.setp(bp['boxes'], color='black')
+    plt.setp(bp['whiskers'], color='black', linestyle='dashdot')
+    plt.setp(bp['fliers'], color='red', marker='+')
+
+    # Add a horizontal grid to the plot, but make it very light in color
+    # so we can use it for reading data values but not be distracting
+    ax1.yaxis.grid(True, linestyle='-', which='major', color='lightgrey',
+                   alpha=0.4)
+    ax1.set(
+        axisbelow=True,  # Hide the grid behind plot objects
+        title='Immobile population over time',
+        xlabel='Time',
+        ylabel='Percentage',
+    )
+
+    # Now fill the boxes with desired colors
+    immobile_coord = []
+    avgs = []
+    box_colors = ['red']
+    num_boxes = len(new_data)
+    medians = np.empty(num_boxes)
+    for i in range(num_boxes):
+        box = bp['boxes'][i]
+        box_x = []
+        box_y = []
+        for j in range(5):
+            box_x.append(box.get_xdata()[j])
+            box_y.append(box.get_ydata()[j])
+        box_coords = np.column_stack([box_x, box_y])
+        # Alternate between Dark Khaki and Royal Blue
+        ax1.add_patch(Polygon(box_coords, facecolor=box_colors[i % 1]))
+        # Now draw the median lines back over what we just filled in
+        med = bp['medians'][i]
+        median_x = []
+        median_y = []
+        for j in range(2):
+            median_x.append(med.get_xdata()[j])
+            median_y.append(med.get_ydata()[j])
+            #ax1.plot(median_x, median_y, 'k')
+        medians[i] = median_y[0]
+        # Finally, overplot the sample averages, with horizontal alignment
+        # in the center of each box
+
+        immobile_coord.append(np.average(med.get_xdata()))
+        mean_val = np.mean(new_data[i])
+        avgs.append(mean_val)
+        ax1.plot(np.average(med.get_xdata()), mean_val, color='w', marker='.', markeredgecolor='k')
+
+    # Set the axes ranges and axes labels
+    ax1.set_xlim(0.5, num_boxes + 0.5)
+    top = 1
+    bottom = 0
+    ax1.set_ylim(bottom, top)
+    ax1.set_xticklabels(plot_list, rotation=0, fontsize=10)
+
+    # Due to the Y-axis scale being different across samples, it can be
+    # hard to compare differences in medians across the samples. Add upper
+    # X-axis tick labels with the sample medians to aid in comparison
+    # (just use two decimal places of precision)
+    pos = np.arange(num_boxes) + 1
+    upper_labels = [str(round(s, 3)) for s in avgs]
+    weights = ['bold', 'semibold', 'bold']
+
+    immobile_line = []
+    for i in range(len(data)):
+        if i % 3 == 0:
+            immobile_line.append([i, np.average(data[i])])
+    immobile_line = np.array(immobile_line)
+    plt.plot(immobile_coord, immobile_line[:, 1], color=box_colors[0], alpha=0.5)
+
+
+    ######## HYBRID PLOT #############
+    fig, ax1 = plt.subplots(figsize=(10, 8))
+    fig.canvas.manager.set_window_title('Hybrid boxplot')
+    fig.subplots_adjust(left=0.075, right=0.95, top=0.9, bottom=0.25)
+
+    new_data = []
+    for i in range(15):
+        if i % 3 == 1:
+            new_data.append(data[i])
+    bp = ax1.boxplot(new_data, notch=False, sym='+', vert=True, whis=1.5)
+    plt.setp(bp['boxes'], color='black')
+    plt.setp(bp['whiskers'], color='black', linestyle='dashdot')
+    plt.setp(bp['fliers'], color='red', marker='+')
+
+    # Add a horizontal grid to the plot, but make it very light in color
+    # so we can use it for reading data values but not be distracting
+    ax1.yaxis.grid(True, linestyle='-', which='major', color='lightgrey',
+                   alpha=0.4)
+    ax1.set(
+        axisbelow=True,  # Hide the grid behind plot objects
+        title='Hybrid population over time',
+        xlabel='Time',
+        ylabel='Percentage',
+    )
+
+    # Now fill the boxes with desired colors
+    hybrid_coord = []
+    avgs = []
+    box_colors = ['green']
+    num_boxes = len(new_data)
+    medians = np.empty(num_boxes)
+    for i in range(num_boxes):
+        box = bp['boxes'][i]
+        box_x = []
+        box_y = []
+        for j in range(5):
+            box_x.append(box.get_xdata()[j])
+            box_y.append(box.get_ydata()[j])
+        box_coords = np.column_stack([box_x, box_y])
+        # Alternate between Dark Khaki and Royal Blue
+        ax1.add_patch(Polygon(box_coords, facecolor=box_colors[i % 1]))
+        # Now draw the median lines back over what we just filled in
+        med = bp['medians'][i]
+        median_x = []
+        median_y = []
+        for j in range(2):
+            median_x.append(med.get_xdata()[j])
+            median_y.append(med.get_ydata()[j])
+            # ax1.plot(median_x, median_y, 'k')
+        medians[i] = median_y[0]
+        # Finally, overplot the sample averages, with horizontal alignment
+        # in the center of each box
+
+        hybrid_coord.append(np.average(med.get_xdata()))
+        mean_val = np.mean(new_data[i])
+        avgs.append(mean_val)
+        ax1.plot(np.average(med.get_xdata()), mean_val, color='w', marker='.', markeredgecolor='k')
+
+    # Set the axes ranges and axes labels
+    ax1.set_xlim(0.5, num_boxes + 0.5)
+    top = 1
+    bottom = 0
+    ax1.set_ylim(bottom, top)
+    ax1.set_xticklabels(plot_list, rotation=0, fontsize=10)
+
+    # Due to the Y-axis scale being different across samples, it can be
+    # hard to compare differences in medians across the samples. Add upper
+    # X-axis tick labels with the sample medians to aid in comparison
+    # (just use two decimal places of precision)
+    pos = np.arange(num_boxes) + 1
+    upper_labels = [str(round(s, 3)) for s in avgs]
+    weights = ['bold', 'semibold', 'bold']
+
+    hybrid_line = []
+    for i in range(len(data)):
+        if i % 3 == 1:
+            hybrid_line.append([i, np.average(data[i])])
+    hybrid_line = np.array(hybrid_line)
+    plt.plot(hybrid_coord, hybrid_line[:, 1], color=box_colors[0], alpha=0.5)
+
+
+    ######## MOBILE PLOT #############
+    fig, ax1 = plt.subplots(figsize=(10, 8))
+    fig.canvas.manager.set_window_title('Mobile boxplot')
+    fig.subplots_adjust(left=0.075, right=0.95, top=0.9, bottom=0.25)
+
+    new_data = []
+    for i in range(15):
+        if i % 3 == 2:
+            new_data.append(data[i])
+    bp = ax1.boxplot(new_data, notch=False, sym='+', vert=True, whis=1.5)
+    plt.setp(bp['boxes'], color='black')
+    plt.setp(bp['whiskers'], color='black', linestyle='dashdot')
+    plt.setp(bp['fliers'], color='red', marker='+')
+
+    # Add a horizontal grid to the plot, but make it very light in color
+    # so we can use it for reading data values but not be distracting
+    ax1.yaxis.grid(True, linestyle='-', which='major', color='lightgrey',
+                   alpha=0.4)
+    ax1.set(
+        axisbelow=True,  # Hide the grid behind plot objects
+        title='Mobile population over time',
+        xlabel='Time',
+        ylabel='Percentage',
+    )
+
+    # Now fill the boxes with desired colors
+    mobile_coord = []
+    avgs = []
+    box_colors = ['royalblue']
+    num_boxes = len(new_data)
+    medians = np.empty(num_boxes)
+    for i in range(num_boxes):
+        box = bp['boxes'][i]
+        box_x = []
+        box_y = []
+        for j in range(5):
+            box_x.append(box.get_xdata()[j])
+            box_y.append(box.get_ydata()[j])
+        box_coords = np.column_stack([box_x, box_y])
+        # Alternate between Dark Khaki and Royal Blue
+        ax1.add_patch(Polygon(box_coords, facecolor=box_colors[i % 1]))
+        # Now draw the median lines back over what we just filled in
+        med = bp['medians'][i]
+        median_x = []
+        median_y = []
+        for j in range(2):
+            median_x.append(med.get_xdata()[j])
+            median_y.append(med.get_ydata()[j])
+            # ax1.plot(median_x, median_y, 'k')
+        medians[i] = median_y[0]
+        # Finally, overplot the sample averages, with horizontal alignment
+        # in the center of each box
+
+        mobile_coord.append(np.average(med.get_xdata()))
+        mean_val = np.mean(new_data[i])
+        avgs.append(mean_val)
+        ax1.plot(np.average(med.get_xdata()), mean_val, color='w', marker='.', markeredgecolor='k')
+
+    # Set the axes ranges and axes labels
+    ax1.set_xlim(0.5, num_boxes + 0.5)
+    top = 1
+    bottom = 0
+    ax1.set_ylim(bottom, top)
+    ax1.set_xticklabels(plot_list, rotation=0, fontsize=10)
+
+    # Due to the Y-axis scale being different across samples, it can be
+    # hard to compare differences in medians across the samples. Add upper
+    # X-axis tick labels with the sample medians to aid in comparison
+    # (just use two decimal places of precision)
+    pos = np.arange(num_boxes) + 1
+    upper_labels = [str(round(s, 3)) for s in avgs]
+    weights = ['bold', 'semibold', 'bold']
+
+    mobile_line = []
+    for i in range(len(data)):
+        if i % 3 == 2:
+            mobile_line.append([i, np.average(data[i])])
+    mobile_line = np.array(mobile_line)
+    plt.plot(mobile_coord, mobile_line[:, 1], color=box_colors[0], alpha=0.5)
+
+
+    ######### DIFF COEF PLOT ###########
     coef_data = []
     plot_list = ['before', '15s', '30s', '1min', '2min']
     for time in plot_list:
@@ -193,6 +446,11 @@ if __name__ == '__main__':
             tmp.extend(coefs[time][nb])
         tmp = np.array(tmp)
         coef_data.append(tmp * 0.1) # 0.01 for centimeter/second
+
+    print('ttest of diffusion coefficient')
+    for time in range(1, len(plot_list)):
+        print(scipy.stats.ttest_ind(coef_data[0], coef_data[time]))
+    print()
 
     fig, ax1 = plt.subplots(figsize=(10, 8))
     fig.canvas.manager.set_window_title('H2B diff_coef boxplot')
@@ -273,7 +531,5 @@ if __name__ == '__main__':
     for i in range(len(coef_data)):
         coef_line.append([i, np.average(coef_data[i])])
     coef_line = np.array(coef_line)
-
     plt.plot(coef_coord, coef_line[:, 1], color=box_colors[0], alpha=0.5)
-
     plt.show()

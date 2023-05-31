@@ -445,7 +445,7 @@ if __name__ == '__main__':
         for nb in range(len(coefs[time])):
             tmp.extend(coefs[time][nb])
         tmp = np.array(tmp)
-        coef_data.append(tmp * 0.1) # 0.01 for centimeter/second
+        coef_data.append(tmp * 10)
 
     print('ttest of diffusion coefficient')
     for time in range(1, len(plot_list)):
@@ -456,7 +456,7 @@ if __name__ == '__main__':
     fig.canvas.manager.set_window_title('H2B diff_coef boxplot')
     fig.subplots_adjust(left=0.075, right=0.95, top=0.9, bottom=0.25)
 
-    bp = ax1.boxplot(coef_data, notch=False, sym='', vert=True, whis=1.5)
+    bp = ax1.boxplot(coef_data, notch=False, sym='', vert=True, whis=1.5, widths=0.25)
     plt.setp(bp['boxes'], color='black')
     plt.setp(bp['whiskers'], color='black', linestyle='dashdot')
     plt.setp(bp['fliers'], color='red', marker='+')
@@ -470,7 +470,7 @@ if __name__ == '__main__':
         axisbelow=True,  # Hide the grid behind plot objects
         title='H2B diffusion coefficient over time',
         xlabel='Time',
-        ylabel='D ($10^{%d}cm^{%d}/s$)' % (-6, 2)
+        ylabel='D ($\u03bcm^{%d}/s$)' % (2)
     )
 
     # Now fill the boxes with desired colors
@@ -508,7 +508,7 @@ if __name__ == '__main__':
 
     # Set the axes ranges and axes labels
     ax1.set_xlim(0.5, num_boxes + 0.5)
-    top = 0.1
+    top = 8
     bottom = 0
     ax1.set_ylim(bottom, top)
     ax1.set_xticklabels(plot_list, rotation=0, fontsize=10)
@@ -532,10 +532,11 @@ if __name__ == '__main__':
         coef_line.append([i, np.average(coef_data[i])])
     coef_line = np.array(coef_line)
     plt.plot(coef_coord, coef_line[:, 1], color=box_colors[0], alpha=0.5)
+
+
     plt.show()
-
-
     """
+
     ###### MERGED INTO ONE FILE VERSION (CUTOFF = 8)######
     plot_list = ['before', '15s', '30s', '1min', '2min']
 

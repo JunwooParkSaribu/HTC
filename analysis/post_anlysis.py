@@ -62,10 +62,6 @@ if __name__ == '__main__':
 
     path = '/Users/junwoopark/Downloads/h2b_zone'
     ratio, coefs = dir_search(path)
-
-
-
-    """
     
     plot_list = ['before', '15s', '30s', '1min', '2min']
     data = []
@@ -536,9 +532,10 @@ if __name__ == '__main__':
         coef_line.append([i, np.average(coef_data[i])])
     coef_line = np.array(coef_line)
     plt.plot(coef_coord, coef_line[:, 1], color=box_colors[0], alpha=0.5)
+    plt.show()
+
 
     """
-
     ###### MERGED INTO ONE FILE VERSION (CUTOFF = 8)######
     plot_list = ['before', '15s', '30s', '1min', '2min']
 
@@ -623,3 +620,5 @@ if __name__ == '__main__':
                  horizontalalignment='center', size='x-small',
                  color='royalblue')
     plt.show()
+
+    """

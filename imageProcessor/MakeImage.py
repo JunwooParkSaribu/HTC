@@ -150,8 +150,18 @@ def make_classified_cell_map(reports, fullh2bs, interpolation=True, make='true')
                 search_file_names.add(dt['filename'])
 
         histones = {}
-        for hs in fullh2bs:
-            histones |= hs
+        try:
+            if type(fullh2bs) is list:
+                for hs in fullh2bs:
+                    print(hs)
+                    histones |= hs
+            elif type(fullh2bs) is dict:
+                histones = fullh2bs
+            else:
+                raise Exception
+        except Exception as e:
+            print(e)
+            print('histone container type err')
 
         for data, report in zip(datas, reports):
             new_histones = {}

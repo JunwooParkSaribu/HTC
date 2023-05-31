@@ -7,6 +7,7 @@ from fileIO import DataLoad, DataSave, ReadParam
 from imageProcessor import ImagePreprocessor, ImgGenerator, MakeImage
 from keras.models import load_model
 from tensorflow import device
+from postProcessing import gapStatistic
 
 
 def predict(gen, scaled_size, nChannel, progress_i, progress_total):
@@ -78,5 +79,11 @@ if __name__ == '__main__':
             if h2bs[h2b].get_predicted_label() == 1:
                 hybrids[h2b] = h2bs[h2b].copy()
 
+    reports = DataSave.save_report(hybrids, path=params['save_dir'], all=params['all'])
+    MakeImage.make_classified_cell_map(reports, fullh2bs=hybrids, make=params['makeImage'])
+
+    clusters = gapStatistic.gap_stats(hybrids, nb_reference=100, nb_ref_point=1000)
     for h2b in hybrids:
-        print(hybrids[h2b].get_trajectory())
+        print(clusters[h2b])
+
+

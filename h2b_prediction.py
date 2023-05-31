@@ -82,7 +82,8 @@ if __name__ == '__main__':
     reports = DataSave.save_report(hybrids, path=params['save_dir'], all=params['all'])
     MakeImage.make_classified_cell_map(reports, fullh2bs=hybrids, make=params['makeImage'])
 
-    clusters = gapStatistic.gap_stats(hybrids, nb_reference=100, nb_ref_point=1000)
+    clusters = gapStatistic.gap_stats(hybrids, nb_reference=100, nb_ref_point=10000)
+    print(len(hybrids), len(clusters))
     for h2b in hybrids:
         print(clusters[h2b])
 

@@ -1,4 +1,4 @@
-class H2B():
+class H2B:
     def __init__(self):
         self.trajectory = []
         self.time = []
@@ -97,4 +97,5 @@ class H2B():
         copy_h2b.set_predicted_label(self.get_predicted_label())
         copy_h2b.set_manuel_label(self.get_manuel_label())
         copy_h2b.set_predicted_proba(self.get_predicted_proba())
+        copy_h2b.set_diff_coef(self.diff_coef)
         return copy_h2b

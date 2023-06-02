@@ -153,7 +153,6 @@ def make_classified_cell_map(reports, fullh2bs, interpolation=True, make='true')
         try:
             if type(fullh2bs) is list:
                 for hs in fullh2bs:
-                    print(hs)
                     histones |= hs
             elif type(fullh2bs) is dict:
                 histones = fullh2bs

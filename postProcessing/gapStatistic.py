@@ -5,10 +5,10 @@ from sklearn.cluster import KMeans
 def generate_references(histone, nb, nb_ref_point):
     refs = []
     trajectory = histone.get_trajectory()
-    x_min = np.min(trajectory[:, 0]) - 1.5
-    x_max = np.max(trajectory[:, 0]) + 1.5
-    y_min = np.min(trajectory[:, 1]) - 1.5
-    y_max = np.max(trajectory[:, 1]) + 1.5
+    x_min = np.min(trajectory[:, 0]) - 2.5
+    x_max = np.max(trajectory[:, 0]) + 2.5
+    y_min = np.min(trajectory[:, 1]) - 2.5
+    y_max = np.max(trajectory[:, 1]) + 2.5
 
     for _ in range(nb):
         x_pos = np.random.uniform(x_min, x_max, nb_ref_point).reshape(-1, 1)
@@ -47,7 +47,8 @@ def gap_stats(histones, max_cluster_nb=10, nb_reference=100, nb_ref_point=500):
         max_nbs.append(len(histones[h2b].get_trajectory()))
     max_cluster_nb = min(np.min(max_nbs) - 1, max_cluster_nb)
 
-    for h2b in histones:
+    for h2b_index, h2b in enumerate(histones):
+        print(f'{h2b_index}/{len(histones)} clustering...')
         gaps = []
         sks = []
         refs = generate_references(histones[h2b], nb=nb_reference, nb_ref_point=nb_ref_point)
@@ -80,6 +81,12 @@ def gap_stats(histones, max_cluster_nb=10, nb_reference=100, nb_ref_point=500):
             if gaps[k-1] >= (gaps[k] - sks[k]):
                 optimal_k.append(k)
                 break
+
+            if k == max_cluster_nb-1:
+                print(h2b_index, h2b, k)
+                print(gaps)
+                print(sks)
+                optimal_k.append(k)
 
     for h2b, k in zip(histones, optimal_k):
         traj = histones[h2b].get_trajectory()

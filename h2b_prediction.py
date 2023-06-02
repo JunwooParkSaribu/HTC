@@ -68,9 +68,6 @@ if __name__ == '__main__':
         main_pipe(full_data, scaled_size=(500, 500), immobile_cutoff=params['immobile_cutoff'],
                   hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],
                   nChannel=params['nChannel'], batch_size=params['batch_size'])
-    #reports = DataSave.save_report(full_data, path=params['save_dir'], all=params['all'])
-    #DataSave.save_diffcoef(full_data, path=params['save_dir'], all=params['all'])
-    #MakeImage.make_classified_cell_map(reports, fullh2bs=full_data, make=params['makeImage'])
 
     # collect only hybrid into a single dict
     hybrids = {}
@@ -79,14 +76,17 @@ if __name__ == '__main__':
             if h2bs[h2b].get_predicted_label() == 1:
                 hybrids[h2b] = h2bs[h2b].copy()
 
-    reports = DataSave.save_report(hybrids, path=params['save_dir'], all=params['all'])
-    MakeImage.make_classified_cell_map(reports, fullh2bs=hybrids, make=params['makeImage'])
-
-    clusters = gapStatistic.gap_stats(hybrids, nb_reference=10, nb_ref_point=100)
-    print(len(hybrids), len(clusters))
-    for h2b in hybrids:
-        print(clusters[h2b])
-
+    clusters = gapStatistic.gap_stats(hybrids, nb_reference=50, nb_ref_point=10000)
     networks = h2bNetwork.transform_network(hybrids, clusters)
-    h2bNetwork.explore_net(hybrids, networks)
+    clustered_hybrids = h2bNetwork.explore_net(hybrids, networks, params['cut_off'])
 
+    main_pipe([clustered_hybrids], scaled_size=(500, 500), immobile_cutoff=params['immobile_cutoff'],
+              hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],
+              nChannel=params['nChannel'], batch_size=params['batch_size'])
+
+    reports = DataSave.save_report([clustered_hybrids], path=params['save_dir'], all=params['all'])
+    MakeImage.make_classified_cell_map(reports, fullh2bs=[clustered_hybrids], make=params['makeImage'])
+
+    #reports = DataSave.save_report(full_data, path=params['save_dir'], all=params['all'])
+    #DataSave.save_diffcoef(full_data, path=params['save_dir'], all=params['all'])
+    #MakeImage.make_classified_cell_map(reports, fullh2bs=full_data, make=params['makeImage'])

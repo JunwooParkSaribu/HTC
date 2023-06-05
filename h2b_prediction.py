@@ -76,7 +76,7 @@ if __name__ == '__main__':
             if h2bs[h2b].get_predicted_label() == 1:
                 hybrids[h2b] = h2bs[h2b].copy()
 
-    clusters = gapStatistic.gap_stats(hybrids, nb_reference=50, nb_ref_point=10000)
+    clusters = gapStatistic.gap_stats(hybrids, nb_reference=50, nb_ref_point=200)
     networks = h2bNetwork.transform_network(hybrids, clusters)
     clustered_hybrids = h2bNetwork.explore_net(hybrids, networks, params['cut_off'])
 

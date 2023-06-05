@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, SpectralClustering
 
 
 def generate_references(histone, nb, nb_ref_point):
@@ -58,18 +58,21 @@ def gap_stats(histones, max_cluster_nb=10, nb_reference=100, nb_ref_point=500):
             ref_weights = []
 
             for ref in refs:
-                ref_kmeans = KMeans(nb_cluster, n_init='auto').fit(ref)
-                #ref_weight_sum = cluster_weight_sum(ref, ref_kmeans.labels_, nb_cluster)
-                ref_weight_sum = ref_kmeans.inertia_
+                #ref_kmeans = KMeans(nb_cluster, n_init='auto').fit(ref)
+                #ref_weight_sum = ref_kmeans.inertia_
+                ref_spectral = SpectralClustering(nb_cluster, assign_labels='discretize').fit(ref)
+                ref_weight_sum = cluster_weight_sum(ref, ref_spectral.labels_, nb_cluster)
                 ref_weights.append(np.log(ref_weight_sum))
 
             ref_expectation = np.mean(ref_weights)
             ref_std_dev = np.std(ref_weights)
             sk = np.sqrt((1 + 1/nb_reference) * ref_std_dev)
 
-            kmeans = KMeans(nb_cluster, n_init='auto').fit(real)
-            #weight_sum = cluster_weight_sum(real, kmeans.labels_, nb_cluster)
-            weight_sum = kmeans.inertia_
+            #kmeans = KMeans(nb_cluster, n_init='auto').fit(real)
+            #weight_sum = kmeans.inertia_
+            spectral = SpectralClustering(nb_cluster, assign_labels='discretize').fit(real)
+            weight_sum = cluster_weight_sum(real, spectral.labels_, nb_cluster)
+
             if weight_sum == 0:
                 print('max number of cluster is bigger than min number of total points')
                 raise Exception
@@ -90,7 +93,9 @@ def gap_stats(histones, max_cluster_nb=10, nb_reference=100, nb_ref_point=500):
 
     for h2b, k in zip(histones, optimal_k):
         traj = histones[h2b].get_trajectory()
-        kmeans = KMeans(k, n_init='auto').fit(traj)
-        label = kmeans.labels_
+        #kmeans = KMeans(k, n_init='auto').fit(traj)
+        #label = kmeans.labels_
+        spectral = SpectralClustering(k, assign_labels='discretize').fit(traj)
+        label = spectral.labels_
         histone_clusters[h2b] = label
     return histone_clusters

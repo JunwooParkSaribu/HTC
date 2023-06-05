@@ -16,37 +16,31 @@ def explore_net(histones, networks, cutoff):
         connections = anomalie_detection(network)
 
         merged_group = dict()
+        uniques = set()
         merged_group[network[0][2]] = set()
         merged_group[network[0][2]].add(network[0][2])
-        dummy = []
-        uniques = set()
+        uniques.add(network[0][2])
+
         for conn in connections:
             prev_cluster, next_cluster, anomaly = connections[conn]
             if anomaly == 1:
-                comb = sorted([prev_cluster, next_cluster])
-                if comb not in dummy:
+                if next_cluster not in uniques:
                     merged_group[next_cluster] = set()
                     merged_group[next_cluster].add(next_cluster)
                     uniques.add(next_cluster)
-                    dummy.append(comb)
             else:
                 for cluster_num in merged_group:
-                    if prev_cluster in merged_group[cluster_num] or next_cluster in merged_group[cluster_num]:
-                        main_cluster = cluster_num
-                        if prev_cluster not in uniques:
-                            merged_group[main_cluster].add(prev_cluster)
-                            uniques.add(prev_cluster)
-                        if next_cluster not in uniques:
-                            merged_group[main_cluster].add(next_cluster)
-                            uniques.add(next_cluster)
+                    main_cluster = cluster_num
+                    if prev_cluster not in uniques:
+                        merged_group[main_cluster].add(prev_cluster)
+                        uniques.add(prev_cluster)
+                    if next_cluster not in uniques:
+                        merged_group[main_cluster].add(next_cluster)
+                        uniques.add(next_cluster)
 
         new_networks = dict()
         for cluster_num in merged_group:
             new_networks[cluster_num] = []
-
-        print('h2b id:',h2b)
-        print(merged_group)
-        print(network)
 
         for index, node in enumerate(network):
             x, y, cluster = node

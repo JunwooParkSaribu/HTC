@@ -221,7 +221,7 @@ def make_window(treedata, starting_path=''):
     sg.theme(theme)
     # First the window layout...2 columns
 
-    cutoff_tooltip = "Minimum number of trajectory for a single h2b(default=10)."
+    cutoff_tooltip = "Minimum number of trajectory for a single h2b(default=8)."
     save_tooltip = "Save directory of report files"
 
     left_col = sg.Column([
@@ -342,7 +342,7 @@ def main():
     window.force_focus()
     save_dir = STARTING_PATH
     window['-REPORTPATH-'].update(save_dir)
-    window['-CUTOFF-'].update('10')
+    window['-CUTOFF-'].update('8')
     data_list = set()
     proc = 0
     stop_status = 0
@@ -453,7 +453,7 @@ def main():
             stop_status = 0
             cutoff_val = window['-CUTOFF-'].get().strip()
             if len(cutoff_val) == 0:
-                cutoff_val = '10'
+                cutoff_val = '8'
             if window['-SEPARATE-'].get():
                 all_val = 'False'
             else:
@@ -493,7 +493,8 @@ def main():
             try:
                 # Subprocess calling
                 #proc = run_command(['./HTCclassifier.exe'])
-                proc = run_command(['python3', 'HTCclassifier.py'])
+                #proc = run_command(['python3', 'HTCclassifier.py'])
+                proc = run_command(['python3', 'h2b_prediction.py'])
                 data_list = set()  # reset data list
                 start_time = time.time()
 
@@ -515,7 +516,7 @@ def main():
                 window = make_window(treedata, reloaded_dir)
                 window.force_focus()
                 window['-REPORTPATH-'].update(save_dir)
-                window['-CUTOFF-'].update('10')
+                window['-CUTOFF-'].update('8')
 
         elif event == '-SHOW ALL FILES-':
             """

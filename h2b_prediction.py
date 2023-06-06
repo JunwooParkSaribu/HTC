@@ -7,7 +7,7 @@ from fileIO import DataLoad, DataSave, ReadParam
 from imageProcessor import ImagePreprocessor, ImgGenerator, MakeImage
 from keras.models import load_model
 from tensorflow import device
-from postProcessing import gapStatistic, h2bNetwork
+from postProcessing import gapStatistic, h2bNetwork, dirichletMixtureModel, splitHistones
 
 
 def predict(gen, scaled_size, nChannel, progress_i, progress_total):
@@ -70,13 +70,10 @@ if __name__ == '__main__':
                   nChannel=params['nChannel'], batch_size=params['batch_size'])
 
     # collect only hybrid into a single dict
-    hybrids = {}
-    for h2bs in full_data:
-        for h2b in h2bs:
-            if h2bs[h2b].get_predicted_label() == 1:
-                hybrids[h2b] = h2bs[h2b].copy()
+    hybrids, others = splitHistones.split_hybrid_from_otehrs(full_data)
 
-    clusters = gapStatistic.gap_stats(hybrids, nb_reference=50, nb_ref_point=200)
+    #clusters = gapStatistic.gap_stats(hybrids, nb_reference=100, nb_ref_point=1000)
+    clusters = dirichletMixtureModel.dpgmm_clustering(hybrids)
     networks = h2bNetwork.transform_network(hybrids, clusters)
     clustered_hybrids = h2bNetwork.explore_net(hybrids, networks, params['cut_off'])
 
@@ -84,9 +81,7 @@ if __name__ == '__main__':
               hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],
               nChannel=params['nChannel'], batch_size=params['batch_size'])
 
-    reports = DataSave.save_report([clustered_hybrids], path=params['save_dir'], all=params['all'])
-    MakeImage.make_classified_cell_map(reports, fullh2bs=[clustered_hybrids], make=params['makeImage'])
-
-    #reports = DataSave.save_report(full_data, path=params['save_dir'], all=params['all'])
-    #DataSave.save_diffcoef(full_data, path=params['save_dir'], all=params['all'])
-    #MakeImage.make_classified_cell_map(reports, fullh2bs=full_data, make=params['makeImage'])
+    post_processed_histones = clustered_hybrids | others
+    reports = DataSave.save_report([post_processed_histones], path=params['save_dir'], all=params['all'])
+    DataSave.save_diffcoef([post_processed_histones], path=params['save_dir'], all=params['all'])
+    MakeImage.make_classified_cell_map(reports, fullh2bs=[post_processed_histones], make=params['makeImage'])

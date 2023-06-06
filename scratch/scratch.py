@@ -237,23 +237,16 @@ plt.show()
 
 
 """
-histones = DataLoad.file_distrib(paths=['./data/TrainingSample/all_data'], cutoff=2, group_size=params['group_size'], chunk=False)[0]  # 16GB RAM
-selec_histone_list = {}
-
-lines = []
-with open('./data/TrainingSample/manuel_labels/manuel_label_model38.csv', newline='') as csvfile:
-    reader = csv.DictReader(csvfile)
-    header = reader.fieldnames
-    for row in reader:
-        lines.append(row)
-
-for line in lines:
-    selec_histone_list[f'{line["filename"]}@{line["h2b_id"]}'] = histones[f'{line["filename"]}@{line["h2b_id"]}'].copy()
-    selec_histone_list[f'{line["filename"]}@{line["h2b_id"]}'].set_manuel_label(line["label"])
-
-ImagePreprocessor.make_channel(selec_histone_list, immobile_cutoff=5, hybrid_cutoff=12, nChannel=params['nChannel'])
-histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(selec_histone_list, img_scale=10, amp=params['amp']
+filepath = '/Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/1_WT-H2BHalo_noIR/whole cells/20220217_h2b halo_before_irradiation_entire_Cell/20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt'
+h2b_id = 27
+histones = DataLoad.read_file(filepath, cutoff=0)
+selec_histone = f'20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt@{h2b_id}'
+histone = dict()
+histone[selec_histone] = histones[selec_histone]
+print(histones[selec_histone])
+ImagePreprocessor.make_channel(histone, immobile_cutoff=5, hybrid_cutoff=12, nChannel=params['nChannel'])
+histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(histone, img_scale=10, amp=params['amp']
                                                                      ,correction=True)
-zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(500, 500))
-MakeImage.make_image(selec_histone_list, zoomed_imgs, scaled_size, params['amp'], '.')
+zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(100, 100))
+MakeImage.make_image(histone, zoomed_imgs, scaled_size, params['amp'], f'/Users/junwoopark/Downloads')
 """

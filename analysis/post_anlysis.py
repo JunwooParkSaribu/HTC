@@ -60,7 +60,7 @@ if __name__ == '__main__':
     else:
         config_path = '.'
 
-    path = '/Users/junwoopark/Downloads/h2b_zone'
+    path = '/Users/junwoopark/Downloads/h2b_zone_post'
     ratio, coefs = dir_search(path)
     
     plot_list = ['before', '15s', '30s', '1min', '2min']

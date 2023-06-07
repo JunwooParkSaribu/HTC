@@ -34,7 +34,6 @@ def main_pipe(full_histones, scaled_size=(500, 500), immobile_cutoff=5,
     total_n_histone = 0
     for g in full_histones:
         total_n_histone += len(list(g.keys()))
-    print(f'Total number of histones after cutting off : {total_n_histone}')
     progress_i = 0
     progress_total = int(total_n_histone / params['batch_size']) + 1
     ProgressBar.printProgressBar(progress_i, progress_total)
@@ -60,6 +59,7 @@ if __name__ == '__main__':
     params = ReadParam.read(config_path)
 
     with device('/cpu:0'):
+        print(f'Main processing...', end=' ')
         full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
         HTC_model = load_model(params['model_dir'], compile=False)
         HTC_model.compile()
@@ -68,20 +68,23 @@ if __name__ == '__main__':
         main_pipe(full_data, scaled_size=(500, 500), immobile_cutoff=params['immobile_cutoff'],
                   hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],
                   nChannel=params['nChannel'], batch_size=params['batch_size'])
+        print('End.')
 
-    # collect only hybrid into a single dict
-    hybrids, others = splitHistones.split_hybrid_from_otehrs(full_data)
+        # collect only hybrid into a single dict
+        hybrids, others = splitHistones.split_hybrid_from_otehrs(full_data)
 
-    #clusters = gapStatistic.gap_stats(hybrids, nb_reference=100, nb_ref_point=1000)
-    clusters = dirichletMixtureModel.dpgmm_clustering(hybrids)
-    networks = h2bNetwork.transform_network(hybrids, clusters)
-    clustered_hybrids = h2bNetwork.explore_net(hybrids, networks, params['cut_off'])
+        #clusters = gapStatistic.gap_stats(hybrids, nb_reference=100, nb_ref_point=1000)
+        clusters = dirichletMixtureModel.dpgmm_clustering(hybrids)
+        networks = h2bNetwork.transform_network(hybrids, clusters)
+        clustered_hybrids = h2bNetwork.explore_net(hybrids, networks, params['cut_off'])
+        main_pipe([clustered_hybrids], scaled_size=(500, 500), immobile_cutoff=params['immobile_cutoff'],
+                  hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],
+                  nChannel=params['nChannel'], batch_size=params['batch_size'])
 
-    main_pipe([clustered_hybrids], scaled_size=(500, 500), immobile_cutoff=params['immobile_cutoff'],
-              hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],
-              nChannel=params['nChannel'], batch_size=params['batch_size'])
-
-    post_processed_histones = clustered_hybrids | others
-    reports = DataSave.save_report([post_processed_histones], path=params['save_dir'], all=params['all'])
-    DataSave.save_diffcoef([post_processed_histones], path=params['save_dir'], all=params['all'])
-    MakeImage.make_classified_cell_map(reports, fullh2bs=[post_processed_histones], make=params['makeImage'])
+        print(f'Post processing...', end=' ')
+        post_processed_histones = clustered_hybrids | others
+        reports = DataSave.save_report([post_processed_histones], path=params['save_dir'], all=params['all'])
+        DataSave.save_diffcoef([post_processed_histones], path=params['save_dir'], all=params['all'])
+        MakeImage.make_classified_cell_map(reports, fullh2bs=[post_processed_histones], make=params['makeImage'])
+        print('End.')
+        print(f'Number of histones:{len(post_processed_histones)}, where trajectory length>={params["cut_off"]}')

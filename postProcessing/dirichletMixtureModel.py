@@ -10,7 +10,6 @@ def dpgmm_clustering(histones):
     histone_clusters = {}
 
     for h2b_index, h2b in enumerate(histones):
-        print(f'{h2b_index}/{len(histones)} clustering...')
         pts = histones[h2b].get_trajectory()
         BGM = BayesianGaussianMixture(n_components=5, init_params='k-means++', n_init=10)
         y = BGM.fit_predict(pts)

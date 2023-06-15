@@ -14,7 +14,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         cur_path = sys.argv[1]
     else:
-        cur_path = 'scratch'
+        cur_path = '.'
 
     data_path = f'{cur_path}/data/TrainingSample/all_data'
     model_path = f'{cur_path}/model'
@@ -92,6 +92,7 @@ if __name__ == '__main__':
     plt.legend()
     plt.savefig(f'{model_path}/{model_name}/loss_history.png')
 
+    """
     # automated git push
     try:
         repo = git.Repo(os.getcwd())
@@ -105,3 +106,4 @@ if __name__ == '__main__':
     except Exception as e:
         print('Git upload failed')
         print(e)
+    """

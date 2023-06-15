@@ -1,7 +1,7 @@
 import keras
 import tensorflow as tf
 from tensorflow.keras.layers import Dense, Flatten, BatchNormalization, \
-    Activation, Conv2D, AveragePooling2D, Dropout, ReLU, MaxPool2D
+    Activation, Conv2D, Dropout, ReLU, MaxPool2D
 
 print("TensorFlow version:", tf.__version__)
 
@@ -153,13 +153,15 @@ class HTC(keras.Model):
 
         test_ds = validation_data
         callbacks[0].on_train_begin()
-
+        backend = keras.backend
         train_loss_results = []
         test_loss_results = []
         train_accuracy_results = []
         test_accuracy_results = []
 
         for epoch in range(epochs):
+            if len(callbacks) > 1:
+                callbacks[1].on_epoch_begin(epoch, self, backend)
             # Reset the metrics at the start of the next epoch
             self.train_loss.reset_states()
             self.train_accuracy.reset_states()
@@ -177,29 +179,31 @@ class HTC(keras.Model):
             train_accuracy_results.append(self.train_accuracy.result())
             test_accuracy_results.append(self.test_accuracy.result())
 
-            if verbose == 1:
+            if verbose != 0:
                 print(
                     f'Epoch {epoch + 1 : >3} | '
-                    f'Loss:{self.train_loss.result() : <9.5f} '
-                    f'Accuracy:{self.train_accuracy.result() * 100 : <9.5f} '
-                    f'Test Loss:{self.test_loss.result() : <9.5f} '
-                    f'Test Accuracy:{self.test_accuracy.result() * 100 : <9.5f} ',
+                    f'Training loss:{self.train_loss.result() : <9.5f} '
+                    f'Training accuracy:{self.train_accuracy.result() * 100 : <9.5f} '
+                    f'Validation loss:{self.test_loss.result() : <9.5f} '
+                    f'Validation accuracy:{self.test_accuracy.result() * 100 : <9.5f} ',
                     end=' '
                 )
 
             # Callback
             if trace == 'training_loss':
                 best_weight = callbacks[0].on_epoch_end(
-                    epoch=epoch, weights=self.weights, loss=self.train_loss.result())
+                    epoch=epoch, weights=self.get_weights(), loss=self.train_loss.result())
             elif trace == 'training_test_loss':
                 best_weight = callbacks[0].on_epoch_end(
-                    epoch=epoch, weights=self.weights, loss=self.train_loss.result() + self.test_loss.result())
+                    epoch=epoch, weights=self.get_weights(), loss=self.train_loss.result() + self.test_loss.result())
             else:
                 best_weight = callbacks[0].on_epoch_end(
-                    epoch=epoch, weights=self.weights, loss=self.test_loss.result())
+                    epoch=epoch, weights=self.get_weights(), loss=self.test_loss.result())
             if best_weight is not None:
                 self.set_weights(best_weight)
                 break
+            if len(callbacks) > 1:
+                callbacks[1].on_epoch_end(self, backend)
 
         best_weight = callbacks[0].on_train_end()
         self.set_weights(best_weight)

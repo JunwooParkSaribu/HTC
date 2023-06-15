@@ -2,7 +2,6 @@ import os
 import sys
 import time
 import git
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # Suppress TensorFlow logging (1)
 from imageProcessor import ImagePreprocessor, ImgGenerator
 from fileIO import DataLoad, ReadParam
 from model import ConvModel, Callback
@@ -15,7 +14,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         cur_path = sys.argv[1]
     else:
-        cur_path = '.'
+        cur_path = 'scratch'
 
     data_path = f'{cur_path}/data/TrainingSample/all_data'
     model_path = f'{cur_path}/model'
@@ -75,10 +74,11 @@ if __name__ == '__main__':
     training_model = ConvModel.HTC(end_neurons=3)
     training_model.build(input_shape=(None, gen.get_scaled_size()[0], gen.get_scaled_size()[1], params['nChannel']))
     training_model.summary()
-    training_model.compile()
+    training_model.compile(optimizer=ConvModel.tf.keras.optimizers.Adam(learning_rate=1e-4))
     history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
-                                 callbacks=[Callback.EarlyStoppingAtMinLoss(patience=20)],
-                                 trace='test_loss')
+                                 callbacks=[Callback.EarlyStoppingAtMinLoss(patience=30),
+                                            Callback.LearningRateScheduler()],
+                                 trace='test_loss')  # training_loss, training_test_loss, test_loss
 
     model_name = ReadParam.write_model_info(training_model, model_path, history, len(histones),
                                             f'{time.gmtime().tm_mday}/{time.gmtime().tm_mon}/{time.gmtime().tm_year}, '

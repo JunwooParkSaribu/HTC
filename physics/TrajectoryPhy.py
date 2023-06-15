@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def trjaectory_rotation(histones: dict|list, nb: int) -> dict:
+def trjaectory_rotation(histones, nb: int) -> dict:
     if 360 % nb != 0:
         print('360%nb should be 0')
         raise Exception

@@ -1,7 +1,4 @@
-import os
 import sys
-import time
-import git
 from imageProcessor import ImagePreprocessor, ImgGenerator
 from fileIO import DataLoad, ReadParam
 from model import ConvModel, Callback

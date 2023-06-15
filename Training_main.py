@@ -1,4 +1,5 @@
 import sys
+import time
 from imageProcessor import ImagePreprocessor, ImgGenerator
 from fileIO import DataLoad, ReadParam
 from model import ConvModel, Callback

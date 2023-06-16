@@ -74,7 +74,7 @@ if __name__ == '__main__':
     training_model.summary()
     training_model.compile(optimizer=ConvModel.tf.keras.optimizers.Adam(learning_rate=1e-4))
     history = training_model.fit(train_ds, validation_data=test_ds, epochs=epochs,
-                                 callbacks=[Callback.EarlyStoppingAtMinLoss(patience=30),
+                                 callbacks=[Callback.EarlyStoppingAtMinLoss(patience=40),
                                             Callback.LearningRateScheduler()],
                                  trace='test_loss')  # training_loss, training_test_loss, test_loss
 

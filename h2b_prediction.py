@@ -68,6 +68,7 @@ if __name__ == '__main__':
                   nChannel=params['nChannel'], batch_size=params['batch_size'])
         print('End.')
 
+        print(f'Post processing...', end=' ')
         # collect only hybrid into a single dict
         hybrids, others = splitHistones.split_hybrid_from_otehrs(full_data)
 
@@ -79,7 +80,6 @@ if __name__ == '__main__':
                   hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],
                   nChannel=params['nChannel'], batch_size=params['batch_size'])
 
-        print(f'Post processing...', end=' ')
         post_processed_histones = clustered_hybrids | others
         reports = DataSave.save_report([post_processed_histones], path=params['save_dir'], all=params['all'])
         DataSave.save_diffcoef([post_processed_histones], path=params['save_dir'], all=params['all'])

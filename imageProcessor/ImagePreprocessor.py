@@ -308,7 +308,8 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
                            (histone_first_pos[1] - img_size / 2) / (10 ** amp),
                            (histone_first_pos[1] + img_size / 2) / (10 ** amp)], label='a')
     plt.legend(title=ps)
-    plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=600)
+    if path != 'show':
+        plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=600)
     """
     if label=='0':
         plt.savefig(f'./0/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=600)

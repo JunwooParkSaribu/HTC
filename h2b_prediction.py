@@ -48,9 +48,9 @@ if __name__ == '__main__':
         """
         ###
 
-        print(f'Report saving...', end=' ')
+        print(f'Report saving...')
         post_processed_histones = clustered_hybrids | others
         reports = DataSave.save_report([post_processed_histones], path=params['save_dir'], all=params['all'])
         DataSave.save_diffcoef([post_processed_histones], path=params['save_dir'], all=params['all'])
         MakeImage.make_classified_cell_map(reports, fullh2bs=[post_processed_histones], make=params['makeImage'])
-        print(f'Number of histones:{len(post_processed_histones)} where trajectory length >= {params["cut_off"]}')
+        print(f'Number of histones:{len(post_processed_histones)} where the length of trajectory >= {params["cut_off"]}')

@@ -19,6 +19,14 @@ if __name__ == '__main__':
         full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
         HTC_model = load_model(params['model_dir'], compile=False)
         HTC_model.compile()
+        """
+        sss = {}
+        for xx in full_data:
+            for h2b in xx:
+                if xx[h2b].get_id() == '1750':
+                    sss[h2b] = xx[h2b].copy()
+        full_data = sss
+        """
         main_pipe(HTC_model, full_data, params)
         print('End.')
 

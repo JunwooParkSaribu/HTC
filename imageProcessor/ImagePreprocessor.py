@@ -234,13 +234,16 @@ def make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=3):
 
     for histone in histones:
         temp = []
-        for velocity in histones_velocity[histone]:
-            if velocity < immobile_cutoff:
-                temp.append(0)
-            elif velocity < hybrid_cutoff:
-                temp.append(1)
-            else:
-                temp.append(2)
+        if len(histones_velocity[histone]) == 0:
+            temp.append(0)
+        else:
+            for velocity in histones_velocity[histone]:
+                if velocity < immobile_cutoff:
+                    temp.append(0)
+                elif velocity < hybrid_cutoff:
+                    temp.append(1)
+                else:
+                    temp.append(2)
         histones[histone].set_channel(temp)
         histones[histone].set_channel_size(nChannel)
     del histones_velocity
@@ -263,7 +266,7 @@ def zoom(imgs, size=1000, to_size=(500, 500)):
     return zoomed_imgs, to_size
 
 
-def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
+def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.', x=1):
     ps = ''
     label = h2b.get_manuel_label()
     pred = h2b.get_predicted_label()
@@ -299,6 +302,7 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
             ps += f'Model{str(index + 1)}:{prediction}\n'
         ps += f'Duration:{str(round(h2b.get_time_duration(), 5))}sec'
 
+    plt.figure()
     if histone_first_pos is None:
         plt.imshow(img, cmap='coolwarm', origin='lower', label='a')
     else:
@@ -309,15 +313,7 @@ def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.'):
                            (histone_first_pos[1] + img_size / 2) / (10 ** amp)], label='a')
     plt.legend(title=ps)
     if path != 'show':
-        plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=600)
-    """
-    if label=='0':
-        plt.savefig(f'./0/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=600)
-    elif label=='1':
-        plt.savefig(f'./1/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=600)
-    else:
-        plt.savefig(f'./2/{h2b.get_file_name()}@{h2b.get_id()}.png', dpi=600)
-    """
+        plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}_{x}.png', dpi=600)
 
 
 def make_gif(full_histones, filename, id, immobile_cutoff=5,

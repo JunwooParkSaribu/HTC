@@ -98,8 +98,8 @@ def velocity(histones):
             x_distance = trajectory[trajec_num + 1][0] - trajectory[trajec_num][0]
             y_distance = trajectory[trajec_num + 1][1] - trajectory[trajec_num][1]
             t = time[trajec_num + 1] - time[trajec_num]
-            if t == 0 :
-                print(histone)
+            if t == 0:
+                print('trajectory speed calculation warning:', histone)
             histone_velocity[histone].append(np.sqrt(x_distance**2 + y_distance**2)/t)
     return histone_velocity
 

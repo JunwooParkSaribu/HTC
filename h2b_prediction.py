@@ -15,7 +15,7 @@ if __name__ == '__main__':
     params = ReadParam.read(config_path)
 
     with device('/cpu:0'):
-        print(f'Main processing...', end=' ')
+        print(f'Main processing...')
         full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
         HTC_model = load_model(params['model_dir'], compile=False)
         HTC_model.compile()
@@ -23,24 +23,20 @@ if __name__ == '__main__':
         sss = {}
         for xx in full_data:
             for h2b in xx:
-                if xx[h2b].get_id() == '1750':
+                if xx[h2b].get_id() == '5148':
                     sss[h2b] = xx[h2b].copy()
         full_data = sss
         """
         main_pipe(HTC_model, full_data, params)
-        print('End.')
 
-        print(f'Post processing...', end=' ')
+        print(f'Post processing...')
         hybrids, others = splitHistones.split_hybrid_from_otehrs(full_data)
         clusters = dirichletMixtureModel.dpgmm_clustering(hybrids)
-        print("clustering end")
         labeled_clusters = dirichletMixtureModel.cluster_prediction(HTC_model, hybrids, clusters, params)
-        print("cluster prediction end")
         networks = h2bNetwork.transform_network(hybrids, labeled_clusters)
         clustered_hybrids = h2bNetwork.explore_net(hybrids, networks, params['cut_off'])
-        print("anomaly detection end")
         main_pipe(HTC_model, [clustered_hybrids], params)
-        print('End.')
+
         ###
         """
         ImagePreprocessor.make_channel(clustered_hybrids, immobile_cutoff=5, hybrid_cutoff=12, nChannel=3)

@@ -1,52 +1,10 @@
 import sys
-import numpy as np
-import ProgressBar
+from mainPipe import main_pipe
 from fileIO import DataLoad, DataSave, ReadParam
-from imageProcessor import ImagePreprocessor, ImgGenerator, MakeImage
+from imageProcessor import ImagePreprocessor, MakeImage
 from keras.models import load_model
 from tensorflow import device
-from postProcessing import gapStatistic, h2bNetwork, dirichletMixtureModel, splitHistones
-
-
-def predict(gen, scaled_size, nChannel, progress_i, progress_total):
-    y_predict = []
-    y_predict_proba = []
-
-    for batch_num in range(9999999):
-        batch = next(gen, -1)
-        if batch == -1:
-            break
-        test_X = np.array(batch).reshape((len(batch), scaled_size[0], scaled_size[1], nChannel))
-        result = HTC_model.predict(test_X, verbose=0)
-        y_predict.extend([np.argmax(x) for x in result])
-        y_predict_proba.extend([np.max(x) for x in result])
-        progress_i += 1
-        ProgressBar.printProgressBar(progress_i, progress_total)
-
-        del batch
-    return y_predict, y_predict_proba, progress_i
-
-
-def main_pipe(full_histones, scaled_size=(500, 500), immobile_cutoff=5,
-              hybrid_cutoff=12, amp=2, nChannel=3, batch_size=32):
-    total_n_histone = 0
-    for g in full_histones:
-        total_n_histone += len(list(g.keys()))
-    progress_i = 0
-    progress_total = int(total_n_histone / params['batch_size']) + 1
-    ProgressBar.printProgressBar(progress_i, progress_total)
-
-    for g_num, histones in enumerate(full_histones):
-        key_list = list(histones.keys())
-        ImagePreprocessor.make_channel(histones, immobile_cutoff=immobile_cutoff,
-                                       hybrid_cutoff=hybrid_cutoff, nChannel=nChannel)
-        gen = ImgGenerator.conversion(histones, key_list=key_list, scaled_size=scaled_size,
-                                      batch_size=batch_size, amp=amp, eval=False)
-        batch_y_predict, batch_y_predict_proba, progress_i = predict(gen, scaled_size,
-                                                                     nChannel, progress_i, progress_total)
-        for index, histone in enumerate(key_list):
-            histones[histone].set_predicted_label(batch_y_predict[index])
-            histones[histone].set_predicted_proba(batch_y_predict_proba[index])
+from postProcessing import h2bNetwork, dirichletMixtureModel, splitHistones
 
 
 if __name__ == '__main__':
@@ -61,28 +19,31 @@ if __name__ == '__main__':
         full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
         HTC_model = load_model(params['model_dir'], compile=False)
         HTC_model.compile()
-
-        # Main pipe start.
-        main_pipe(full_data, scaled_size=(500, 500), immobile_cutoff=params['immobile_cutoff'],
-                  hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],
-                  nChannel=params['nChannel'], batch_size=params['batch_size'])
+        main_pipe(HTC_model, full_data, params)
         print('End.')
 
         print(f'Post processing...', end=' ')
-        # collect only hybrid into a single dict
         hybrids, others = splitHistones.split_hybrid_from_otehrs(full_data)
-
-        #clusters = gapStatistic.gap_stats(hybrids, nb_reference=100, nb_ref_point=1000)
         clusters = dirichletMixtureModel.dpgmm_clustering(hybrids)
-        networks = h2bNetwork.transform_network(hybrids, clusters)
+        labeled_clusters = dirichletMixtureModel.cluster_prediction(HTC_model, hybrids, clusters, params)
+        networks = h2bNetwork.transform_network(hybrids, labeled_clusters)
         clustered_hybrids = h2bNetwork.explore_net(hybrids, networks, params['cut_off'])
-        main_pipe([clustered_hybrids], scaled_size=(500, 500), immobile_cutoff=params['immobile_cutoff'],
-                  hybrid_cutoff=params['hybrid_cutoff'], amp=params['amp'],
-                  nChannel=params['nChannel'], batch_size=params['batch_size'])
+        main_pipe(HTC_model, [clustered_hybrids], params)
+        print('End.')
+        ###
+        """
+        ImagePreprocessor.make_channel(clustered_hybrids, immobile_cutoff=5, hybrid_cutoff=12, nChannel=3)
+        histones_imgs, img_size, time_scale = ImagePreprocessor.preprocessing(clustered_hybrids, img_scale=10, amp=2,
+                                                                              correction=True)
+        zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=(300, 300))
+        MakeImage.make_image(clustered_hybrids, zoomed_imgs, scaled_size, 2, '/Users/junwoopark/Downloads/hybrids', x=2)
+        exit(1)
+        """
+        ###
 
+        print(f'Report saving...', end=' ')
         post_processed_histones = clustered_hybrids | others
         reports = DataSave.save_report([post_processed_histones], path=params['save_dir'], all=params['all'])
         DataSave.save_diffcoef([post_processed_histones], path=params['save_dir'], all=params['all'])
         MakeImage.make_classified_cell_map(reports, fullh2bs=[post_processed_histones], make=params['makeImage'])
-        print('End.')
-        print(f'Number of histones:{len(post_processed_histones)}, where trajectory length>={params["cut_off"]}')
+        print(f'Number of histones:{len(post_processed_histones)} where trajectory length >= {params["cut_off"]}')

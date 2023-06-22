@@ -3,6 +3,8 @@ from sklearn.metrics import silhouette_score
 from histone.H2B import H2B
 from mainPipe import main_pipe
 from sklearn.mixture import BayesianGaussianMixture, GaussianMixture
+from imageProcessor import ImagePreprocessor, MakeImage
+import matplotlib.pyplot as plt
 
 
 def dpgmm_clustering(histones):

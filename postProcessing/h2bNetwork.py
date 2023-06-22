@@ -90,13 +90,28 @@ def anomalie_detection(network):
         prev_label = next_label
 
     anomalie_connections = {}
-    if len(crossing) > 0:
-        for connec in crossing:
+    if len(crossing) > 1:
+        prev_index = crossing[0][0]
+        index, prev_cluster, next_cluster, labels = crossing[0]
+        index = crossing[1][0]
+        if (combs[tuple(sorted([prev_cluster, next_cluster]))] > 1 and \
+            labels[0] == 0 and labels[1] == 0) \
+                or (combs[tuple(sorted([prev_cluster, next_cluster]))] > 1 and \
+                    abs(index - prev_index) == 1):
+            anomalie_connections[prev_index] = [prev_cluster, next_cluster, 1]
+        else:
+            anomalie_connections[prev_index] = [prev_cluster, next_cluster, 0]
+
+        for connec in crossing[1:]:
             index, prev_cluster, next_cluster, labels = connec
             ## here change.
-            if combs[tuple(sorted([prev_cluster, next_cluster]))] > 1 and\
-                    labels[0] == 0 and labels[1] == 0:
+            if (combs[tuple(sorted([prev_cluster, next_cluster]))] > 1 and\
+                    labels[0] == 0 and labels[1] == 0)\
+                    or (combs[tuple(sorted([prev_cluster, next_cluster]))] > 1 and\
+                        abs(index-prev_index) == 1):
                 anomalie_connections[index] = [prev_cluster, next_cluster, 1]
             else:
                 anomalie_connections[index] = [prev_cluster, next_cluster, 0]
+            prev_index = index
+
     return anomalie_connections

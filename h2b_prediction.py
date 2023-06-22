@@ -33,9 +33,12 @@ if __name__ == '__main__':
         print(f'Post processing...', end=' ')
         hybrids, others = splitHistones.split_hybrid_from_otehrs(full_data)
         clusters = dirichletMixtureModel.dpgmm_clustering(hybrids)
+        print("clustering end")
         labeled_clusters = dirichletMixtureModel.cluster_prediction(HTC_model, hybrids, clusters, params)
+        print("cluster prediction end")
         networks = h2bNetwork.transform_network(hybrids, labeled_clusters)
         clustered_hybrids = h2bNetwork.explore_net(hybrids, networks, params['cut_off'])
+        print("anomaly detection end")
         main_pipe(HTC_model, [clustered_hybrids], params)
         print('End.')
         ###

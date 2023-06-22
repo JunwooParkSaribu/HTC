@@ -4,7 +4,7 @@ def transform_network(histones, clusters):
         network = []
         traj = histones[h2b].get_trajectory()
         time = histones[h2b].get_time()
-        for (x, y), (cluster,cluster_label), t in zip(traj, clusters[h2b], time):
+        for (x, y), (cluster, cluster_label), t in zip(traj, clusters[h2b], time):
             network.append([x, y, cluster, t, cluster_label])
         networks.append(network)
     return networks
@@ -46,10 +46,14 @@ def explore_net(histones, networks, cutoff):
 
         for index, node in enumerate(network):
             x, y, cluster, t, _ = node
-            print(merged_group, x, y, cluster, t)
-            target_cluster = arrow_reverse(merged_group, target=cluster)
-            new_networks[target_cluster].append([x, y])
-            new_times[target_cluster].append(t)
+            try:
+                target_cluster = arrow_reverse(merged_group, target=cluster)
+                new_networks[target_cluster].append([x, y])
+                new_times[target_cluster].append(t)
+            except:
+                print(merged_group, x, y, cluster, t)
+                print(histones[h2b].get_id())
+                print(connections)
 
         for cluster_num, time in zip(new_networks, new_times):
             if len(new_networks[cluster_num]) >= cutoff:

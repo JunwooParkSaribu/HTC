@@ -3,13 +3,13 @@ from fileIO import DataLoad, ReadParam
 from imageProcessor import ImagePreprocessor
 
 
-def make_image(histones, zoomed_imgs, scaled_size, amp, img_save_path='.'):
+def make_image(histones, zoomed_imgs, scaled_size, amp, img_save_path='.', x=1):
     for histone in histones:
         trajectory = histones[histone].get_trajectory()
         histone_first_pos = [int(trajectory[0][0] * (10 ** amp)),
                              int(trajectory[0][1] * (10 ** amp))]
         ImagePreprocessor.img_save(zoomed_imgs[histone], histones[histone], scaled_size,
-                                   histone_first_pos=histone_first_pos, amp=amp, path=img_save_path)
+                                   histone_first_pos=histone_first_pos, amp=amp, path=img_save_path, x=x)
 
 
 def recursive_filesearch(path, filename, params, h2b_ids, cls, img_save_path, lbs: list | None, img_option=0):

@@ -3,8 +3,9 @@ def transform_network(histones, clusters):
     for h2b in histones:
         network = []
         traj = histones[h2b].get_trajectory()
-        for (x,y), cluster in zip(traj, clusters[h2b]):
-            network.append([x, y, cluster])
+        time = histones[h2b].get_time()
+        for (x, y), (cluster,cluster_label), t in zip(traj, clusters[h2b], time):
+            network.append([x, y, cluster, t, cluster_label])
         networks.append(network)
     return networks
 
@@ -14,7 +15,6 @@ def explore_net(histones, networks, cutoff):
 
     for h2b, network in zip(histones, networks):
         connections = anomalie_detection(network)
-
         merged_group = dict()
         uniques = set()
         merged_group[network[0][2]] = set()
@@ -39,21 +39,25 @@ def explore_net(histones, networks, cutoff):
                         uniques.add(next_cluster)
 
         new_networks = dict()
+        new_times = dict()
         for cluster_num in merged_group:
             new_networks[cluster_num] = []
+            new_times[cluster_num] = []
 
         for index, node in enumerate(network):
-            x, y, cluster = node
+            x, y, cluster, t, _ = node
             target_cluster = arrow_reverse(merged_group, target=cluster)
             new_networks[target_cluster].append([x, y])
+            new_times[target_cluster].append(t)
 
-        for cluster_num in new_networks:
+        for cluster_num, time in zip(new_networks, new_times):
             if len(new_networks[cluster_num]) >= cutoff:
                 new_id = f'{histones[h2b].get_id()}_cluster{cluster_num}'
                 clustered_histones[f'{h2b}_cluster{cluster_num}'] = histones[h2b].copy()
                 clustered_histones[f'{h2b}_cluster{cluster_num}'].set_id(new_id)
                 clustered_histones[f'{h2b}_cluster{cluster_num}'].set_trajectory(new_networks[cluster_num])
                 clustered_histones[f'{h2b}_cluster{cluster_num}'].set_predicted_label(None)  # reset
+                clustered_histones[f'{h2b}_cluster{cluster_num}'].set_time(new_times[time])
     del histones
     return clustered_histones
 
@@ -70,25 +74,29 @@ def arrow_reverse(dict_net, target):
 def anomalie_detection(network):
     crossing = []
     prev_cluster = network[0][2]
+    prev_label = network[0][4]
     combs = {}
     for index, node in enumerate(network):
         next_cluster = node[2]
+        next_label = node[4]
         if prev_cluster != next_cluster:
             if tuple(sorted([prev_cluster, next_cluster])) in combs:
                 combs[tuple(sorted([prev_cluster, next_cluster]))] += 1
             else:
                 combs[tuple(sorted([prev_cluster, next_cluster]))] = 1
-            connect = (index, prev_cluster, next_cluster)
+            connect = (index, prev_cluster, next_cluster, (prev_label, next_label))
             crossing.append(connect)
         prev_cluster = next_cluster
+        prev_label = next_label
 
     anomalie_connections = {}
-    for connec in crossing:
-        index, prev_cluster, next_cluster = connec[0], connec[1], connec[2]
-        if combs[tuple(sorted([prev_cluster, next_cluster]))] > 1:
-            #anomalie_connections.append([index, prev_cluster, next_cluster, 1])
-            anomalie_connections[index] = [prev_cluster, next_cluster, 1]
-        else:
-            #anomalie_connections.append([index, prev_cluster, next_cluster, 0])
-            anomalie_connections[index] = [prev_cluster, next_cluster, 0]
+    if len(crossing) > 0:
+        for connec in crossing:
+            index, prev_cluster, next_cluster, labels = connec
+            ## here change.
+            if combs[tuple(sorted([prev_cluster, next_cluster]))] > 1 and\
+                    labels[0] == 0 and labels[1] == 0:
+                anomalie_connections[index] = [prev_cluster, next_cluster, 1]
+            else:
+                anomalie_connections[index] = [prev_cluster, next_cluster, 0]
     return anomalie_connections

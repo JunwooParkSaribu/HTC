@@ -50,10 +50,14 @@ def explore_net(histones, networks, cutoff):
                 target_cluster = arrow_reverse(merged_group, target=cluster)
                 new_networks[target_cluster].append([x, y])
                 new_times[target_cluster].append(t)
-            except:
+            except Exception as e:
+                print('@@@@@ ERR on network, check anomaly detection @@@@')
                 print(merged_group, x, y, cluster, t)
                 print(histones[h2b].get_id())
                 print(connections)
+                print(e)
+                print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+                exit(1)
 
         for cluster_num, time in zip(new_networks, new_times):
             if len(new_networks[cluster_num]) >= cutoff:
@@ -95,9 +99,10 @@ def anomalie_detection(network):
         prev_label = next_label
 
     anomalie_connections = {}
-    if len(crossing) > 1:
-        prev_index = crossing[0][0]
-        index, prev_cluster, next_cluster, labels = crossing[0]
+    if len(crossing) == 1:
+        anomalie_connections[crossing[0][0]] = [crossing[0][1], crossing[0][2], 0]
+    else:
+        prev_index, prev_cluster, next_cluster, labels = crossing[0]
         index = crossing[1][0]
         if (combs[tuple(sorted([prev_cluster, next_cluster]))] > 1 and \
             labels[0] == 0 and labels[1] == 0) \
@@ -118,5 +123,4 @@ def anomalie_detection(network):
             else:
                 anomalie_connections[index] = [prev_cluster, next_cluster, 0]
             prev_index = index
-
     return anomalie_connections

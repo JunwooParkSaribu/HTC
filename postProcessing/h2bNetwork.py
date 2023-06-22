@@ -101,7 +101,7 @@ def anomalie_detection(network):
     anomalie_connections = {}
     if len(crossing) == 1:
         anomalie_connections[crossing[0][0]] = [crossing[0][1], crossing[0][2], 0]
-    else:
+    elif len(crossing) > 1:
         prev_index, prev_cluster, next_cluster, labels = crossing[0]
         index = crossing[1][0]
         if (combs[tuple(sorted([prev_cluster, next_cluster]))] > 1 and \

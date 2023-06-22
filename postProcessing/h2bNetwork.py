@@ -46,6 +46,7 @@ def explore_net(histones, networks, cutoff):
 
         for index, node in enumerate(network):
             x, y, cluster, t, _ = node
+            print(merged_group, x, y, cluster, t)
             target_cluster = arrow_reverse(merged_group, target=cluster)
             new_networks[target_cluster].append([x, y])
             new_times[target_cluster].append(t)

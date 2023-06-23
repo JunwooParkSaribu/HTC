@@ -1,4 +1,4 @@
-def split_hybrid_from_others(data:dict | list):
+def split_hybrid_from_others(data: dict | list):
     histones = {}
     if type(data) is dict:
         histones = data
@@ -16,3 +16,23 @@ def split_hybrid_from_others(data:dict | list):
         else:
             others[h2b] = histones[h2b].copy()
     return hybrids, others
+
+
+def split_mobile_from_others(data: dict | list):
+    histones = {}
+    if type(data) is dict:
+        histones = data
+    elif type(data) is list:
+        for f in data:
+            histones |= f
+    else:
+        raise Exception
+
+    mobiles = {}
+    others = {}
+    for h2b in histones:
+        if histones[h2b].get_predicted_label() == 2:
+            mobiles[h2b] = histones[h2b].copy()
+        else:
+            others[h2b] = histones[h2b].copy()
+    return mobiles, others

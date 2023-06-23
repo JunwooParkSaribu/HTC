@@ -1,9 +1,9 @@
 import os
 import csv
 import numpy as np
-from physics import TrajectoryPhy
 from histone.H2B import H2B
 from itertools import islice
+from physics import TrajectoryPhy
 
 
 def read_file(file: str, cutoff: int, filetype='trxyt') -> dict:

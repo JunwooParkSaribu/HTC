@@ -1,4 +1,4 @@
-def split_hybrid_from_otehrs(data:dict | list):
+def split_hybrid_from_others(data:dict | list):
     histones = {}
     if type(data) is dict:
         histones = data

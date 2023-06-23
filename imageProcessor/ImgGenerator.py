@@ -1,5 +1,5 @@
-from imageProcessor import ImagePreprocessor
 import numpy as np
+from imageProcessor import ImagePreprocessor
 
 
 class DataGenerator:

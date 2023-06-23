@@ -1,6 +1,6 @@
 import os
-from fileIO import DataLoad, ReadParam
 from imageProcessor import ImagePreprocessor
+from fileIO import DataLoad, ReadParam
 
 
 def make_image(histones, zoomed_imgs, scaled_size, amp, img_save_path='.', x=1):

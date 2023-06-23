@@ -5,6 +5,7 @@ from imageProcessor import ImagePreprocessor, MakeImage
 from keras.models import load_model
 from tensorflow import device
 from postProcessing import h2bNetwork, dirichletMixtureModel, splitHistones
+from analysis import DataAnalysis
 
 
 if __name__ == '__main__':
@@ -28,6 +29,9 @@ if __name__ == '__main__':
         full_data = sss
         """
         main_pipe(HTC_model, full_data, params)
+        mobiles, _ = splitHistones.split_mobile_from_others(full_data)
+        DataAnalysis.hist_trajectory_length(mobiles)
+        exit(1)
 
         print(f'Post processing...')
         hybrids, others = splitHistones.split_hybrid_from_others(full_data)

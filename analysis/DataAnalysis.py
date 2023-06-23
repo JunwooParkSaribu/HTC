@@ -1,4 +1,6 @@
 from fileIO import DataLoad
+from physics import TrajectoryPhy
+import matplotlib.pyplot as plt
 
 
 def ratio_calcul(report):
@@ -15,3 +17,14 @@ def ratio_calcul(report):
         if histone['predicted_class_id'] == '2':
             mobile += 1
     return immobile/total, hybrid/total, mobile/total
+
+
+def hist_trajectory_length(histones):
+    displacements_all = []
+    displacements = TrajectoryPhy.displacement(histones)
+    for h2b in displacements:
+        displacements_all.extend(displacements[h2b])
+    print(len(displacements_all))
+    plt.figure()
+    plt.hist(displacements_all)
+    plt.show()

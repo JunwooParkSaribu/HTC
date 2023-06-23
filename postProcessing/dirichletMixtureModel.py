@@ -1,8 +1,8 @@
 import numpy as np
-from sklearn.metrics import silhouette_score
-from histone.H2B import H2B
 from mainPipe import main_pipe
+from histone.H2B import H2B
 from sklearn.mixture import BayesianGaussianMixture, GaussianMixture
+from sklearn.metrics import silhouette_score
 from imageProcessor import ImagePreprocessor, MakeImage
 import matplotlib.pyplot as plt
 

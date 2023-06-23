@@ -1,12 +1,13 @@
-import keras
 import tensorflow as tf
-from tensorflow.keras.layers import Dense, Flatten, BatchNormalization, \
+import keras
+from keras import Model
+from keras.layers import Dense, Flatten, BatchNormalization, \
     Activation, Conv2D, Dropout, ReLU, MaxPool2D
 
 print("TensorFlow version:", tf.__version__)
 
 
-class HTC(keras.Model):
+class HTC(Model):
     def __init__(self, end_neurons=3, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.loss_object = None

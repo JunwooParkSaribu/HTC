@@ -10,8 +10,8 @@ def predict(model, gen, scaled_size, nChannel):
         batch = next(gen, -1)
         if batch == -1:
             break
-        test_X = np.array(batch).reshape((len(batch), scaled_size[0], scaled_size[1], nChannel))
-        result = model.predict(test_X, verbose=0)
+        test_x = np.array(batch).reshape((len(batch), scaled_size[0], scaled_size[1], nChannel))
+        result = model.predict(test_x, verbose=0)
         y_predict.extend([np.argmax(x) for x in result])
         y_predict_proba.extend([np.max(x) for x in result])
         del batch

@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def trjaectory_rotation(histones, nb: int) -> dict:
+def trajectory_rotation(histones, nb: int) -> dict:
     if 360 % nb != 0:
         print('360%nb should be 0')
         raise Exception
@@ -78,11 +78,11 @@ def displacement(histones):
         displacements[histone] = []
 
     for histone in histones:
-        x_displacement = histones[histone][-1][0] - histones[histone][0][0]
-        y_displacement = histones[histone][-1][1] - histones[histone][0][1]
-        t = histones[histone][-1][2] - histones[histone][0][2]
-        displacements[histone].append(np.sqrt(x_displacement ** 2 + y_displacement ** 2))
-        displacements[histone].append(t)
+        trajectory = histones[histone].get_trajectory()
+        for i in range(1, len(trajectory)):
+            x_displacement = trajectory[i-1][0] - trajectory[i][0]
+            y_displacement = trajectory[i-1][1] - trajectory[i][1]
+            displacements[histone].append(np.sqrt(x_displacement ** 2 + y_displacement ** 2))
     return displacements
 
 

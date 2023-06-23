@@ -1,5 +1,5 @@
 import csv
-from analysis.DataAnalysis import ratio_calcul
+from analysis import DataAnalysis
 
 
 def save_report(full_data, path='', all=False) -> list:
@@ -29,7 +29,7 @@ def save_report(full_data, path='', all=False) -> list:
             with open(write_file_name, 'w', newline='') as f:
                 report_names.append(write_file_name)
                 fieldnames = ['filename', 'h2b_id', 'predicted_class_id', 'predicted_class_name', 'probability',
-                                  'maximum_radius', 'first_x_position', 'first_y_position']
+                              'maximum_radius', 'first_x_position', 'first_y_position']
                 writer = csv.DictWriter(f, fieldnames=fieldnames)
                 writer.writeheader()
 
@@ -117,7 +117,7 @@ def save_diffcoef(full_data, path='', all=False, exel=False) -> list:
 
             with open(f'{path}/{filename}_ratio.txt', 'w', newline='') as ratio_file:
                 report_name = f'{path}/{filename}.csv'
-                ratio = ratio_calcul(report_name)
+                ratio = DataAnalysis.ratio_calcul(report_name)
                 ratio_file.write(f'(immobile:hybrid:mobile):{ratio}\n')
                 ratio_file.close()
 
@@ -163,13 +163,13 @@ def save_diffcoef(full_data, path='', all=False, exel=False) -> list:
         write_file_name = f'{path}/prediction_all_diffcoef.csv'
         with open(f'{path}/prediction_all_ratio.txt', 'w', newline='') as ratio_file:
             report_name = f'{path}/prediction_all.csv'
-            ratio = ratio_calcul(report_name)
+            ratio = DataAnalysis.ratio_calcul(report_name)
             ratio_file.write(f'(immobile:hybrid:mobile):{ratio}\n')
             ratio_file.close()
 
         with open(write_file_name, 'w', newline='') as f:
             report_name = f'{path}/prediction_all.csv'
-            ratio = ratio_calcul(report_name)
+            ratio = DataAnalysis.ratio_calcul(report_name)
             f.write(f'(immobile:hybrid:mobile):{ratio}\n')
 
             fieldnames = ['filename', 'h2b_id', 'diffusion_coef']

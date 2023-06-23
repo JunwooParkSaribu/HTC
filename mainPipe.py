@@ -1,5 +1,4 @@
 import numpy as np
-import ProgressBar
 from imageProcessor import ImagePreprocessor, ImgGenerator
 
 

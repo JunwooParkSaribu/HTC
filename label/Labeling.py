@@ -1,8 +1,8 @@
-from physics import TrajectoryPhy, DataSimulation
-from fileIO import DataLoad
 import numpy as np
-import os
 import csv
+import os
+from physics import TrajectoryPhy
+from fileIO import DataLoad
 
 
 def make_label(histones, radius=0.4, density=0.5) -> []:
@@ -178,6 +178,3 @@ def make_labelreport_from_folders(path):
             filename, h2b_id = key.split('@')
             label = filedict[key]
             writer.writerow({'filename': filename, 'h2b_id': h2b_id, 'label': label})
-
-
-#make_labelreport_from_folders('/Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/TrainingSample/manuel_labels/training_data_model38')

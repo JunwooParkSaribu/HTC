@@ -18,12 +18,12 @@ def dpgmm_clustering(histones):
             silhouette = []
             min_range = min(10, len(pts))
             for k in range(2, min_range):
-                gmm = GaussianMixture(n_components=k, covariance_type='spherical', init_params='kmeans', n_init=10,
+                gmm = GaussianMixture(n_components=k, covariance_type='spherical', init_params='kmeans', n_init=25,
                                       max_iter=100)
                 y = gmm.fit_predict(pts)
                 silhouette.append(silhouette_score(pts, y))
             optimal_k = np.argmax(silhouette)+2
-            gmm = GaussianMixture(n_components=optimal_k, covariance_type='spherical', init_params='kmeans', n_init=10,
+            gmm = GaussianMixture(n_components=optimal_k, covariance_type='spherical', init_params='kmeans', n_init=25,
                                   max_iter=100)
             y = gmm.fit_predict(pts)
         histone_clusters[h2b] = y

@@ -1,6 +1,6 @@
-import imageio
 import numpy as np
-from matplotlib import pyplot as plt
+import imageio
+import matplotlib.pyplot as plt
 from physics import TrajectoryPhy
 
 
@@ -74,77 +74,6 @@ def preprocessing(histones, img_scale=None, amp=2, interpolation=True, correctio
     return imgs, (img_size, img_size), None
 
 
-def preprocessing3D(histones, img_size=None, amplif=3, channel=1, time_scale=500, interpolation=True):
-    channel_vals = 0
-    if img_size is None:
-        img_size = 5 * (10 ** amplif)
-    else:
-        img_size = img_size * (10 ** amplif)
-    central_point = [int(img_size / 2), int(img_size / 2)]
-    imgs = {}
-    for histone in histones:
-        current_xval = central_point[0]
-        current_yval = central_point[1]
-        start_time = int(histones[histone][0][2] * 100)
-        current_time = int(histones[histone][0][2] * 100)
-        if not channel:
-            img = np.zeros((img_size, img_size, time_scale))
-        else:
-            img = np.zeros((img_size, img_size, time_scale, channel))
-        x_shift = central_point[0] - int(histones[histone][0][0] * (10 ** amplif))
-        y_shift = central_point[1] - int(histones[histone][0][1] * (10 ** amplif))
-
-        for trajectory in histones[histone]:
-            x_val = x_shift + int(trajectory[0] * (10 ** amplif))
-            y_val = y_shift + int(trajectory[1] * (10 ** amplif))
-            t_time = int(trajectory[2] * 100)
-            if not interpolation:
-
-                # Forcing the scailing to reduce the memory
-                shifted_time = t_time - current_time
-                scaled_y_val = img_size - y_val
-                if shifted_time >= time_scale:
-                    shifted_time = time_scale - 1
-                if scaled_y_val >= img_size:
-                    scaled_y_val = img_size - 1
-                if scaled_y_val < 0:
-                    scaled_y_val = 0
-                if x_val >= img_size:
-                    x_val = img_size - 1
-                if x_val < 0:
-                    x_val = 0
-
-                if not channel:
-                    img[scaled_y_val][x_val][shifted_time] = 1
-                else:
-                    img[scaled_y_val][x_val][shifted_time][channel_vals] = 1
-            else:
-                interpolate_pos = interpolate3D([current_xval, current_yval, current_time - start_time],
-                                                [x_val, y_val, t_time - start_time])
-                current_xval = x_val
-                current_yval = y_val
-                current_time = t_time
-                for inter_pos in interpolate_pos:
-                    # Forcing the scailing to reduce the memory
-                    if inter_pos[2] >= time_scale:
-                        inter_pos[2] = time_scale - 1
-                    if inter_pos[0] < 0:
-                        inter_pos[0] = 0
-                    if inter_pos[0] >= img_size:
-                        inter_pos[0] = img_size - 1
-                    if img_size - inter_pos[1] < 0:
-                        inter_pos[1] = img_size
-                    if img_size - inter_pos[1] >= img_size:
-                        inter_pos[1] = 1
-
-                    if not channel:
-                        img[img_size - inter_pos[1]][inter_pos[0]][inter_pos[2]] = 1
-                    else:
-                        img[img_size - inter_pos[1]][inter_pos[0]][inter_pos[2]][channel_vals] = 1
-        imgs[histone] = img
-    return imgs, img_size, time_scale
-
-
 def interpolate(current_pos, next_pos):  # 2D interpolation
     pos = []
     current_xval = current_pos[0]
@@ -187,39 +116,6 @@ def interpolate(current_pos, next_pos):  # 2D interpolation
             xval = int((yval - current_yval) / slope) + current_xval
             pos.append([xval, yval])
     pos.append([next_xval, next_yval])
-    return pos
-
-
-def interpolate3D(current_pos, next_pos):  # 3D interpolation
-    pos = []
-    current_xval = current_pos[0]
-    current_yval = current_pos[1]
-    current_time = current_pos[2]
-    next_xval = next_pos[0]
-    next_yval = next_pos[1]
-    next_time = next_pos[2]
-
-    if (next_xval - current_xval) == 0:
-        ## need to add time slope
-        if next_yval < current_yval:
-            for yval in range(current_yval, next_yval, -1):
-                pos.append([next_xval, yval, next_time])  ## this is wrong
-        else:
-            for yval in range(current_yval, next_yval):
-                pos.append([next_xval, yval, next_time])  ## this is wrong
-        return pos
-
-    xy_slope = (next_yval - current_yval) / (next_xval - current_xval)
-    z_slope = np.around(np.linspace(current_time, next_time + 1, num=abs(current_xval - next_xval))).astype(int)
-    if next_xval < current_xval:
-        for xval, time in zip(range(current_xval, next_xval, -1), z_slope):
-            yval = int(xy_slope * (xval - current_xval)) + current_yval
-            pos.append([xval, yval, time])
-    else:
-        for xval, time in zip(range(current_xval, next_xval), z_slope):
-            yval = int(xy_slope * (xval - current_xval)) + current_yval
-            pos.append([xval, yval, time])
-    pos.append([next_xval, next_yval, next_time])
     return pos
 
 

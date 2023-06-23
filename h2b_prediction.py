@@ -30,7 +30,7 @@ if __name__ == '__main__':
         main_pipe(HTC_model, full_data, params)
 
         print(f'Post processing...')
-        hybrids, others = splitHistones.split_hybrid_from_otehrs(full_data)
+        hybrids, others = splitHistones.split_hybrid_from_others(full_data)
         clusters = dirichletMixtureModel.dpgmm_clustering(hybrids)
         labeled_clusters = dirichletMixtureModel.cluster_prediction(HTC_model, hybrids, clusters, params)
         networks = h2bNetwork.transform_network(hybrids, labeled_clusters)

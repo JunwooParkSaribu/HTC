@@ -337,7 +337,7 @@ def main():
 
     STARTING_PATH = sg.PopupGetFolder('Choose working directory')
     reloaded_dir = STARTING_PATH
-    model_dir = f'{get_gui_path()}/model/model_h2b'
+    model_dir = f'{get_gui_path()}/model/model_htc'
     treedata = sg.TreeData()
     add_files_in_folder(treedata, '', STARTING_PATH)
     window = make_window(treedata, STARTING_PATH)

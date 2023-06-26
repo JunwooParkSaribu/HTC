@@ -1,9 +1,10 @@
-data = ./data/1_WT-H2BHalo_noIR/whole cells/20220217_h2b halo_before_irradiation_entire_Cell/20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt
-save_dir = /Users/junwoopark/Downloads/dpgmm_test
-model_dir = ./model/model42
+data = ./sample.trxyt
+save_dir = ./
+model_dir = ./model/model_htc
 cut_off = 8
-all = True
+all = False
 makeImage = True
+postProcessing = True
 
 immobile_cutoff = 5
 hybrid_cutoff = 12

@@ -1,6 +1,6 @@
 import sys
-import sklearn.mixture
-import sklearn.neighbors
+from sklearn.metrics import _pairwise_distances_reduction
+from sklearn.neighbors import _distance_metric
 from mainPipe import main_pipe
 from fileIO import DataLoad, DataSave, ReadParam
 from imageProcessor import MakeImage

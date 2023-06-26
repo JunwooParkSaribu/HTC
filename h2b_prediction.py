@@ -1,4 +1,5 @@
 import sys
+import sklearn.mixture
 from mainPipe import main_pipe
 from fileIO import DataLoad, DataSave, ReadParam
 from imageProcessor import MakeImage

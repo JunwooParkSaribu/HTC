@@ -107,7 +107,8 @@ def anomalie_detection(network):
         if (combs[tuple(sorted([prev_cluster, next_cluster]))] > 1 and \
             labels[0] == 0 and labels[1] == 0) \
                 or (combs[tuple(sorted([prev_cluster, next_cluster]))] > 1 and \
-                    abs(index - prev_index) == 1):
+                    abs(index - prev_index) == 1)\
+                or combs[tuple(sorted([prev_cluster, next_cluster]))] > 2:
             anomalie_connections[prev_index] = [prev_cluster, next_cluster, 1]
         else:
             anomalie_connections[prev_index] = [prev_cluster, next_cluster, 0]
@@ -118,7 +119,8 @@ def anomalie_detection(network):
             if (combs[tuple(sorted([prev_cluster, next_cluster]))] > 1 and\
                     labels[0] == 0 and labels[1] == 0)\
                     or (combs[tuple(sorted([prev_cluster, next_cluster]))] > 1 and\
-                        abs(index-prev_index) == 1):
+                        abs(index-prev_index) == 1)\
+                    or combs[tuple(sorted([prev_cluster, next_cluster]))] > 2:
                 anomalie_connections[index] = [prev_cluster, next_cluster, 1]
             else:
                 anomalie_connections[index] = [prev_cluster, next_cluster, 0]

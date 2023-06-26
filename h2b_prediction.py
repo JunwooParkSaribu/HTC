@@ -1,5 +1,6 @@
 import sys
 import sklearn.mixture
+import sklearn.neighbors
 from mainPipe import main_pipe
 from fileIO import DataLoad, DataSave, ReadParam
 from imageProcessor import MakeImage

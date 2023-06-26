@@ -235,7 +235,9 @@ def make_window(treedata, starting_path=''):
                        ' Uncheck this box if you want to generate all data into a single report.'),
          sg.CB('Make image', default=True, enable_events=True, k='-MAKEIMAGE-',
                tooltip='Make nucleus trajectory map.'
-                       ' if separated report is checked, image will be created for each report.')
+                       ' if separated report is checked, image will be created for each report.'),
+         sg.CB('Post processing', default=True, enable_events=True, k='-POSTPROCESSING-',
+               tooltip='Apply post processing.')
          ],
         [sg.Button('Run'),
          # sg.Button('Stop'),
@@ -462,6 +464,10 @@ def main():
                 makeimage = 'True'
             else:
                 makeimage = 'False'
+            if window['-POSTPROCESSING-'].get():
+                postpro = 'True'
+            else:
+                postpro = 'False'
 
             file_run_list = []
             for file in data_list:
@@ -477,6 +483,7 @@ def main():
                 input_str += f'cut_off = {cutoff_val}\n'
                 input_str += f'all = {all_val}\n'
                 input_str += f'makeImage = {makeimage}\n'
+                input_str += f'postProcessing = {postpro}\n'
 
                 input_str += '\n'
                 input_str += 'immobile_cutoff = 5\n'

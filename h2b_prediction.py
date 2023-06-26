@@ -21,7 +21,7 @@ if __name__ == '__main__':
         HTC_model.compile()
         main_pipe(HTC_model, full_data, params)
 
-        if params['postProcessing']:
+        if params['postProcessing'].lower() == 'true':
             print(f'Post processing...')
             hybrids, others = splitHistones.split_hybrid_from_others(full_data)
             clusters = dirichletMixtureModel.dpgmm_clustering(hybrids)

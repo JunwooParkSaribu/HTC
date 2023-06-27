@@ -7,36 +7,35 @@ from physics import TrajectoryPhy
 
 
 def read_file(file: str, cutoff: int, filetype='trxyt') -> dict:
+    """
+    @params : filename(String), cutoff value(Integer)
+    @return : dictionary of H2B objects(Dict)
+    Read a single trajectory file and return the dictionary.
+    key is consist of filename@id and the value is H2B object.
+    Dict only keeps the histones which have the trajectory length longer than cutoff value.
+    """
     histones = {}
     trajectory = {}
     time = {}
-    label = {}
-    labeled = False
 
+    # Raise an error if the given file extension is not trxyt.
+    if file.strip().split('.')[-1] != filetype:
+        print(f"Wrong file type: {file}")
+        raise Exception
+
+    # Read file and store the trajectory and time information in H2B object
     try:
         with open(file, 'r', encoding="utf-8") as f:
             input = f.read()
         lines = input.strip().split('\n')
-
         file_name = file.strip().split('\\')[-1].split('/')[-1].strip()
         for line in lines:
             temp = line.split('\t')
-            if len(temp) == 5: ## change?
-                labeled = True
 
-            if filetype == 'trxyt':
-                key = file_name + '@' + temp[0].strip()  # filename + h2b_id
-                x_pos = float(temp[1].strip())
-                y_pos = float(temp[2].strip())
-                time_step = float(temp[3].strip())
-            else:
-                key = file_name + '@' + temp[3].strip()  # filename + h2b_id
-                x_pos = float(temp[1].strip()) / 6.25
-                y_pos = float(temp[2].strip()) / 6.25
-                time_step = float(temp[0].strip()) / 100
-
-            if labeled:
-                label[key] = int(temp[4].strip())  # label
+            key = file_name + '@' + temp[0].strip()  # filename + h2b_id
+            x_pos = float(temp[1].strip())
+            y_pos = float(temp[2].strip())
+            time_step = float(temp[3].strip())
 
             if key in trajectory:
                 trajectory[key].append([x_pos, y_pos])
@@ -53,58 +52,54 @@ def read_file(file: str, cutoff: int, filetype='trxyt') -> dict:
                 info = histone.strip().split('@')
                 histones[histone].set_id(info[-1])
                 histones[histone].set_file_name('@'.join(info[:-1]))
-                if labeled:
-                    histones[histone].set_manuel_label(label[histone])
+
         del trajectory
         del time
-        del label
+
         TrajectoryPhy.calcul_max_radius(histones)
         TrajectoryPhy.diff_coef(histones)
         return histones
     except Exception as e:
-        print(f"{file} read err, {e}")
+        print(f"Unexpected error, check the file: {file}")
+        print(e)
 
 
-def file_distrib(paths: list, cutoff=5, group_size=2000, chunk=True) -> list:
+def read_files(paths: list, cutoff=8, group_size=160, chunk=True) -> list:
+    """
+    @params : paths(list, can be directory or multiple trxyt files), cutoff value(Integer),
+              group_size(Integer), chunk(boolean)
+    @return : list of splitted dictionary containing H2B objects
+    Read all trajectory files under the given path (can be multiple trajectory files or a path)
+    If chunk is true, split the data(dictionary) into a list for a group size to control the memory usage.
+    Else, return a list containing a single dictionary.
+    group_size decide the memory size when the trajectory files convert into images.
+    (large group size increase the speed but takes large amount of memory)
+    """
+    histones = {}
+    split_histones = []
+    # If the given path is directory
     if os.path.isdir(paths[0]):
         files = os.listdir(paths[0])
-        histones = {}
         if len(files) > 0:
             for file in files:
                 if 'trxyt' in file:
                     h = read_file(paths[0] + '/' + file, cutoff=cutoff, filetype='trxyt')
                     histones |= h
-                if 'sos' in file:
-                    h = read_file(paths[0] + '/' + file, cutoff=cutoff, filetype='sos')
-                    histones |= h
         if not chunk:
             return [histones]
-        split_histones = []
         for item in chunks(histones, group_size):
             split_histones.append(item)
         return split_histones
+    # If the given path contains multiple files
     else:
-        nb_files = len(paths)
-        if nb_files == 1:
-            h = read_file(paths[0], cutoff=cutoff)
-            if not chunk:
-                return [h]
-            split_histones = []
-            for item in chunks(h, group_size):
-                split_histones.append(item)
-            return split_histones
-        else:
-            files = paths.copy()
-            histones = {}
-            for file in files:
-                h = read_file(file, cutoff=cutoff)
-                histones |= h
-            if not chunk:
-                return [histones]
-            split_histones = []
-            for item in chunks(histones, group_size):
-                split_histones.append(item)
-            return split_histones
+        for file in paths:
+            h = read_file(file, cutoff=cutoff)
+            histones |= h
+        if not chunk:
+            return [histones]
+        for item in chunks(histones, group_size):
+            split_histones.append(item)
+        return split_histones
 
 
 def chunks(data, size):
@@ -113,7 +108,12 @@ def chunks(data, size):
         yield {k: data[k] for k in islice(it, size)}
 
 
-def read_report(file):
+def read_report(file: str):
+    """
+    @params : filename(String)
+    @return : header(dict), lines(dict)
+    Read a report file(csv), return the header and lines
+    """
     lines = []
     with open(file, newline='') as csvfile:
         reader = csv.DictReader(csvfile)

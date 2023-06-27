@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     with device('/cpu:0'):
         print(f'Main processing...')
-        full_data = DataLoad.file_distrib(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
+        full_data = DataLoad.read_files(paths=params['data'], cutoff=params['cut_off'], group_size=params['group_size'])
         HTC_model = load_model(params['model_dir'], compile=False)
         HTC_model.compile()
         main_pipe(HTC_model, full_data, params)

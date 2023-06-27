@@ -54,9 +54,12 @@ def dir_search(path):
 
 
 if __name__ == '__main__':
-    path = '/Users/junwoopark/Downloads/a'
+    # Must change the backslash(\) to slash(/) or double backlash(\\) on WindowsOS
+    path = "/Users/junwoopark/Downloads/zone_results"
+
+    path = path.replace('\\', '/')
     # Element names of plot_list must be same as the folder names
-    plot_list = ['before', '1min', '2min']
+    plot_list = ['before', '30s', '1min', '2min']
     box_colors = ['red', 'green', 'royalblue']
     FONTSIZE = 14
 
@@ -73,12 +76,12 @@ if __name__ == '__main__':
         data.append(mobile)
 
     # T-test between Before and each class
-    print('TTest between each class')
+    print('###  ttest  ###')
     for time in range(1, len(plot_list)):
         print(f'result between {plot_list[0]} and {plot_list[time]}')
-        print(scipy.stats.ttest_ind(np.array(ratio[plot_list[0]])[:, 0], np.array(ratio[plot_list[time]])[:, 0]))
-        print(scipy.stats.ttest_ind(np.array(ratio[plot_list[0]])[:, 1], np.array(ratio[plot_list[time]])[:, 1]))
-        print(scipy.stats.ttest_ind(np.array(ratio[plot_list[0]])[:, 2], np.array(ratio[plot_list[time]])[:, 2]))
+        print('Immobile: ',scipy.stats.ttest_ind(np.array(ratio[plot_list[0]])[:, 0], np.array(ratio[plot_list[time]])[:, 0]))
+        print('Hybrid: ',scipy.stats.ttest_ind(np.array(ratio[plot_list[0]])[:, 1], np.array(ratio[plot_list[time]])[:, 1]))
+        print('Mobile: ',scipy.stats.ttest_ind(np.array(ratio[plot_list[0]])[:, 2], np.array(ratio[plot_list[time]])[:, 2]))
         print()
 
     """
@@ -177,6 +180,7 @@ if __name__ == '__main__':
     plot_list.append('')
     ax2.set_xticklabels(plot_list, fontsize=FONTSIZE)
     plt.show()
+
 
     exit(1)
     ######## IMMOBILE PLOT #############
@@ -516,7 +520,7 @@ if __name__ == '__main__':
 
     ######### DIFF COEF PLOT ###########
     coef_data = []
-    plot_list = ['before', '15s', '30s', '1min', '2min']
+    plot_list = ['before', '30s', '1min', '2min']
     for time in plot_list:
         tmp = []
         for nb in range(len(coefs[time])):
@@ -532,7 +536,6 @@ if __name__ == '__main__':
     fig, ax1 = plt.subplots(figsize=(10, 8))
     fig.canvas.manager.set_window_title('H2B diff_coef boxplot')
     fig.subplots_adjust(left=0.075, right=0.95, top=0.9, bottom=0.25)
-
     bp = ax1.boxplot(coef_data, notch=False, sym='', vert=True, whis=1.5, widths=0.25)
     plt.setp(bp['boxes'], color='black')
     plt.setp(bp['whiskers'], color='black', linestyle='dashdot')
@@ -553,7 +556,7 @@ if __name__ == '__main__':
     # Now fill the boxes with desired colors
     coef_coord = []
     avgs = []
-    box_colors = ['royalblue']
+    box_colors = ['grey']
     num_boxes = len(coef_data)
     medians = np.empty(num_boxes)
     for i in range(num_boxes):

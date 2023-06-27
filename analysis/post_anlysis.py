@@ -179,10 +179,9 @@ if __name__ == '__main__':
     ax2.set_xticks(ax2_tick_col)
     plot_list.append('')
     ax2.set_xticklabels(plot_list, fontsize=FONTSIZE)
-    plt.show()
 
 
-    exit(1)
+    """
     ######## IMMOBILE PLOT #############
     plot_list = ['before', '15s', '30s', '1min', '2min']
     fig, ax1 = plt.subplots(figsize=(10, 8))
@@ -190,7 +189,7 @@ if __name__ == '__main__':
     fig.subplots_adjust(left=0.075, right=0.95, top=0.9, bottom=0.25)
 
     immobile_data = []
-    for i in range(15):
+    for i in range(nb_time*3):
         if i % 3 == 0:
             immobile_data.append(data[i])
         else:
@@ -259,11 +258,7 @@ if __name__ == '__main__':
     top = 1
     bottom = 0
     ax1.set_ylim(bottom, top)
-    ax1.set_xticklabels(['immobile', '', '',
-                         'immobile', '', '',
-                         'immobile', '', '',
-                         'immobile', '', '',
-                         'immobile', '', '', ], rotation=45, fontsize=14)
+    ax1.set_xticklabels(['immobile', '', '']*nb_time, rotation=45, fontsize=14)
     ax1.set_yticklabels([0, 0.2, 0.4, 0.6, 0.8, 1.0], rotation=0, fontsize=14)
 
     # Due to the Y-axis scale being different across samples, it can be
@@ -517,6 +512,7 @@ if __name__ == '__main__':
     ax2.set_xticks([0.1, 0.3, 0.5, 0.7, 0.9, 1])
     plot_list.append('')
     ax2.set_xticklabels(plot_list, fontsize=14)
+    """
 
     ######### DIFF COEF PLOT ###########
     coef_data = []

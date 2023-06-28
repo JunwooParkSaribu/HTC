@@ -1,7 +1,7 @@
 import sys
 import time
 from imageProcessor import ImagePreprocessor, ImgGenerator
-from fileIO import DataLoad, ReadParam
+from fileIO import DataLoad, DataSave
 from model import ConvModel, Callback
 import matplotlib.pyplot as plt
 from physics import TrajectoryPhy
@@ -30,7 +30,7 @@ if __name__ == '__main__':
             # Memory growth must be set before GPUs have been initialized
             print(e)
 
-    params = ReadParam.read(cur_path)
+    params = DataLoad.read_params(cur_path)
     epochs = 200
     batch_size = params['batch_size']
     print(f'\nLoading the data...')
@@ -78,7 +78,7 @@ if __name__ == '__main__':
                                             Callback.LearningRateScheduler()],
                                  trace='test_loss')  # training_loss, training_test_loss, test_loss
 
-    model_name = ReadParam.write_model_info(training_model, model_path, history, len(histones),
+    model_name = DataSave.write_model_info(training_model, model_path, history, len(histones),
                                             f'{time.gmtime().tm_mday}/{time.gmtime().tm_mon}/{time.gmtime().tm_year}, '
                                             f'{time.gmtime().tm_hour + 1}:{time.gmtime().tm_min}')
     print(f'{model_name} saved...')

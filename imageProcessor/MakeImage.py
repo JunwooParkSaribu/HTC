@@ -142,7 +142,7 @@ def make_image_from_single_report(report: str, option=1, data_path='.', img_save
 
 
 def make_classified_cell_map(reports, fullh2bs, interpolation=True, make='true'):
-    if make.lower() == 'true' or make == '1':
+    if make:
         search_file_names = set()
         datas = [DataLoad.read_report(report)[1] for report in reports]
         for data in datas:

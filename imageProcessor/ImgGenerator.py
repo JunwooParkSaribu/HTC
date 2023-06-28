@@ -98,7 +98,7 @@ def conversion(histones: dict, key_list: list, scaled_size: tuple, batch_size: i
                 del train_Y
                 return
             while i < size:
-                histones_imgs, img_size, _ = \
+                histones_imgs, img_size = \
                     ImagePreprocessor.preprocessing({keys[i]: histones[keys[i]].copy()}, img_scale=10, amp=amp)
                 zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, to_size=scaled_size)
                 train_X.append(zoomed_imgs[keys[i]])
@@ -115,7 +115,7 @@ def conversion(histones: dict, key_list: list, scaled_size: tuple, batch_size: i
                 del train_Y
                 return
             while i < size:
-                histones_imgs, img_size, time_scale = \
+                histones_imgs, img_size = \
                     ImagePreprocessor.preprocessing({keys[i]: histones[keys[i]].copy()}, img_scale=10, amp=amp)
                 zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, to_size=scaled_size)
                 train_X.append(zoomed_imgs[keys[i]])

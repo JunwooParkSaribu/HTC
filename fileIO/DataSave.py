@@ -1,18 +1,19 @@
 import csv
+import os
 from analysis import DataAnalysis
 
 
-def save_report(full_data, path='', all=False) -> list:
+def save_report(data: list, path='', all=False) -> list:
+    """
+    @params : data(list), path(String), all(boolean)
+    @return : list of saved report names(list)
+    Save reports in a given path.
+    """
     histones = {}
     report_names = []
 
-    if type(full_data) is list:
-        for chunked_data in full_data:
-            histones |= chunked_data
-    elif type(full_data) is dict:
-        histones = full_data
-    else:
-        raise Exception
+    for chunked_data in data:
+        histones |= chunked_data
 
     if not all:
         histone_names = list(histones.keys())
@@ -52,14 +53,14 @@ def save_report(full_data, path='', all=False) -> list:
                         pred_class_name = 'Mobile'
 
                     writer.writerow({'filename':file_name, 'h2b_id':h2b_id, 'predicted_class_id':pred_class_id,
-                                         'predicted_class_name':pred_class_name, 'probability':proba, 'maximum_radius':max_r,
-                                         'first_x_position':first_x_pos, 'first_y_position':first_y_pos})
+                                     'predicted_class_name':pred_class_name, 'probability':proba, 'maximum_radius':max_r,
+                                     'first_x_position':first_x_pos, 'first_y_position':first_y_pos})
     else:
         write_file_name = f'{path}/prediction_all.csv'
         with open(write_file_name, 'w', newline='') as f:
             report_names.append(write_file_name)
             fieldnames = ['filename', 'h2b_id', 'predicted_class_id', 'predicted_class_name', 'probability',
-                              'maximum_radius', 'first_x_position', 'first_y_position']
+                          'maximum_radius', 'first_x_position', 'first_y_position']
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
 
@@ -82,22 +83,20 @@ def save_report(full_data, path='', all=False) -> list:
                     pred_class_name = 'Mobile'
 
                 writer.writerow({'filename': file_name, 'h2b_id': h2b_id, 'predicted_class_id': pred_class_id,
-                                     'predicted_class_name': pred_class_name, 'probability': proba,
-                                     'maximum_radius': max_r,
-                                     'first_x_position': first_x_pos, 'first_y_position': first_y_pos})
+                                 'predicted_class_name': pred_class_name, 'probability': proba, 'maximum_radius': max_r,
+                                 'first_x_position': first_x_pos, 'first_y_position': first_y_pos})
     return report_names
 
 
-def save_diffcoef(full_data, path='', all=False, exel=False) -> list:
+def save_diffcoef(data, path='', all=False):
+    """
+    @params : data(list), path(String), all(boolean)
+    Save diffusion coefficient of each trajectory and the ratio of population.
+    """
     histones = {}
 
-    if type(full_data) is list:
-        for chunked_data in full_data:
-            histones |= chunked_data
-    elif type(full_data) is dict:
-        histones = full_data
-    else:
-        raise Exception
+    for chunked_data in data:
+        histones |= chunked_data
 
     if not all:
         histone_names = list(histones.keys())
@@ -110,10 +109,7 @@ def save_diffcoef(full_data, path='', all=False, exel=False) -> list:
             for histone in histone_names:
                 if filename in histone:
                     h[histone] = histones[histone]
-            if exel:
-                write_file_name = f'{path}/{filename}_diffcoef.xlsx'
-            else:
-                write_file_name = f'{path}/{filename}_diffcoef.csv'
+            write_file_name = f'{path}/{filename}_diffcoef.csv'
 
             with open(f'{path}/{filename}_ratio.txt', 'w', newline='') as ratio_file:
                 report_name = f'{path}/{filename}.csv'
@@ -121,15 +117,10 @@ def save_diffcoef(full_data, path='', all=False, exel=False) -> list:
                 ratio_file.write(f'(immobile:hybrid:mobile):{ratio}\n')
                 ratio_file.close()
 
-            if exel:
-                """
-                # Workbook() takes one, non-optional, argument
-                # which is the filename that we want to create.
-                workbook = xlsxwriter.Workbook(write_file_name)
-
-                # The workbook object is then used to add new
-                # worksheet via the add_worksheet() method.
-                worksheet = workbook.add_worksheet()
+            with open(write_file_name, 'w', newline='') as f:
+                fieldnames = ['filename', 'h2b_id', 'diffusion_coef']
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
+                writer.writeheader()
 
                 for i, key in enumerate(h):
                     file_name = histones[key].get_file_name()
@@ -137,27 +128,9 @@ def save_diffcoef(full_data, path='', all=False, exel=False) -> list:
                     diff_coefs = histones[key].get_diff_coef()
                     for j, diff_coef in enumerate(diff_coefs):
                         if j == 0:
-                            worksheet.write(file_name, h2b_id, diff_coef)
+                            writer.writerow({'filename': file_name, 'h2b_id': h2b_id, 'diffusion_coef': diff_coef})
                         else:
-                            worksheet.write('', '', diff_coef)
-                workbook.close()
-                """
-
-            else:
-                with open(write_file_name, 'w', newline='') as f:
-                    fieldnames = ['filename', 'h2b_id', 'diffusion_coef']
-                    writer = csv.DictWriter(f, fieldnames=fieldnames)
-                    writer.writeheader()
-
-                    for i, key in enumerate(h):
-                        file_name = histones[key].get_file_name()
-                        h2b_id = histones[key].get_id()
-                        diff_coefs = histones[key].get_diff_coef()
-                        for j, diff_coef in enumerate(diff_coefs):
-                            if j==0:
-                                writer.writerow({'filename': file_name, 'h2b_id': h2b_id, 'diffusion_coef': diff_coef})
-                            else:
-                                writer.writerow({'diffusion_coef': diff_coef})
+                            writer.writerow({'diffusion_coef': diff_coef})
 
     else:
         write_file_name = f'{path}/prediction_all_diffcoef.csv'
@@ -187,23 +160,30 @@ def save_diffcoef(full_data, path='', all=False, exel=False) -> list:
                         writer.writerow({'diffusion_coef': diff_coef})
 
 
-def save_simulated_data(histones, filepath):
+def write_model_info(training_model, path: str, history: list, nb_histones: int, date: str) -> str:
+    """
+    @params : model(tensorflow model object), path(String), history(list), nb_histones(Integer), data(String)
+    @return : saved model name(String)
+    Save the logs and the history of the model and return the model name.
+    """
+    new_model_num = 0
     try:
-        with open(filepath, 'w', encoding="utf-8") as f:
-            for histone in histones:
-                for traj, time in zip(histones[histone].get_trajectory(), histones[histone].get_time()):
-                    line = ''
-                    line += histones[histone].get_id()
-                    line += '\t'
-                    line += str(traj[0])
-                    line += '\t'
-                    line += str(traj[1])
-                    line += '\t'
-                    line += str(time)
-                    line += '\t'
-                    line += str(histones[histone].get_manuel_label())
-                    f.write(f'{line}\n')
-
+        if os.path.isdir(path):
+            contents = os.listdir(path)
+            for content in contents:
+                if 'model' in content:
+                    model_num = int(content.split('_')[0].split('model')[-1])
+                    new_model_num = max(new_model_num, model_num)
+            modelname = f'model{new_model_num + 1}'
+        training_model.save(f'{path}/{modelname}')
     except Exception as e:
-        print('Simulated data save err')
+        print('Model directory creation err')
         print(e)
+
+    with open(f'{path}/{modelname}/log.txt', 'w') as info_file:
+        info_file.write(f'{date}, number of trained h2bs:{str(nb_histones)}\n')
+        info_file.write(f'train history, test history, train_acc, test_acc\n')
+        for line_num in range(len(history[0])):
+            info_file.write(f'{str(history[0][line_num])}\t{str(history[1][line_num])}\t'
+                            f'{str(history[2][line_num])}\t{str(history[3][line_num])}\n')
+    return modelname

@@ -1,6 +1,6 @@
 import os
 from imageProcessor import ImagePreprocessor
-from fileIO import DataLoad, ReadParam
+from fileIO import DataLoad
 
 
 def make_image(histones, zoomed_imgs, scaled_size, amp, img_save_path='.', x=1):
@@ -56,7 +56,7 @@ def recursive_filesearch(path, filename, params, h2b_ids, cls, img_save_path, lb
 
 def comparison_from_reports(reports: list, data_path='.', img_save_path='.') -> None:
     data_list = [DataLoad.read_report(rp)[1] for rp in reports]
-    params = ReadParam.read(data_path)
+    params = DataLoad.read_params(data_path)
 
     print("Reading the reports...")
     img_list = {}
@@ -95,7 +95,7 @@ def comparison_from_reports(reports: list, data_path='.', img_save_path='.') -> 
 def make_image_from_single_report(report: str, option=1, data_path='.', img_save_path='.',
                                   filename=None, h2b_id=None) -> None:
     header, data = DataLoad.read_report(report)
-    params = ReadParam.read(data_path)
+    params = DataLoad.read_params(data_path)
     img_list = {}
 
     match option:

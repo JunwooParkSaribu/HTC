@@ -1,7 +1,26 @@
 import numpy as np
-import imageio
-import matplotlib.pyplot as plt
 from physics import TrajectoryPhy
+
+
+def zoom(imgs, to_size=(500, 500)) -> (dict, tuple):
+    """
+    @params : imgs(dict), to_size(tuple)
+    @return : zoomed images and scaled size
+    Scaling of the images, read a dictionary containing 2D matrices and change its size.
+    """
+    zoomed_imgs = {}
+    keys = list(imgs.keys())
+    size_y = len(imgs[keys[0]])
+    size_x = len(imgs[keys[0]][0])
+    for histone in keys:
+        center_pos = [int(size_x / 2), int(size_y / 2)]
+        x_start = center_pos[0] - int(to_size[0] / 2)
+        x_end = center_pos[0] + int(to_size[0] / 2)
+        y_start = center_pos[1] - int(to_size[1] / 2)
+        y_end = center_pos[1] + int(to_size[1] / 2)
+        zoomed_imgs[histone] = imgs[histone][x_start:x_end, y_start:y_end].copy()
+        del imgs[histone]
+    return zoomed_imgs, to_size
 
 
 def preprocessing(histones, img_scale=None, amp=2, interpolation=True, correction=False):
@@ -120,6 +139,16 @@ def interpolate(current_pos, next_pos):  # 2D interpolation
 
 
 def make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=3):
+    """
+    @params : histones(dict), cutoff values, number of channels.
+    Calculate the speed of each trajectory and set the numbers(colors) with given cutoff values.
+    if the speed is slower than immobile cutoff, set to 0
+    if the speed is faster than immobile cutoff but slower than hybrid cutoff, set to 1
+    if the speed is faster than hybrid cutoff, set to 2
+    These cutoff values are to maximize the differences of each class (optimized for the h2b),
+    in the case of other molecules, it needs to change by inspecting its diffusion coefficient.
+    The values are stored in the H2B object.
+    """
     histones_velocity = TrajectoryPhy.velocity(histones)
     immobile_cutoff = float(immobile_cutoff)
     hybrid_cutoff = float(hybrid_cutoff)
@@ -143,220 +172,3 @@ def make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=3):
         histones[histone].set_channel(temp)
         histones[histone].set_channel_size(nChannel)
     del histones_velocity
-
-
-def zoom(imgs, size=1000, to_size=(500, 500)):
-    zoomed_imgs = {}
-    keys = list(imgs.keys())
-    for histone in keys:
-        if type(size) is not int:
-            center_pos = [int(size[0] / 2), int(size[1] / 2)]
-        else:
-            center_pos = [int(size / 2), int(size / 2)]
-        x_start = center_pos[0] - int(to_size[0] / 2)
-        x_end = center_pos[0] + int(to_size[0] / 2)
-        y_start = center_pos[1] - int(to_size[1] / 2)
-        y_end = center_pos[1] + int(to_size[1] / 2)
-        zoomed_imgs[histone] = imgs[histone][x_start:x_end, y_start:y_end].copy()
-        del imgs[histone]
-    return zoomed_imgs, to_size
-
-
-def img_save(img, h2b, img_size, histone_first_pos=None, amp=2, path='.', x=1):
-    ps = ''
-    label = h2b.get_manuel_label()
-    pred = h2b.get_predicted_label()
-    proba = h2b.get_predicted_proba()
-
-    if type(img_size) is tuple:
-        img_size = img_size[0]
-
-    if type(pred) is not list:
-        if label is not None:
-            if label == 0:
-                label = 'immobile'
-            if label == 1:
-                label = 'hybrid'
-            if label == 2:
-                label = 'mobile'
-        if pred is not None:
-            if pred == 0:
-                pred = 'immobile'
-            if pred == 1:
-                pred = 'hybrid'
-            if pred == 2:
-                pred = 'mobile'
-        if label is not None:
-            ps += 'label = ' + label
-        if pred is not None:
-            ps += '\nprediction = ' + pred
-        if proba is not None:
-            ps += '\nprobability = ' + str(proba)
-        ps += f'\nDuration:{str(round(h2b.get_time_duration(), 5))}sec'
-    else:
-        for index, prediction in enumerate(pred):
-            ps += f'Model{str(index + 1)}:{prediction}\n'
-        ps += f'Duration:{str(round(h2b.get_time_duration(), 5))}sec'
-
-    plt.figure()
-    if histone_first_pos is None:
-        plt.imshow(img, cmap='coolwarm', origin='lower', label='a')
-    else:
-        plt.imshow(img, cmap='coolwarm', origin='lower',
-                   extent=[(histone_first_pos[0] - img_size / 2) / (10 ** amp),
-                           (histone_first_pos[0] + img_size / 2) / (10 ** amp),
-                           (histone_first_pos[1] - img_size / 2) / (10 ** amp),
-                           (histone_first_pos[1] + img_size / 2) / (10 ** amp)], label='a')
-    plt.legend(title=ps)
-    if path != 'show':
-        plt.savefig(f'{path}/{h2b.get_file_name()}@{h2b.get_id()}_{x}.png', dpi=600)
-
-
-def make_gif(full_histones, filename, id, immobile_cutoff=5,
-             hybrid_cutoff=12, nChannel=3, img_scale=5, amp=2, correction=False):
-    try:
-        histones = {}
-
-        if type(full_histones) is list:
-            for h in full_histones:
-                histones |= h
-        elif type(full_histones) is dict:
-            histones = full_histones
-        else:
-            raise Exception
-
-        gif = []
-        key = f'{filename}@{id}'
-        make_channel(histones, immobile_cutoff=immobile_cutoff, hybrid_cutoff=hybrid_cutoff, nChannel=nChannel)
-        histones_velocity = TrajectoryPhy.velocity(histones)
-        if img_scale is None:
-            img_size = 5 * (10 ** amp)
-        else:
-            img_size = img_scale * (10 ** amp)
-        central_point = [int(img_size / 2), int(img_size / 2)]
-        histones_channel = histones[key].get_channel()
-        channel = histones[key].get_channel_size()
-        histone_velocity = histones_velocity[key]
-        current_xval = central_point[0]
-        current_yval = central_point[1]
-        if not channel:
-            img = np.zeros((img_size, img_size))
-        else:
-            img = np.zeros((img_size, img_size, channel))
-        histone_trajectory = histones[key].get_trajectory()
-        x_shift = central_point[0] - int(histone_trajectory[0][0] * (10 ** amp))
-        y_shift = central_point[1] - int(histone_trajectory[0][1] * (10 ** amp))
-        for index, trajectory in enumerate(histone_trajectory):
-            if index == 0:
-                trajec_channel = histones_channel[index]
-            else:
-                trajec_channel = histones_channel[index - 1]
-            velocity = histone_velocity[index - 1] if index > 0 else 0
-
-            x_val = x_shift + int(trajectory[0] * (10 ** amp))
-            y_val = y_shift + int(trajectory[1] * (10 ** amp))
-
-            interpolate_pos = interpolate([current_xval, current_yval], [x_val, y_val])
-            current_xval = x_val
-            current_yval = y_val
-            for mod, inter_pos in enumerate(interpolate_pos):
-                frame = int(velocity)/2
-                if frame == 0:
-                    gif.append(img.copy())
-                else:
-                    if mod % (int(velocity)/2) == 0:
-                        gif.append(img.copy())
-                # Forcing the scailing to reduce the memory
-                if inter_pos[0] < 0:
-                    inter_pos[0] = 0
-                if inter_pos[0] >= img_size:
-                    inter_pos[0] = img_size - 1
-                if inter_pos[1] < 0:
-                    inter_pos[1] = 0
-                if inter_pos[1] >= img_size:
-                    inter_pos[1] = img_size - 1
-
-                if not channel:
-                    img[img_size - inter_pos[1]][inter_pos[0]] = 1
-                else:
-                    img[img_size - inter_pos[1]][inter_pos[0]][trajec_channel] = 1
-                    if correction:
-                        img[img_size - inter_pos[1]][inter_pos[0]][0] = 1
-
-        ps = ''
-        label = histones[key].get_manuel_label()
-        pred = histones[key].get_predicted_label()
-        proba = histones[key].get_predicted_proba()
-
-        if label is not None:
-            if label == 0:
-                label = 'immobile'
-            if label == 1:
-                label = 'hybrid'
-            if label == 2:
-                label = 'mobile'
-        if pred is not None:
-            if pred == 0:
-                pred = 'immobile'
-            if pred == 1:
-                pred = 'hybrid'
-            if pred == 2:
-                pred = 'mobile'
-        if label is not None:
-            ps += 'label = ' + label
-        if pred is not None:
-            ps += '\nprediction = ' + pred
-        if proba is not None:
-            ps += '\nprobability = ' + str(proba)
-
-        with imageio.get_writer(f'./gif/{filename}@{id}.gif', mode='I') as writer:
-            for i in range(len(gif)):
-                writer.append_data(np.array(gif[i]))
-
-    except Exception as e:
-        print(e)
-        print(f'There is no matching filename and id in the data')
-
-
-def classified_cellmap(histones, report_name: str, amp=2, interpolation=True):
-    channel = 3  # nb of classes
-    min_x = 0
-    max_x = 0
-    min_y = 0
-    max_y = 0
-
-    for histone in histones:
-        trajectory = histones[histone].get_trajectory()
-        for traj in trajectory:
-            x, y = traj[0], traj[1]
-            max_x = max(max_x, x)
-            max_y = max(max_y, y)
-
-    max_x += 1
-    max_y += 1
-    max_x = max_x * (10 ** amp)
-    max_y = max_y * (10 ** amp)
-
-    img_x_size = int(max_x - min_x)
-    img_y_size = int(max_y - min_y)
-    img = np.zeros((img_y_size, img_x_size, channel))
-    for histone in histones:
-        histone_trajectory = histones[histone].get_trajectory()
-        current_xval, current_yval = int(histone_trajectory[0][0] * (10 ** amp)), int(histone_trajectory[0][1] * (10 ** amp))
-        for index, trajectory in enumerate(histone_trajectory):
-            x_val = int(trajectory[0] * (10 ** amp))
-            y_val = int(trajectory[1] * (10 ** amp))
-            label = int(histones[histone].get_predicted_label())
-
-            if not interpolation:
-                img[y_val][x_val][label] = 1
-            else:
-                interpolate_pos = interpolate([current_xval, current_yval], [x_val, y_val])
-                current_xval = x_val
-                current_yval = y_val
-                for inter_pos in interpolate_pos:
-                    # add channels or not (val in float 0.0 ~ 1.0)
-                    img[inter_pos[1]][inter_pos[0]][label] = 1
-    plt.imshow(img, cmap='coolwarm', origin='lower', label='cellmap',
-               extent=[min_x/(10**amp), max_x/(10**amp), min_y/(10**amp), max_y/(10**amp)])
-    plt.savefig(f'{report_name}_cellmap.png', dpi=1200)

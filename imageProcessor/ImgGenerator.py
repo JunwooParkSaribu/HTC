@@ -63,7 +63,7 @@ class DataGenerator:
                 train_histones[histone_id] = self.histones[histone_id].copy()
             histones_imgs, img_size, time_scale =\
                 ImagePreprocessor.preprocessing(train_histones, img_scale=10, amp=self.amp)
-            zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=self.to_size)
+            zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, to_size=self.to_size)
             for histone_id in histones_id:
                 yield zoomed_imgs[histone_id], train_histones[histone_id].get_manuel_label()
 
@@ -75,12 +75,12 @@ class DataGenerator:
                 test_histones[histone_id] = self.histones[histone_id].copy()
             histones_imgs, img_size, time_scale =\
                 ImagePreprocessor.preprocessing(test_histones, img_scale=10, amp=self.amp)
-            zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=self.to_size)
+            zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, to_size=self.to_size)
             for histone_id in histones_id:
                 yield zoomed_imgs[histone_id], test_histones[histone_id].get_manuel_label()
 
 
-def conversion(histones, key_list=None, scaled_size=(500, 500), batch_size=32, amp=2, eval=True):
+def conversion(histones, key_list=None, scaled_size=(500, 500), batch_size=16, amp=2, eval=True):
     train_X = []
     train_Y = []
 
@@ -100,7 +100,7 @@ def conversion(histones, key_list=None, scaled_size=(500, 500), batch_size=32, a
             while i < size:
                 histones_imgs, img_size, _ = \
                     ImagePreprocessor.preprocessing({keys[i]: histones[keys[i]].copy()}, img_scale=10, amp=amp)
-                zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=scaled_size)
+                zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, to_size=scaled_size)
                 train_X.append(zoomed_imgs[keys[i]])
                 i += 1
                 if i % batch_size == 0:
@@ -117,7 +117,7 @@ def conversion(histones, key_list=None, scaled_size=(500, 500), batch_size=32, a
             while i < size:
                 histones_imgs, img_size, time_scale = \
                     ImagePreprocessor.preprocessing({keys[i]: histones[keys[i]].copy()}, img_scale=10, amp=amp)
-                zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, size=img_size, to_size=scaled_size)
+                zoomed_imgs, scaled_size = ImagePreprocessor.zoom(histones_imgs, to_size=scaled_size)
                 train_X.append(zoomed_imgs[keys[i]])
                 train_Y.append(histones[keys[i]].get_manuel_label())
                 i += 1

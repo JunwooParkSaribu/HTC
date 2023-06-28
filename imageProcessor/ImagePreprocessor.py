@@ -2,7 +2,7 @@ import numpy as np
 from physics import TrajectoryPhy
 
 
-def zoom(imgs, to_size=(500, 500)) -> (dict, tuple):
+def zoom(imgs, to_size: tuple) -> (dict, tuple):
     """
     @params : imgs(dict), to_size(tuple)
     @return : zoomed images and scaled size
@@ -19,11 +19,17 @@ def zoom(imgs, to_size=(500, 500)) -> (dict, tuple):
         y_start = center_pos[1] - int(to_size[1] / 2)
         y_end = center_pos[1] + int(to_size[1] / 2)
         zoomed_imgs[histone] = imgs[histone][x_start:x_end, y_start:y_end].copy()
-        del imgs[histone]
+        del imgs[histone]  # delete original images to save the memory
     return zoomed_imgs, to_size
 
 
-def preprocessing(histones, img_scale=None, amp=2, interpolation=True, correction=False):
+def preprocessing(histones: dict, img_scale: int, amp: int, interpolation=True, correction=False):
+    """
+    @params : histones(dict), img_scale(Integer), amp(Integer), interpolation(boolean), correction(boolean)
+    @return : processed images(dict) and the size(tuple)
+    Processing of a trajectory data(x, y positions) into images.
+    Only for a 2-dimensional data.
+    """
     if img_scale is None:
         img_size = 5 * (10 ** amp)
     else:
@@ -90,10 +96,15 @@ def preprocessing(histones, img_scale=None, amp=2, interpolation=True, correctio
                         if correction:
                             img[inter_pos[1]][inter_pos[0]][0] = 1
         imgs[histone] = img
-    return imgs, (img_size, img_size), None
+    return imgs, (img_size, img_size)
 
 
-def interpolate(current_pos, next_pos):  # 2D interpolation
+def interpolate(current_pos: int, next_pos: int) -> list:
+    """
+    @params : current_pos(Integer), next_pos(Integer)
+    @return : interpolated x, y positions
+    Directional interpolation of two extrema.
+    """
     pos = []
     current_xval = current_pos[0]
     current_yval = current_pos[1]
@@ -152,10 +163,6 @@ def make_channel(histones, immobile_cutoff=5, hybrid_cutoff=12, nChannel=3):
     histones_velocity = TrajectoryPhy.velocity(histones)
     immobile_cutoff = float(immobile_cutoff)
     hybrid_cutoff = float(hybrid_cutoff)
-
-    hist_channel = {}
-    for histone in histones:
-        hist_channel[histone] = []
 
     for histone in histones:
         temp = []

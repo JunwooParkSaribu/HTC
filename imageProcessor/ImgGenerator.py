@@ -3,7 +3,7 @@ from imageProcessor import ImagePreprocessor
 
 
 class DataGenerator:
-    def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, split_size=32,
+    def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, split_size=16,
                  shuffle=True, train_keys=None, test_keys=None):
         self.histones = histones
         self.train_split = []
@@ -61,7 +61,7 @@ class DataGenerator:
             histones_id = self.train_split[i]
             for histone_id in histones_id:
                 train_histones[histone_id] = self.histones[histone_id].copy()
-            histones_imgs, img_size, time_scale =\
+            histones_imgs, img_size =\
                 ImagePreprocessor.preprocessing(train_histones, img_scale=10, amp=self.amp)
             zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, to_size=self.to_size)
             for histone_id in histones_id:
@@ -73,14 +73,14 @@ class DataGenerator:
             histones_id = self.test_split[i]
             for histone_id in histones_id:
                 test_histones[histone_id] = self.histones[histone_id].copy()
-            histones_imgs, img_size, time_scale =\
+            histones_imgs, img_size =\
                 ImagePreprocessor.preprocessing(test_histones, img_scale=10, amp=self.amp)
             zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, to_size=self.to_size)
             for histone_id in histones_id:
                 yield zoomed_imgs[histone_id], test_histones[histone_id].get_manuel_label()
 
 
-def conversion(histones, key_list=None, scaled_size=(500, 500), batch_size=16, amp=2, eval=True):
+def conversion(histones: dict, key_list: list, scaled_size: tuple, batch_size: int, amp: int, eval: bool):
     train_X = []
     train_Y = []
 

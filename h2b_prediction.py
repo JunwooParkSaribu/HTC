@@ -1,6 +1,6 @@
 import sys
 from mainPipe import main_pipe
-from fileIO import DataLoad, DataSave, ReadParam
+from fileIO import DataLoad, DataSave
 from imageProcessor import MakeImage
 from keras.models import load_model
 from tensorflow import device
@@ -12,7 +12,7 @@ if __name__ == '__main__':
         config_path = sys.argv[1]
     else:
         config_path = '.'
-    params = ReadParam.read(config_path)
+    params = DataLoad.read_params(config_path)
 
     with device('/cpu:0'):
         print(f'Main processing...')
@@ -21,7 +21,7 @@ if __name__ == '__main__':
         HTC_model.compile()
         main_pipe(HTC_model, full_data, params)
 
-        if params['postProcessing'].lower() == 'true':
+        if params['postProcessing']:
             print(f'Post processing...')
             hybrids, others = splitHistones.split_hybrid_from_others(full_data)
             clusters = dirichletMixtureModel.dpgmm_clustering(hybrids)

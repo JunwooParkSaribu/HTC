@@ -99,9 +99,9 @@ def preprocessing(histones: dict, img_scale: int, amp: int, interpolation=True, 
     return imgs, (img_size, img_size)
 
 
-def interpolate(current_pos: int, next_pos: int) -> list:
+def interpolate(current_pos: list, next_pos: list) -> list:
     """
-    @params : current_pos(Integer), next_pos(Integer)
+    @params : current_pos(list), next_pos(list)
     @return : interpolated x, y positions
     Directional interpolation of two extrema.
     """

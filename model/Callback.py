@@ -2,6 +2,9 @@ import numpy as np
 
 
 class EarlyStoppingAtMinLoss:
+    """
+    Callback functions to control the training of the model.
+    """
     def __init__(self, patience=0):
         self.patience = patience
         # best_weights to store the weights at which the minimum loss occurs.
@@ -47,6 +50,9 @@ class EarlyStoppingAtMinLoss:
 
 
 class LearningRateScheduler:
+    """
+    Callback functions to control the learning rate of the model during training.
+    """
     def __init__(self, schedule=None, verbose=0):
         super().__init__()
         if schedule is None:

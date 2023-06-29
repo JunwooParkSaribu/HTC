@@ -10,10 +10,9 @@ def zoom(imgs, to_size: tuple) -> (dict, tuple):
     """
     zoomed_imgs = {}
     keys = list(imgs.keys())
-    print(len(keys))
-    size_y = len(imgs[keys[0]])
-    size_x = len(imgs[keys[0]][0])
     for histone in keys:
+        size_y = len(imgs[histone])
+        size_x = len(imgs[histone][0])
         center_pos = [int(size_x / 2), int(size_y / 2)]
         x_start = center_pos[0] - int(to_size[0] / 2)
         x_end = center_pos[0] + int(to_size[0] / 2)

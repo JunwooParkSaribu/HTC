@@ -3,7 +3,11 @@ from imageProcessor import ImagePreprocessor
 
 
 class DataGenerator:
-    def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, split_size=16,
+    """
+    Image generator for the model training.
+    Trajectories of histones are split into batch size to control the memory usage.
+    """
+    def __init__(self, histones: dict, amp: int, to_size: tuple, ratio=0.8, batch_size=16,
                  shuffle=True, train_keys=None, test_keys=None):
         self.histones = histones
         self.train_split = []
@@ -38,10 +42,10 @@ class DataGenerator:
         self.train_size = len(self.train_keys)
         self.test_size = len(self.test_keys)
 
-        self.train_split_indices = [int(i * split_size) for i in
-                                    range(1, int(self.train_size / split_size) + 1)]
-        self.test_split_indices = [int(i * split_size) for i in
-                                   range(1, int(self.test_size / split_size) + 1)]
+        self.train_split_indices = [int(i * batch_size) for i in
+                                    range(1, int(self.train_size / batch_size) + 1)]
+        self.test_split_indices = [int(i * batch_size) for i in
+                                   range(1, int(self.test_size / batch_size) + 1)]
 
         self.train_split = np.split(np.array(self.train_keys), self.train_split_indices)
         self.test_split = np.split(np.array(self.test_keys), self.test_split_indices)
@@ -81,6 +85,12 @@ class DataGenerator:
 
 
 def conversion(histones: dict, key_list: list, scaled_size: tuple, batch_size: int, amp: int, eval: bool):
+    """
+    @params : histones(dict), key_list(list), scaled_size(tuple), batch_size(int), amp(int), eval(boolean)
+    @return : generator of images
+    Generator for the prediction. Trajectories are converted into images for a given batch size.
+    Trajectories of histones are split into batch size to control the memory usage.
+    """
     train_X = []
     train_Y = []
 

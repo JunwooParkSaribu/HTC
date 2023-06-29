@@ -43,7 +43,7 @@ if __name__ == '__main__':
                                    hybrid_cutoff=params['hybrid_cutoff'], nChannel=params['nChannel'])
 
     print(f'Generator building...')
-    gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8, split_size=batch_size)
+    gen = ImgGenerator.DataGenerator(histones, amp=params['amp'], to_size=(500, 500), ratio=0.8, batch_size=batch_size)
     print(f'Number of training items:{sum(gen.get_size())}, processed shape:{gen.get_scaled_size()}\n'
           f'Training set length:{gen.get_size()[0]}, Test set length:{gen.get_size()[1]}')
     train_ds = ConvModel.tf.data.Dataset.from_generator(gen.train_generator,

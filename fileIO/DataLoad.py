@@ -18,10 +18,8 @@ def read_file(file: str, cutoff: int, filetype='trxyt') -> dict:
     trajectory = {}
     time = {}
 
-    # Raise an error if the given file extension is not trxyt.
-    if file.strip().split('.')[-1] != filetype:
-        print(f"Wrong file type: {file}")
-        raise Exception
+    # Check filetype.
+    assert file.strip().split('.')[-1] == filetype
 
     # Read file and store the trajectory and time information in H2B object
     try:

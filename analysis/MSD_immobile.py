@@ -46,11 +46,52 @@ def dir_search(path, histones):
     return imm_traj_dict
 
 
-def MSD(trajectory_dict: dict, times):
+def write_trxyt_file(dict):
+    times = list(dict.keys())
+    base_path = '/Users/junwoopark/Downloads/fabiola/immobile_files'
+    for time in times:
+        histones = dict[time]
+        for h2b in histones:
+            filename = h2b.get_file_name()
+            w_path = f'{base_path}/seperated_files/{time}/{filename}'
+            write_or_append = None
+            if os.path.isfile(w_path):
+                write_or_append = 'a'
+            else:
+                write_or_append = 'w'
+            with open(w_path, write_or_append) as f:
+                trajectory = h2b.get_trajectory()
+                t_series = h2b.get_time()
+                id = h2b.get_id()
+                for traj, t in zip(trajectory, t_series):
+                    line = f'{id}\t{traj[0]}\t{traj[1]}\t{t}\n'
+                    f.write(line)
+                f.close()
+
+        w_path = f'{base_path}/merged_files/{time}/merged_cells.trxyt'
+        write_or_append = None
+        if os.path.isfile(w_path):
+            write_or_append = 'a'
+        else:
+            write_or_append = 'w'
+        with open(w_path, write_or_append) as f:
+            for h2b in histones:
+                filename = h2b.get_file_name()
+                trajectory = h2b.get_trajectory()
+                t_series = h2b.get_time()
+                id = h2b.get_id()
+                for traj, t in zip(trajectory, t_series):
+                    line = f'{id}\t{traj[0]}\t{traj[1]}\t{t}\t{filename}\n'
+                    f.write(line)
+            f.close()
+
+
+def MSD(trajectory_dict, plotList):
     msd = dict()
     x_axis = dict()
-    for time in times:
+    for time in plotList:
         histone_list = trajectory_dict[time]
+        print(len(histone_list))
         disps = []
         for h2b in histone_list:
             trajectory = h2b.get_trajectory()
@@ -82,7 +123,7 @@ if __name__ == '__main__':
     data_path = f'./data/TrainingSample/all_data'
     # Must change the backslash(\) to slash(/) or double backlash(\\) on WindowsOS
     histones = DataLoad.read_files([data_path], cutoff=2, chunk=False)[0]
-    path = "/Users/junwoopark/Downloads/zone_results"
+    path = "/Users/junwoopark/Downloads/fabiola/zone_results"
 
     path = path.replace('\\', '/')
     # Element names of plot_list must be same as the folder names

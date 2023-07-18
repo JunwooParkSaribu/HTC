@@ -51,6 +51,7 @@ def write_trxyt_file(dict):
     base_path = '/Users/junwoopark/Downloads/fabiola/immobile_files'
     for time in times:
         histones = dict[time]
+        """
         for h2b in histones:
             filename = h2b.get_file_name()
             w_path = f'{base_path}/seperated_files/{time}/{filename}'
@@ -67,15 +68,10 @@ def write_trxyt_file(dict):
                     line = f'{id}\t{traj[0]}\t{traj[1]}\t{t}\n'
                     f.write(line)
                 f.close()
-
+        """
         w_path = f'{base_path}/merged_files/{time}/merged_cells.trxyt'
-        write_or_append = None
-        if os.path.isfile(w_path):
-            write_or_append = 'a'
-        else:
-            write_or_append = 'w'
-        with open(w_path, write_or_append) as f:
-            for h2b in histones:
+        with open(w_path, 'w') as f:
+            for i, h2b in enumerate(histones):
                 filename = h2b.get_file_name()
                 trajectory = h2b.get_trajectory()
                 t_series = h2b.get_time()
@@ -83,7 +79,6 @@ def write_trxyt_file(dict):
                 for traj, t in zip(trajectory, t_series):
                     line = f'{id}\t{traj[0]}\t{traj[1]}\t{t}\t{filename}\n'
                     f.write(line)
-            f.close()
 
 
 def MSD(trajectory_dict, plotList):
@@ -133,6 +128,7 @@ if __name__ == '__main__':
 
     # Read classification result files (ratio, diffusion coef)
     immobile_trajectory_dict = dir_search(path, histones)
+    #write_trxyt_file(immobile_trajectory_dict)
     msd, x_axis = MSD(immobile_trajectory_dict, plot_list)
 
     plt.figure()

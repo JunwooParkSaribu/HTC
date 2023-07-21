@@ -1,0 +1,21 @@
+filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,127_cluster0,1,Hybrid,1.0,0.34059523851822904,1.3784936,15.27906
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,129_cluster0,0,Immobile,0.99991584,0.3954773705983816,1.3692039,15.29061
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,141_cluster0,0,Immobile,0.9999505,1.349893217594625,1.305629,15.336998
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,143_cluster1,0,Immobile,0.999997,0.25911690416028393,1.3018621,15.352141
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,162_cluster0,1,Hybrid,1.0,1.4626195322043403,1.1359846,15.48905
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,63,0,Immobile,1.0,0.06265799977602315,0.85377776,4.9736401
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,67,0,Immobile,1.0,0.07315454476150124,0.80586307,4.9833562
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,79,0,Immobile,0.9999976,0.11876739127308006,0.88469627,8.1231982
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,80,0,Immobile,0.9999988,0.11727312664494018,0.88403486,8.1200092
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,122,0,Immobile,0.9999957,0.15334157746941937,1.3194105,15.335807
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,123,0,Immobile,0.9899511,0.1844818409074727,1.3172336,15.337511
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,140,0,Immobile,0.99998915,0.10128043876510662,0.90587032,1.7469125
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,142,0,Immobile,0.999944,0.088919617736246,0.90321967,1.7464818
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,202,0,Immobile,1.0,0.15468523110138988,1.3274235,15.278251
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,203,0,Immobile,0.99998903,0.14839992131588192,1.3285828,15.300436
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,222,0,Immobile,0.9967129,0.3177053591314446,1.5148759,15.467093
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,254,2,Mobile,0.9999988,0.2409729387289164,1.5846354,2.2439019
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,274,0,Immobile,0.99999917,0.14458150954520452,1.7100295,2.2883387
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,357,0,Immobile,0.99998796,0.15268375404986664,0.88841893,13.519769
+20220217_h2b halo_Cell1_immediately_after_irradiation_crop.trxyt,358,0,Immobile,0.99998176,0.14105733476644025,0.88518134,13.515456

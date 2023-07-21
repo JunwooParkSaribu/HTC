@@ -1,0 +1,15 @@
+filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,53_cluster0,1,Hybrid,0.9653782,1.6438146358107564,1.7293443,5.2508906
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,1,0,Immobile,0.9999535,0.1484702266525179,1.1035467,3.8895805
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,5,0,Immobile,0.9999975,0.1905549020647071,1.1954401,2.3318239
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,19,0,Immobile,0.9999931,0.1974366621053193,1.5160494,2.0266666
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,22,0,Immobile,1.0,0.09503946941797398,1.7337804,3.0838337
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,28,0,Immobile,0.99999964,0.192857688208735,0.83335879,2.6540417
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,32,0,Immobile,1.0,0.12181898079860115,1.7215756,3.1548223
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,52,2,Mobile,0.99998677,0.5346158318836527,1.1633785,4.9595272
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,54,0,Immobile,0.9998068,0.27258575815557573,1.4912384,1.9465456
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,55,0,Immobile,0.99998987,0.19804142660627835,1.5594586,1.9748911
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,58,0,Immobile,0.99999976,0.18180220384090512,1.4925808,1.9273381
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,63,0,Immobile,0.99708873,0.1722911623206771,1.4930277,1.8738801
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,68,0,Immobile,0.67715955,0.1935843321164191,1.5464748,1.8794155
+20220601_H2B Halo_h2b halo_Field6_before-crop.mldatx_tracked.trxyt,83,2,Mobile,0.9999567,0.2625200773534093,1.3703191,1.9399781

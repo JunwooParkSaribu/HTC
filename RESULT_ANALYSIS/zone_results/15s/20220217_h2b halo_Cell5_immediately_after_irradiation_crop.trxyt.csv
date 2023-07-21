@@ -1,0 +1,18 @@
+filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,179_cluster0,1,Hybrid,1.0,0.6500435537233025,1.7170253,6.7086625
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,25,0,Immobile,0.8097971,0.24524151190563093,1.1466368,10.561896
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,52,0,Immobile,0.9996939,0.17856858707692702,1.0301576,5.2737142
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,89,0,Immobile,0.9467021,0.21884592798074687,0.94841429,5.2987419
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,123,0,Immobile,0.9999988,0.20574940203512154,1.0896698,10.369332
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,131,0,Immobile,1.0,0.08656812007430899,1.4473383,4.7788047
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,174,0,Immobile,0.9999999,0.08188678695589441,1.447426,11.330971
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,180,0,Immobile,0.9999958,0.16056318111699752,1.6202176,12.686522
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,185,0,Immobile,0.9999999,0.07524303648345156,1.7592532,10.887222
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,187,0,Immobile,1.0,0.06451928049234626,1.7517829,10.853427
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,192,0,Immobile,1.0,0.06042081887602973,1.6533565,2.8312289
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,204,0,Immobile,0.99901295,0.2491041806025945,1.4766666,4.9419055
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,205,0,Immobile,0.9999943,0.1392958445728014,1.5939613,4.9915262
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,207,0,Immobile,0.99999833,0.24176797656788623,1.6706269,5.0130842
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,209,0,Immobile,0.9999994,0.16514727318272612,1.5324138,4.878709
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,210,0,Immobile,0.99925894,0.32809794670378545,1.4875363,5.0757805
+20220217_h2b halo_Cell5_immediately_after_irradiation_crop.trxyt,218,0,Immobile,0.99447685,0.21967470503014624,0.86412821,8.8423521

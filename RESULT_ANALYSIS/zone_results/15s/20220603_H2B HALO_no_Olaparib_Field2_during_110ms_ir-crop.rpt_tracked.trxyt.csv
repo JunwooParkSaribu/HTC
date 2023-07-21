@@ -1,0 +1,6 @@
+filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
+20220603_H2B HALO_no_Olaparib_Field2_during_110ms_ir-crop.rpt_tracked.trxyt,57_cluster0,1,Hybrid,0.9998286,0.7907406763461203,1.4661934,9.0909058
+20220603_H2B HALO_no_Olaparib_Field2_during_110ms_ir-crop.rpt_tracked.trxyt,52,2,Mobile,0.99998415,0.3333423344161374,1.6365203,12.030327
+20220603_H2B HALO_no_Olaparib_Field2_during_110ms_ir-crop.rpt_tracked.trxyt,60,0,Immobile,0.99629515,0.24514084945774417,0.80102602,9.1682774
+20220603_H2B HALO_no_Olaparib_Field2_during_110ms_ir-crop.rpt_tracked.trxyt,62,0,Immobile,0.99996626,0.1640928648326919,1.0803044,10.525656
+20220603_H2B HALO_no_Olaparib_Field2_during_110ms_ir-crop.rpt_tracked.trxyt,71,2,Mobile,0.9999944,0.6750360969538812,1.4657896,2.0690207

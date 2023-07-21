@@ -1,0 +1,20 @@
+filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,398_cluster0,1,Hybrid,0.7598799,0.30853371410878266,1.5352078,4.4588926
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,477_cluster1,1,Hybrid,0.5170416,0.6856440735553179,1.9718884,2.8561769
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,608_cluster0,1,Hybrid,0.657224,0.21948344809269776,1.6227747,4.9252189
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,681_cluster0,0,Immobile,0.99999785,0.2572284712333571,1.4694831,4.6497103
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,65,0,Immobile,0.99982184,0.24516190164315907,1.411597,5.1474136
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,414,0,Immobile,0.97074395,0.21291246660038493,1.5873584,4.4369325
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,418,0,Immobile,0.99998987,0.21237903401616604,1.6432771,4.3663334
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,459,0,Immobile,0.9999958,0.11300192174861472,1.6021325,4.3798616
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,462,0,Immobile,0.9999938,0.21426671093730393,1.4297466,7.0098171
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,482,0,Immobile,0.9999927,0.2116830290539603,1.3026864,6.941812
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,607,0,Immobile,1.0,0.14339532748471956,1.4889294,4.936474
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,672,0,Immobile,0.99999714,0.17225840042227258,1.4560402,4.6172719
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,676,0,Immobile,0.99985754,0.1811167937357826,1.4497521,4.5488495
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,678,0,Immobile,0.99998796,0.23554287111464442,1.4497034,4.6707452
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,701,0,Immobile,0.99999976,0.08656622348579436,0.89091916,3.498635
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,755,2,Mobile,0.9538587,0.6285817862183725,1.0215068,4.4655081
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,758,0,Immobile,0.99999964,0.22576247588412476,1.1198225,4.9031895
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,761,0,Immobile,0.99999726,0.16562542603733896,1.2421132,4.9427817
+20220210 H2B Halo_Field1_30s_after_irradiation_crop.trxyt,783,0,Immobile,0.9999968,0.08239981601969748,1.4528338,2.150305

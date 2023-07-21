@@ -1,0 +1,13 @@
+filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
+20220301_H2B Halo_Field5-30s_crop.mldatx_tracked copy.trxyt,27,0,Immobile,1.0,0.14056961923102781,0.85539772,11.908166
+20220301_H2B Halo_Field5-30s_crop.mldatx_tracked copy.trxyt,28,0,Immobile,0.9999994,0.09174495190191592,0.88735011,11.882951
+20220301_H2B Halo_Field5-30s_crop.mldatx_tracked copy.trxyt,33,0,Immobile,0.9999999,0.13121343564459043,0.8768232,11.824238
+20220301_H2B Halo_Field5-30s_crop.mldatx_tracked copy.trxyt,58,0,Immobile,0.9999999,0.23364519083246718,1.0643656,1.8281836
+20220301_H2B Halo_Field5-30s_crop.mldatx_tracked copy.trxyt,67,0,Immobile,0.99999976,0.1433692787227793,1.2122113,1.8980923
+20220301_H2B Halo_Field5-30s_crop.mldatx_tracked copy.trxyt,77,0,Immobile,0.99999964,0.06437829742591805,1.2863693,4.5958549
+20220301_H2B Halo_Field5-30s_crop.mldatx_tracked copy.trxyt,85,0,Immobile,1.0,0.10508349156468715,0.82225233,9.3551747
+20220301_H2B Halo_Field5-30s_crop.mldatx_tracked copy.trxyt,93,0,Immobile,0.9999999,0.06408595200080974,1.4571944,5.9300285
+20220301_H2B Halo_Field5-30s_crop.mldatx_tracked copy.trxyt,137,0,Immobile,0.9999728,0.2304365763402374,1.0724692,7.394113
+20220301_H2B Halo_Field5-30s_crop.mldatx_tracked copy.trxyt,154,0,Immobile,1.0,0.07154706779765614,0.80713874,7.3571327
+20220301_H2B Halo_Field5-30s_crop.mldatx_tracked copy.trxyt,155,0,Immobile,1.0,0.1051345593327428,0.81950805,7.3603664
+20220301_H2B Halo_Field5-30s_crop.mldatx_tracked copy.trxyt,159,0,Immobile,1.0,0.09744883081417091,0.86979798,6.6858737

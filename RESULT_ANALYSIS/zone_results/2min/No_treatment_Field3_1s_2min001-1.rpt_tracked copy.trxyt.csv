@@ -1,0 +1,16 @@
+filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,32_cluster0,1,Hybrid,0.9998456,0.8061613903668481,1.434981,11.504254
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,152_cluster0,1,Hybrid,0.809559,0.3938581709670755,1.1005782,3.0886509
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,164_cluster0,0,Immobile,0.99999964,0.4827215722504538,1.3070642,12.451415
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,1,0,Immobile,0.9999999,0.0862577592236204,1.0935005,6.4505398
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,30,0,Immobile,1.0,0.1361700181560165,1.4716222,11.415116
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,42,0,Immobile,0.99999976,0.15511893984297986,1.4140391,11.393234
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,111,0,Immobile,0.9999416,0.19534126369830332,1.4933267,11.10855
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,155,0,Immobile,0.9999882,0.17532048037023515,1.510647,11.745957
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,169,0,Immobile,0.56410265,0.302737132057318,1.2743135,12.403285
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,173,0,Immobile,0.99999964,0.18670262007183958,1.3258216,12.537239
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,174,0,Immobile,0.99999654,0.12900696954955573,1.4096457,12.445984
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,177,0,Immobile,0.9999989,0.10475589760371583,1.5611498,11.46217
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,307,0,Immobile,0.9664951,0.2809763118008085,1.1099441,11.577218
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,308,0,Immobile,1.0,0.08908908995574151,0.84931008,4.5680551
+No_treatment_Field3_1s_2min001-1.rpt_tracked copy.trxyt,312,0,Immobile,1.0,0.09835286495199903,1.0278168,4.6277189

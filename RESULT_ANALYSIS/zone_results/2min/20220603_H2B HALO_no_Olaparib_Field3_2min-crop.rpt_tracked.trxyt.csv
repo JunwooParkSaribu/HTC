@@ -1,0 +1,16 @@
+filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,47_cluster0,0,Immobile,0.9999964,0.3191956303482863,1.2987287,2.5389506
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,47_cluster1,0,Immobile,0.9999999,0.3191956303482863,1.3734234,2.6541462
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,49_cluster1,0,Immobile,0.99994457,0.38728522298059576,1.463972,2.5678683
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,49_cluster0,0,Immobile,0.9990103,0.38728522298059576,1.3595986,2.6883037
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,12,0,Immobile,1.0,0.16029146087231227,1.1504052,3.8966466
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,18,0,Immobile,1.0,0.10478324119538383,1.3583228,3.9191667
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,30,0,Immobile,0.9999993,0.13050535802586796,1.6835295,2.2129924
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,34,0,Immobile,0.99999726,0.274009651764112,1.7102144,2.0709099
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,35,0,Immobile,0.999995,0.22074420906318223,1.6217367,2.3346869
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,38,2,Mobile,0.99999905,0.6673000117579686,0.86811814,3.7391247
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,50,0,Immobile,0.99999917,0.26951946928717413,1.2975901,2.6926227
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,57,2,Mobile,0.6462039,0.6529179933751247,1.5247735,11.594851
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,77,0,Immobile,1.0,0.12382992160705752,1.1209715,4.1724485
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,89,2,Mobile,0.9999993,0.48013956885097486,1.0681291,5.583264
+20220603_H2B HALO_no_Olaparib_Field3_2min-crop.rpt_tracked.trxyt,114,0,Immobile,0.9999908,0.23357271237020424,0.91164799,4.7064182

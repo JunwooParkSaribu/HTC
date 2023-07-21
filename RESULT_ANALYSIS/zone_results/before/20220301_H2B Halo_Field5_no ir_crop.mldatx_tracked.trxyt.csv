@@ -1,0 +1,19 @@
+filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,45_cluster1,1,Hybrid,0.9999695,0.3230929262361527,1.2623064,11.783529
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,100_cluster0,0,Immobile,1.0,0.3108716417203714,0.80028017,1.5603753
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,28,0,Immobile,0.99999535,0.22812887168363866,1.2801241,4.0208035
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,29,0,Immobile,1.0,0.08922768986542244,1.516063,1.5753434
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,34,0,Immobile,0.99999964,0.06834849329495117,1.1510585,4.5436613
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,46,2,Mobile,0.9999807,0.7731712776992495,1.2283163,2.3253838
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,70,0,Immobile,1.0,0.06826900091439754,1.0697152,5.8468851
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,74,0,Immobile,1.0,0.12238775073286484,1.4304576,6.8954155
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,83,0,Immobile,1.0,0.15181879230375275,1.1965233,3.2162288
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,99,0,Immobile,0.9999945,0.07828368183095365,1.2271777,10.30556
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,101,0,Immobile,0.99999774,0.2070171813282952,0.86498836,4.131124
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,102,0,Immobile,0.9999989,0.11649675149019792,0.98435747,7.6581403
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,105,0,Immobile,1.0,0.08134381450460701,1.552485,9.2105306
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,106,0,Immobile,0.9999995,0.06072020392035922,1.5807697,9.2443202
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,107,0,Immobile,1.0,0.1384851345518715,1.5895363,9.258863
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,125,2,Mobile,0.55554956,0.26835805017329006,1.5808713,2.6468666
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,139,0,Immobile,1.0,0.05885876853902063,1.1847493,7.7137687
+20220301_H2B Halo_Field5_no ir_crop.mldatx_tracked.trxyt,140,0,Immobile,0.9993808,0.20664355192603068,0.94576145,3.1829586

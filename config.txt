@@ -1,9 +1,9 @@
-data = ./data/1_WT-H2BHalo_noIR/whole cells/20220217_h2b halo_before_irradiation_entire_Cell/20220217_h2b halo_cel8_no_ir.rpt_tracked.trxyt
-save_dir = ./
+data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell
+save_dir = /Users/junwoopark/Downloads/analysis/whole_cells_results
 model_dir = ./model/model42
 cut_off = 8
 all = False
-makeImage = True
+makeImage = False
 postProcessing = True
 
 immobile_cutoff = 5

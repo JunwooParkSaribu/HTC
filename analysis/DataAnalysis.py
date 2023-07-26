@@ -1,6 +1,7 @@
 from fileIO import DataLoad
 from physics import TrajectoryPhy
 import matplotlib.pyplot as plt
+import os
 
 
 def ratio_calcul(report):
@@ -32,10 +33,9 @@ def hist_trajectory_length(histones):
 
 def write_trxyt_file(dict):
     times = list(dict.keys())
-    base_path = '/Users/junwoopark/Downloads/fabiola/immobile_files'
+    base_path = '/Users/junwoopark/Downloads/analysis/whole_cells'
     for time in times:
         histones = dict[time]
-        """
         for h2b in histones:
             filename = h2b.get_file_name()
             w_path = f'{base_path}/seperated_files/{time}/{filename}'
@@ -52,7 +52,6 @@ def write_trxyt_file(dict):
                     line = f'{id}\t{traj[0]}\t{traj[1]}\t{t}\n'
                     f.write(line)
                 f.close()
-        """
         w_path = f'{base_path}/merged_files/{time}/merged_cells.trxyt'
         with open(w_path, 'w') as f:
             for i, h2b in enumerate(histones):

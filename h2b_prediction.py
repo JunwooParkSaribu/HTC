@@ -3,7 +3,6 @@ from mainPipe import main_pipe
 from fileIO import DataLoad, DataSave
 from imageProcessor import MakeImage
 from keras.models import load_model
-from tensorflow import device
 from postProcessing import h2bNetwork, dirichletMixtureModel, splitHistones
 
 

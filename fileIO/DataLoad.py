@@ -6,7 +6,7 @@ from itertools import islice
 from physics import TrajectoryPhy
 
 
-def read_file(file: str, cutoff: int, filetype='trxyt') -> dict:
+def read_file(file: str, cutoff: int, filetype=['trxyt', 'trx']) -> dict:
     """
     @params : filename(String), cutoff value(Integer)
     @return : dictionary of H2B objects(Dict)
@@ -19,7 +19,7 @@ def read_file(file: str, cutoff: int, filetype='trxyt') -> dict:
     time = {}
 
     # Check filetype.
-    assert file.strip().split('.')[-1] == filetype
+    assert file.strip().split('.')[-1].lower() in filetype
 
     # Read file and store the trajectory and time information in H2B object
     try:
@@ -80,8 +80,8 @@ def read_files(paths: list, cutoff=8, group_size=160, chunk=True) -> list:
         files = os.listdir(paths[0])
         if len(files) > 0:
             for file in files:
-                if 'trxyt' in file:
-                    h = read_file(paths[0] + '/' + file, cutoff=cutoff, filetype='trxyt')
+                if 'trxyt' or 'trx' in file.lower():
+                    h = read_file(paths[0] + '/' + file, cutoff=cutoff)
                     histones |= h
         if not chunk:
             return [histones]

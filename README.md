@@ -4,6 +4,7 @@ Input &nbsp;&nbsp; : <b>.trxyt</b> [columns(1: h2b id, 2: x position, 3: y posit
 Output : Classified mobility(3 types) of h2b in nucleus.
 <br>
 <br>
+program is also available in remote through intranet of IBPS, Sorbonne University. 
 
 ![](https://github.com/JunwooParkSaribu/HTC/blob/main/img/h2binterface_image.png)
 ![](https://github.com/JunwooParkSaribu/HTC/blob/main/img/cell8_image.png)

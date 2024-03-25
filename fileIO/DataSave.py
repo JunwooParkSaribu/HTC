@@ -160,6 +160,37 @@ def save_diffcoef(data, path='', all=False):
                         writer.writerow({'diffusion_coef': diff_coef})
 
 
+def write_trxyt(data, path='', all=False):
+    """
+    @params : data(list), path(String), all(boolean)
+    Save diffusion coefficient of each trajectory and the ratio of population.
+    """
+    histones = {}
+
+    for chunked_data in data:
+        histones |= chunked_data
+
+    if not all:
+        histone_names = list(histones.keys())
+        filenames = set()
+        for histone in histone_names:
+            filenames.add(histone.split('\\')[-1].split('@')[0])
+
+        for filename in filenames:
+            h = {}
+            for histone in histone_names:
+                if filename in histone:
+                    h[histone] = histones[histone]
+
+            write_file_name = f'{path}/{filename.strip().split(".trx")[0]}_misslink_processed.trxyt'
+            with open(write_file_name, 'w', encoding="utf-8") as f:
+                input_str = ''
+                for index, trajectory_name in enumerate(list(h.keys())):
+                    for (xpos, ypos), time in zip(h[trajectory_name].get_trajectory(), h[trajectory_name].get_time()):
+                        input_str += f'{index}\t{xpos}\t{ypos}\t{time}\n'
+                f.write(input_str)
+
+
 def write_model_info(training_model, path: str, history: list, nb_histones: int, date: str) -> str:
     """
     @params : model(tensorflow model object), path(String), history(list), nb_histones(Integer), data(String)

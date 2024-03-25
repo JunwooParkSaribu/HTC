@@ -28,6 +28,7 @@ if __name__ == '__main__':
         clustered_hybrids = h2bNetwork.explore_net(hybrids, networks, params['cut_off'])
         main_pipe(HTC_model, [clustered_hybrids], params)
         full_data = [clustered_hybrids | others]
+        DataSave.write_trxyt(full_data, path=params['save_dir'], all=False)
 
     print(f'Report saving...')
     reports = DataSave.save_report(full_data, path=params['save_dir'], all=params['all'])

@@ -55,7 +55,8 @@ def read_file(file: str, cutoff: int, filetype=['trxyt', 'trx']) -> dict:
         del time
 
         TrajectoryPhy.calcul_max_radius(histones)
-        TrajectoryPhy.diff_coef(histones)
+        TrajectoryPhy.get_diffusion_coefs(histones, 1, None)
+        #TrajectoryPhy.diff_coef(histones)
         return histones
     except Exception as e:
         print(f"Unexpected error, check the file: {file}")

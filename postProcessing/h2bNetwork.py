@@ -48,8 +48,14 @@ def explore_net(histones, networks, cutoff):
             x, y, cluster, t, _ = node
             try:
                 target_cluster = arrow_reverse(merged_group, target=cluster)
-                new_networks[target_cluster].append([x, y])
-                new_times[target_cluster].append(t)
+                if len(new_times[target_cluster]) > 3:
+                    if t - new_times[target_cluster][-1] < (2 * (new_times[target_cluster][-1] - new_times[target_cluster][-2])):
+                        new_networks[target_cluster].append([x, y])
+                        new_times[target_cluster].append(t)
+                else:
+                    new_networks[target_cluster].append([x, y])
+                    new_times[target_cluster].append(t)
+
             except Exception as e:
                 print('@@@@@ ERR on network, check anomaly detection @@@@')
                 print(merged_group, x, y, cluster, t)
@@ -57,7 +63,6 @@ def explore_net(histones, networks, cutoff):
                 print(connections)
                 print(e)
                 print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-                exit(1)
 
         for cluster_num, time in zip(new_networks, new_times):
             if len(new_networks[cluster_num]) >= cutoff:

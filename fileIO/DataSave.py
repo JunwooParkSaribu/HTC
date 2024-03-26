@@ -182,7 +182,7 @@ def write_trxyt(data, path='', all=False):
                 if filename in histone:
                     h[histone] = histones[histone]
 
-            write_file_name = f'{path}/{filename.strip().split(".trx")[0]}_misslink_processed.trxyt'
+            write_file_name = f'{path}/{filename.strip().split(".trx")[0]}_mislink_processed.trxyt'
             with open(write_file_name, 'w', encoding="utf-8") as f:
                 input_str = ''
                 for index, trajectory_name in enumerate(list(h.keys())):

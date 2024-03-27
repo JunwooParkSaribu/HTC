@@ -165,31 +165,3 @@ def diff_coef(histones):
             disp = np.sqrt(x_disp**2 + y_disp**2)
             coef.append(disp**2 / (4 * (times[i]-times[i-1])))
         histones[histone].set_diff_coef(coef)
-
-
-def get_diffusion_coefs(histones, time_interval, t_range=None):
-    for histone in histones:
-        if t_range is None:
-            t_range = [0, len(histones[histone].get_trajectory())]
-        considered_positions = histones[histone].get_trajectory()[t_range[0]: t_range[1]]
-        considered_times = histones[histone].get_time()[t_range[0]: t_range[1]]
-
-        diff_coefs = []
-        for i in range(len(considered_positions) - 1):
-            j = i + 1
-            prev_x, prev_y = considered_positions[i]
-            prev_t = considered_times[i]
-            x, y= considered_positions[j]
-            t = considered_times[j]
-            diff_coef = np.sqrt((x - prev_x) ** 2 + (y - prev_y) ** 2) / (t - prev_t)
-            diff_coefs.append(diff_coef)
-        diff_coefs = np.array(diff_coefs)
-        diff_coefs_intervals = []
-        for i in range(len(diff_coefs)):
-            left_idx = i - time_interval//2
-            right_idx = i + time_interval//2
-            diff_coefs_intervals.append(np.mean(diff_coefs[max(0, left_idx):min(len(diff_coefs), right_idx+1)]))
-
-        # make length equal to length of xy pos
-        diff_coefs_intervals.append(0.0)
-        histones[histone].set_diff_coef(diff_coefs_intervals)

@@ -7,6 +7,8 @@ from model import ConvModel
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+from sklearn import metrics
+from sklearn.preprocessing import label_binarize
 
 
 if __name__ == '__main__':
@@ -41,7 +43,6 @@ if __name__ == '__main__':
     y_predict = []
     y_predict_proba = []
 
-
     test_ds = ConvModel.tf.data.Dataset.from_generator(gen.test_generator,
                                                        output_signature=(
                                                            ConvModel.tf.TensorSpec(
@@ -52,7 +53,7 @@ if __name__ == '__main__':
                                                            ConvModel.tf.TensorSpec(
                                                                shape=(),
                                                                dtype=ConvModel.tf.int32))
-                                                       ).batch(batch_size, drop_remainder=True)
+                                                       ).batch(batch_size)
     result = HTC_model.predict(test_ds)
     y_predict.extend([np.argmax(x) for x in result])
     y_predict_proba.extend([np.max(x) for x in result])

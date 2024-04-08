@@ -49,6 +49,7 @@ class DataGenerator:
 
         self.train_split = np.split(np.array(self.train_keys), self.train_split_indices)
         self.test_split = np.split(np.array(self.test_keys), self.test_split_indices)
+        self.test_labels = []
 
     def get_keys(self):
         return self.keys
@@ -81,6 +82,7 @@ class DataGenerator:
                 ImagePreprocessor.preprocessing(test_histones, img_scale=10, amp=self.amp)
             zoomed_imgs, _ = ImagePreprocessor.zoom(histones_imgs, to_size=self.to_size)
             for histone_id in histones_id:
+                self.test_labels.append(test_histones[histone_id].get_manuel_label())
                 yield zoomed_imgs[histone_id], test_histones[histone_id].get_manuel_label()
 
 

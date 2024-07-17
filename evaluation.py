@@ -2,11 +2,12 @@ import sys
 from label import Labeling
 from fileIO import DataLoad
 from imageProcessor import ImagePreprocessor, ImgGenerator
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 from model import ConvModel
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+import tensorflow as tf
 from sklearn import metrics
 from sklearn.preprocessing import label_binarize
 
@@ -17,17 +18,20 @@ if __name__ == '__main__':
     else:
         config_path = '.'
     data_path = f'./data/TrainingSample/all_data'
-    model_path = f'./model/model42'
+    model_path = f'./model/histoneModel'
     report_path = [f'./data/TrainingSample/manuel_label_model38.csv']
     params = DataLoad.read_params(config_path)
+    
+    try:
+        HTC_model = tf.keras.layers.TFSMLayer('./model/histoneModel', call_endpoint='serving_default')
+    except:
+        pass
+    HTC_model.compile()
 
     print(f'Main processing...')
 
     histones = DataLoad.read_files([data_path], cutoff=2, chunk=False)[0]
     histones = Labeling.label_from_reports(histones, report_path, label_header='label')  # 1040
-
-    HTC_model = load_model(model_path, compile=False)
-    HTC_model.compile()
 
     batch_size = params['batch_size']
     nChannel = params['nChannel']

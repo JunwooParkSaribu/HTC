@@ -12,7 +12,7 @@
 > - latest version of [scikit-learn](https://scikit-learn.org/stable/)
 
 > [!NOTE]  
-> Binary executable is only available by contacting the author due to its large file size(3GB). </br>
+> Binary executable is only available by contacting the author[^1] directly due to its large file size(3GB). </br>
 
 
 ***Input &nbsp;&nbsp; : .trxyt***<br>
@@ -31,4 +31,4 @@ To run the program, open the GUI with following command.<br>
 
 
 <h3> Contacts </h3>
-junwoo.park@sorbonne-universite.fr<br>
+[^1]: junwoo.park@sorbonne-universite.fr<br>

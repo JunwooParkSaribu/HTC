@@ -1,6 +1,6 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13334706.svg)](https://doi.org/10.5281/zenodo.13334706)
 # H2B mobility classifier
-<h3>HTC classifies the mobility of H2B based on their trajectory image using CNN</h3> 
+<h3>HTC classifies the mobility of H2Bs based on their trajectory image using CNN</h3> 
 
 > [!IMPORTANT]  
 > Requirements to run from source code </br>
@@ -18,7 +18,7 @@
 
 
 ***Input &nbsp;&nbsp; : .trxyt***<br>
-***Output : Report(.csv)*** of the classified mobility(3 types) of H2B.<br><br>
+***Output : Reports(.csv)*** including classified mobility(in 3 types) of H2Bs.<br><br>
 This repository contains sample.trxyt file for the test of the program.<br>
 Please test sample.trxyt before run the program on your own data.<br>
 

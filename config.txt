@@ -1,10 +1,10 @@
-data = /Users/junwoopark/Desktop/Junwoo/Faculty/Master/M2/HTC/data/1_WT-H2BHalo_noIR/whole cells/Concatenation_20220217_20220301_20220601_H2B_Halo_before_entire_Cell
-save_dir = /Users/junwoopark/Downloads/analysis/whole_cells_results
-model_dir = ./model/model42
+data = /Users/junwoopark/Desktop/Junwoo/Faculty/PhD/HTC/sample.trxyt
+save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/PhD/HTC
+model_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/PhD/HTC/model/model_htc
 cut_off = 8
 all = False
-makeImage = False
-postProcessing = True
+makeImage = True
+postProcessing = False
 
 immobile_cutoff = 5
 hybrid_cutoff = 12

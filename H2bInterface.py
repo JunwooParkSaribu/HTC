@@ -499,8 +499,8 @@ def main():
                 sg.cprint(fichier.split('\\')[-1].split('/')[-1], text_color='white', background_color='purple')
             try:
                 # Subprocess calling
-                proc = run_command(['./h2b_pipe.exe'])
-                #proc = run_command(['python3', 'h2b_prediction.py'])
+                #proc = run_command(['./h2b_pipe.exe'])
+                proc = run_command(['python3', 'h2b_prediction.py'])
                 data_list = set()  # reset data list
                 start_time = time.time()
 

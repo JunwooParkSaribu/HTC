@@ -14,7 +14,7 @@
 > - latest version of [scikit-learn](https://scikit-learn.org/stable/)
 
 > [!NOTE]  
-> Binary executable(WIN) only can be [downloaded](https://drive.google.com/file/d/17Gr0x4nUNjZJuPlDVHn4odP9TwFANtC4/view?usp=share_link) via GoogleDrive due to its large file size(>3GB). </br>
+> Binary executable(WIN) only can be [downloaded](https://drive.google.com/file/d/17Gr0x4nUNjZJuPlDVHn4odP9TwFANtC4/view?usp=share_link)[^1] via GoogleDrive due to its large file size(>3GB). </br>
 
 
 ***Input &nbsp;&nbsp; : .trxyt***<br>

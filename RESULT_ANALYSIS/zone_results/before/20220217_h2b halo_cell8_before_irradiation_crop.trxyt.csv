@@ -1,4 +1,0 @@
-filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
-20220217_h2b halo_cell8_before_irradiation_crop.trxyt,10,0,Immobile,0.99999857,0.13008655063937077,0.96258355,8.4676239
-20220217_h2b halo_cell8_before_irradiation_crop.trxyt,67,0,Immobile,1.0,0.07153540247368706,1.4363068,0.88602742
-20220217_h2b halo_cell8_before_irradiation_crop.trxyt,75,0,Immobile,0.9999994,0.19762563838320646,1.2767346,9.7892294

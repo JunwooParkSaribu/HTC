@@ -1,8 +1,0 @@
-filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
-20220301_H2B Halo_Field2-30s_crop.mldatx_tracked copy.trxyt,3,2,Mobile,0.999997,0.4237939226361091,1.3285763,5.5089922
-20220301_H2B Halo_Field2-30s_crop.mldatx_tracked copy.trxyt,8,0,Immobile,0.99976104,0.14792842878882342,1.3857886,7.4202642
-20220301_H2B Halo_Field2-30s_crop.mldatx_tracked copy.trxyt,10,0,Immobile,0.99851173,0.2050327411042684,1.3527406,7.3923631
-20220301_H2B Halo_Field2-30s_crop.mldatx_tracked copy.trxyt,11,0,Immobile,0.9535941,0.23464168488220524,1.356837,7.4297282
-20220301_H2B Halo_Field2-30s_crop.mldatx_tracked copy.trxyt,23,0,Immobile,0.9999951,0.10905662593153163,1.3823925,7.4714634
-20220301_H2B Halo_Field2-30s_crop.mldatx_tracked copy.trxyt,26,2,Mobile,0.78577495,0.29155260428739116,1.3345774,7.3728577
-20220301_H2B Halo_Field2-30s_crop.mldatx_tracked copy.trxyt,27,0,Immobile,0.9999999,0.10614790650827748,1.451839,7.4252928

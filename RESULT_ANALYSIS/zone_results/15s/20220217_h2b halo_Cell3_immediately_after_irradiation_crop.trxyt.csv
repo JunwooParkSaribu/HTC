@@ -1,7 +1,0 @@
-filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
-20220217_h2b halo_Cell3_immediately_after_irradiation_crop.trxyt,6,0,Immobile,0.9999976,0.1566622103812532,1.1921973,8.0532139
-20220217_h2b halo_Cell3_immediately_after_irradiation_crop.trxyt,29,0,Immobile,0.9950028,0.1380735739282865,1.3377249,6.9551402
-20220217_h2b halo_Cell3_immediately_after_irradiation_crop.trxyt,32,0,Immobile,1.0,0.13752263345969695,1.4368385,11.219627
-20220217_h2b halo_Cell3_immediately_after_irradiation_crop.trxyt,57,2,Mobile,0.9999906,0.5844674750205779,1.7399112,3.4487002
-20220217_h2b halo_Cell3_immediately_after_irradiation_crop.trxyt,65,2,Mobile,0.998762,0.8120221437832166,1.2810352,16.421288
-20220217_h2b halo_Cell3_immediately_after_irradiation_crop.trxyt,78,2,Mobile,1.0,0.7262270128338681,1.1119604,0.95459887

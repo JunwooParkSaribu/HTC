@@ -31,4 +31,4 @@ To run the program, open the GUI with following command.<br>
 
 
 <h3> Contacts </h3>
-[^1]: junwoo.park@sorbonne-universite.fr<br>
+[^1]: junwoo.park@sorbonne-universite.fr

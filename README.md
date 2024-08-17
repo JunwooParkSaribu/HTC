@@ -12,13 +12,13 @@
 > - latest version of [scikit-learn](https://scikit-learn.org/stable/)
 
 
-***Input &nbsp;&nbsp; : .trxyt ***<br>
-***Output : Report(.csv) ***of the classified mobility(3 types) of H2B.<br><br>
+*Input &nbsp;&nbsp; : .trxyt*<br>
+*Output : Report(.csv)*of the classified mobility(3 types) of H2B.<br><br>
 This repository contains sample.trxyt file for the test of the program.<br>
 Please test sample.trxyt before run the program on your own data.<br>
 
 To run the program, open the GUI with following command.<br>
-**python3 H2bInterface.py**
+*python3 H2bInterface.py*
 <br>
 <br>
 

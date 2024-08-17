@@ -1,13 +1,31 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13334707.svg)](https://doi.org/10.5281/zenodo.13334707)
 # H2B mobility classifier
-<h3>h2b mobility classifier[CNN]</h3> 
-Input &nbsp;&nbsp; : <b>.trxyt</b> [columns(1: h2b id, 2: x position, 3: y position, 4: time)<br>
-Output : Classified mobility(3 types) of h2b in nucleus.
+<h3>HTC classifies the mobility of H2B based on their trajectory image using CNN</h3> 
+
+> [!IMPORTANT]  
+> Requirements to run from source code </br>
+> - Python 3.10 or higher
+> - TensorFlow 2.12
+> - latest version of numpy
+> - latest version of imageio
+> - latest version of matplotlib
+> - latest version of [scikit-learn](https://scikit-learn.org/stable/)
+
+
+Input &nbsp;&nbsp; : <b>.trxyt</b><br>
+Output : Report(.csv) of the classified mobility(3 types) of H2B.<br>
+This repository contains sample.trxyt file for the test of the program.<br>
+Please test sample.trxyt before run the program on your own data.
 <br>
 <br>
-The program is also available in remote via intranet of LCQB, Sorbonne University.<br>
-Contact: junwoo.park@sorbonne-universite.fr<br>
 
 ![](https://github.com/JunwooParkSaribu/HTC/blob/main/img/h2binterface_image.png)
 ![](https://github.com/JunwooParkSaribu/HTC/blob/main/img/cell8_image.png)
 ![](https://github.com/JunwooParkSaribu/HTC/blob/main/img/cell9_image.png)
+
+
+> [!NOTE]  
+> Binary executable is only available by contacting the author due to its large file size(3GB). </br>
+
+<h3> Contacts </h3>
+junwoo.park@sorbonne-universite.fr<br>

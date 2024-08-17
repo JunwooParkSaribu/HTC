@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13334707.svg)](https://doi.org/10.5281/zenodo.13334707)
 # H2B mobility classifier
 <h3>h2b mobility classifier[CNN]</h3> 
 Input &nbsp;&nbsp; : <b>.trxyt</b> [columns(1: h2b id, 2: x position, 3: y position, 4: time)<br>

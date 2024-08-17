@@ -316,7 +316,7 @@ def model_check(model_path) -> bool:
 
 
 # --------------------------------- Main Program Layout ---------------------------------
-def main():
+def main(exec):
     """
     The main program that contains the event loop.
     It will call the make_window function to create the window.
@@ -500,7 +500,7 @@ def main():
             try:
                 # Subprocess calling
                 #proc = run_command(['./h2b_pipe.exe'])
-                proc = run_command(['python3', 'h2b_prediction.py'])
+                proc = run_command([exec, 'h2b_prediction.py'])
                 data_list = set()  # reset data list
                 start_time = time.time()
 
@@ -536,4 +536,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.executable.split('/')[-1])

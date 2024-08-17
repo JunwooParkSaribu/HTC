@@ -4,15 +4,17 @@
 
 > [!IMPORTANT]  
 > Requirements to run from source code </br>
+> - C compiler
 > - Python 3.10 or higher
 > - TensorFlow 2.12
 > - latest version of numpy
 > - latest version of imageio
 > - latest version of matplotlib
+> - latest version of PySimpleGUI
 > - latest version of [scikit-learn](https://scikit-learn.org/stable/)
 
 > [!NOTE]  
-> Binary executable is only available by contacting the author[^1] directly due to its large file size(3GB). </br>
+> Binary executable(WIN) only can be [downloaded](https://drive.google.com/file/d/17Gr0x4nUNjZJuPlDVHn4odP9TwFANtC4/view?usp=share_link) via GoogleDrive due to its large file size(>3GB). </br>
 
 
 ***Input &nbsp;&nbsp; : .trxyt***<br>
@@ -21,7 +23,8 @@ This repository contains sample.trxyt file for the test of the program.<br>
 Please test sample.trxyt before run the program on your own data.<br>
 
 To run the program, open the GUI with following command.<br>
-*python3 H2bInterface.py*
+From source code:*python H2bInterface.py*
+
 <br>
 <br>
 

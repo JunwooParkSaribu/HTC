@@ -1,3 +1,0 @@
-Nb of traces in yoTRacesur input files: 34719 
-Longuest trace in your input files : 1291 
-Mean trace length in your input files : 1.712057e+01 

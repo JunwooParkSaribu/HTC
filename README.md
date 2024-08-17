@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13334707.svg)](https://doi.org/10.5281/zenodo.13334707)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13334706.svg)](https://doi.org/10.5281/zenodo.13334706)
 # H2B mobility classifier
 <h3>HTC classifies the mobility of H2B based on their trajectory image using CNN</h3> 
 

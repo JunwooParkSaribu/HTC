@@ -5,8 +5,8 @@ authors:
     given-names: Junwoo
     orcid: https://orcid.org/0009-0000-6126-2125
 title: "HTC"
-version: v1.0.5
+version: v1.0.7
 identifiers:
   - type: doi
     value: 10.5281/zenodo.13334706
-date-released: 2024-08-17
+date-released: 2024-08-18

@@ -1,0 +1,7 @@
+filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
+20220624_Field1_before_crop.mldatx_tracked - Copie.trxyt,5,0,Immobile,0.9905408,0.05909214542948988,1.4560595,9.2408563
+20220624_Field1_before_crop.mldatx_tracked - Copie.trxyt,7,2,Mobile,0.9999999,0.22047727973779946,1.5167134,9.0657342
+20220624_Field1_before_crop.mldatx_tracked - Copie.trxyt,10,0,Immobile,0.966655,0.06832751841310312,0.93503121,6.7288986
+20220624_Field1_before_crop.mldatx_tracked - Copie.trxyt,13,0,Immobile,0.93820477,0.0743428847775629,0.91155622,6.8671568
+20220624_Field1_before_crop.mldatx_tracked - Copie.trxyt,14,2,Mobile,0.9962469,0.1267810118590319,1.8088983,1.9517977
+20220624_Field1_before_crop.mldatx_tracked - Copie.trxyt,23,2,Mobile,0.9999981,0.17363030406158367,1.1282923,6.9188901

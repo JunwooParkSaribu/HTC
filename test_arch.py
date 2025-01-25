@@ -1,0 +1,15 @@
+from keras.models import load_model
+from fileIO import DataLoad
+params = DataLoad.read_params('.')
+HTC_model = load_model(params['model_dir'], compile=False)
+HTC_model.compile()
+print(HTC_model.layers[0].filters, HTC_model.layers[0].kernel.shape)
+#print(HTC_model.layers[1].filters, HTC_model.layers[1].kernel.shape)
+#print(HTC_model.layers[2].filters, HTC_model.layers[2].kernel.shape)
+#print(HTC_model.layers[3].filters, HTC_model.layers[3].kernel.shape)
+print(HTC_model.layers[4].filters, HTC_model.layers[4].kernel.shape)
+print(HTC_model.layers[8].filters, HTC_model.layers[8].kernel.shape)
+print(HTC_model.layers[12].filters, HTC_model.layers[12].kernel.shape)
+print(HTC_model.layers[16].filters, HTC_model.layers[16].kernel.shape)
+print(HTC_model.input_spec)
+HTC_model.summary()

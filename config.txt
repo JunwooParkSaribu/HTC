@@ -1,7 +1,7 @@
-data = /Users/junwoopark/Desktop/Junwoo/Faculty/PhD/HTC/sample.trxyt
-save_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/PhD/HTC
-model_dir = /Users/junwoopark/Desktop/Junwoo/Faculty/PhD/HTC/model/model_htc
-cut_off = 8
+data = /home/junwoo/HTC/inputs/sample/20220217_aa4_cel9_before_ir.rpt_tracked - Copie_processed.trxyt
+save_dir = /home/junwoo/HTC/outpus/sample
+model_dir = /home/junwoo/HTC/model/model_htc
+cut_off = 2
 all = False
 makeImage = True
 postProcessing = False

@@ -1,0 +1,26 @@
+filename,h2b_id,predicted_class_id,predicted_class_name,probability,maximum_radius,first_x_position,first_y_position
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,7,0,Immobile,0.99941814,0.04840585419907947,0.93312293,14.692984
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,8,0,Immobile,0.9651945,0.061701967486104306,0.93826845,14.709696
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,9,0,Immobile,0.9751287,0.09792610635908901,0.98448048,14.664027
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,11,0,Immobile,0.97858495,0.1079953368055564,0.9491291,14.663378
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,13,0,Immobile,0.9999279,0.08974943252780157,0.93850656,14.722038
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,14,0,Immobile,0.9865262,0.08327254018443381,0.96319234,14.753391
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,15,2,Mobile,0.99996674,0.15010159879560012,1.0046888,14.72031
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,18,0,Immobile,0.99933016,0.04971677339781866,2.2087718,8.6993197
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,41,2,Mobile,0.9999933,1.000777171555807,2.1514433,14.625921
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,42,2,Mobile,0.99999607,0.5207447602691848,1.9128344,15.027824
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,47,0,Immobile,0.9619513,0.05969533299354262,2.0844297,7.2527439
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,51,0,Immobile,0.8542719,0.02089831984466684,2.0149623,7.1998025
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,55,0,Immobile,0.96550894,0.11631566902958544,2.0437527,7.1172954
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,69,0,Immobile,0.9963917,0.03347031540708867,1.537382,2.4378949
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,72,0,Immobile,0.99990296,0.03262123241283946,0.81501792,5.6809943
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,79,0,Immobile,0.91302,0.07201543977107236,0.80870633,16.666341
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,81,0,Immobile,0.9989532,0.04738524161974481,0.85008383,16.646002
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,91,0,Immobile,0.9981036,0.04750965103460925,0.81204064,16.770861
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,96,0,Immobile,1.0,0.04254429189256824,0.81765371,16.694263
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,104,2,Mobile,0.99999964,0.2582619008325466,2.2320673,14.690507
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,116,0,Immobile,0.99997663,0.11135679397580618,1.6356535,6.4457365
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,118,2,Mobile,0.99999976,0.2704907410988589,1.5951133,6.5251605
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,124,0,Immobile,0.97538775,0.026774937472943065,1.6572694,6.4695787
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,128,0,Immobile,0.99423015,0.0424773688046942,1.6540021,6.5773156
+20220713_Field6_before_crop.rpt_tracked - Copie.trxyt,129,2,Mobile,0.99999976,0.30063788621729004,1.7032534,6.4009087

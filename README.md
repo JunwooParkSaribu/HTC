@@ -1,11 +1,11 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13334706.svg)](https://doi.org/10.5281/zenodo.13334706)
 # H2B mobility classifier
-<h3>HTC classifies the mobility of H2Bs based on their trajectory image using CNN</h3> 
+<h3>HTC (histone trajectory classifier) classifies the mobility of H2Bs based on their trajectory image using CNN</h3> 
 
 > [!IMPORTANT]  
 > Requirements to run from source code </br>
 > - C compiler
-> - Python 3.10 or higher
+> - Python 3.10
 > - TensorFlow 2.12
 > - latest version of numpy
 > - latest version of imageio
